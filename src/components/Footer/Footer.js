@@ -13,7 +13,7 @@ export const Footer = () => {
     <Typography variant="body2" color="textSecondary" align="center" className={classes.footerContainer}>
       {"Copyright © "}
       <Link color="inherit" to={'/'}>
-        Your Website
+        Instrumentos PRII 
       </Link >{" "}
       {new Date().getFullYear()}
       {"."}

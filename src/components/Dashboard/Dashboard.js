@@ -21,6 +21,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { LogoNavbar } from "../Navbar/LogoNavbar";
 import { dashboardStyle } from "./DashboardStyle";
 import { Footer } from "../Footer/Footer";
+import { listItems } from "./MainListItems/ListItems";
 
 
 const useStyles = makeStyles((theme) => dashboardStyle(theme));
@@ -89,8 +90,8 @@ export const Dashboard = () => {
           </IconButton>
         </div>
         <Divider />
-        <List></List>
-        {/* <Divider /> */}
+        <List>{listItems}</List>
+        <Divider />
         <List></List>
       </Drawer>
       <main className={classes.content}>
