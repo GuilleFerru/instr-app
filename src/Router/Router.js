@@ -6,10 +6,10 @@ import { DailyWorksContainer } from '../screens/DayliWorksContainer/DayliWorksCo
 export const Router = () => {
     return <Switch>
         <Route exact path="/">
-            <Dashboard />
+            <DailyWorksContainer />
         </Route>
-        <Route exact path="/tareas-diarias">
-            <DailyWorksContainer/>
+        <Route exact path="/dashboard">
+            <Dashboard/>
         </Route>
     </Switch>
 }

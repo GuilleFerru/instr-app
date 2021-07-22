@@ -1,8 +1,15 @@
-
-export const navbarStyle = theme =>{
+export const navbarStyle = theme => {
     return ({
-        container : {
-            padding: '2rem'
-        }
+        root: {
+            display: "flex"
+        },
+        pages: {
+            width: '100%'
+        },
+        content: {
+            flexGrow: "1",
+            height: "100vh",
+            overflow: "auto",
+        },
     })
 }
