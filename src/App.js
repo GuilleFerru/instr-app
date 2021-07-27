@@ -1,9 +1,10 @@
-import { Navbar } from "./components/Navbar/Navbar";
+
 import { BrowserRouter } from "react-router-dom";
 import { Router } from "./Router/Router";
-import { Footer } from "./components/Footer/Footer";
+
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from "./styles/theme";
+import { LayOut } from "./components/LayOut/LayOut";
 
 
 const App = (props) => {
@@ -11,10 +12,10 @@ const App = (props) => {
     <>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Navbar>
+          <LayOut>
             <Router />
-            <Footer />
-          </Navbar>
+            {/* <Footer/> */}
+          </LayOut>
         </ThemeProvider>
       </BrowserRouter>
     </>

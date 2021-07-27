@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { navbarStyle } from "./NavbarStyle";
+// import { navbarStyle } from "./NavbarStyle";
 import { DrawerContainer } from "../Navbar/Drawer/DrawerContainer";
 import { AppBarContainer } from "../Navbar/AppBar/AppBarContainer";
 
 
-const useStyles = makeStyles((theme) => navbarStyle(theme));
+// const useStyles = makeStyles((theme) => navbarStyle(theme));
 
 
 export const Navbar = ({ children }) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [open, setOpen] = useState(true);
 
   const handleDrawerOpen = () => {
@@ -20,14 +20,9 @@ export const Navbar = ({ children }) => {
     setOpen(false);
   };
 
-  return <div className={classes.root}>
+  return <>
     <CssBaseline />
     <AppBarContainer handleDrawerOpen={handleDrawerOpen} open={open} />
     <DrawerContainer handleDrawerClose={handleDrawerClose} open={open} />
-    <main className={classes.pages}>
-      <section className={classes.content}>
-        {children}
-      </section>
-    </main>
-  </div>
+  </>
 };
