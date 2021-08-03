@@ -1,4 +1,4 @@
-export const dailyWorksContainerStyle = theme => {
+export const empDailyScheduleContainerStyle = theme => {
     return ({
         paper: {
             margin: theme.spacing(2),

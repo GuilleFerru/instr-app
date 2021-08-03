@@ -1,85 +1,58 @@
-import React, { useState } from 'react'
-// import { DataGrid } from '@material-ui/data-grid';
+import React from 'react'
 import MaterialTable from 'material-table'
-import { workers } from '../../../Services/Workers';
 import { tableIcons } from './tableIcons';
+// import { Checkbox, Select, MenuItem } from '@material-ui/core';
 
-
-const columns = [
-    {
-        field: 'id',
-        title: 'Numero',
-        // editable: false
-    },
-    {
-        field: 'legajo',
-        title: 'Legajo',
-    },
-    {
-        field: 'fullName',
-        title: 'Nombre Completo',
-
-    },
-
-
-
-    // { field: 'id', headerName: 'ID', width: 90 },
-    // {
-    //     field: 'firstName',
-    //     headerName: 'First name',
-    //     width: 150,
-    //     editable: true,
-    // },
-    // {
-    //     field: 'lastName',
-    //     headerName: 'Last name',
-    //     width: 150,
-    //     editable: true,
-    // },
-    // {
-    //     field: 'age',
-    //     headerName: 'Age',
-    //     type: 'number',
-    //     width: 110,
-    //     editable: true,
-    // },
-    // {
-    //     field: 'fullName',
-    //     headerName: 'Full name',
-    //     description: 'This column has a value getter and is not sortable.',
-    //     sortable: false,
-    //     width: 160,
-    //     valueGetter: (params) =>
-    //         `${params.getValue(params.id, 'firstName') || ''} ${params.getValue(params.id, 'lastName') || ''
-    //         }`,
-    // },
-];
-
-// const rows = [
-//     { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-//     { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//     { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//     { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//     { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//     { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//     { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+// const columns = [
+//     {
+//         field: 'id',
+//         title: 'Numero',
+//         hidden: true
+//     },
+//     {
+//         field: 'legajo',
+//         title: 'Legajo',
+//     },
+//     {
+//         field: 'fullName',
+//         title: 'Nombre Completo',
+//         lookup: {301: 'Jorge Reinoso', 303: 'Cleri Cattaneo',649: 'Fabian Monzon', 657: 'Edgardo Heredia', 672: 'Juan Machado', 1151: 'Ezequiel Lopez'}
+//     },
+//     {
+//         field: 'shift',
+//         title: 'Horario',
+//         lookup: {1: '05 a 13 hs',2: '13 a 21 hs',3: '21 a 05 hs',4: 'Franco',5: '08 a 17 hs',}
+//     },
+//     {
+//         field: 'date',
+//         title: 'Fecha',
+//     },
 // ];
 
-export const MuiTable = () => {
+export const MuiTable = ({data, setData, title, columns}) => {
+    // const [data, setData] = useState(scheduleEmp);
+    // const [filter, setFilter] = useState(false)
+    // const [filteredData, setFilteredData] = useState(data)
+    // const [filterBy, setFilterBy] = useState('')
 
-    const [data, setData] = useState(workers)
+    // const handleChange = () => {
+    //     setFilter(!filter)
+    // }
+
+    // useEffect(() => {
+    //     // setFilteredData(filterBy === '' ? data : data.filter(dt => dt.fullName))
+    //     console.log(onRowAddCancelled)
+    // }, [])
 
     return (
         <div>
             <MaterialTable
                 icons={tableIcons}
-                title="Personal del día"
+                title= {title}
                 data={data}
                 columns={columns}
-                pageSize={5}
                 editable={{
+                    
                     onRowAdd: (newRow) => new Promise((resolve, reject) => {
                         const updatedRows = [...data, newRow];
                         setTimeout(() => {
@@ -96,16 +69,59 @@ export const MuiTable = () => {
                     }),
                     onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
                         const index = oldRow.tableData.id;
+                        console.log(oldRow.tableData.id)
                         const updatedRows = [...data];
                         updatedRows[index] = updatedRow;
-                        setData(updatedRows)
-                        resolve()
+                        setData(updatedRows);
+                        resolve();
+                    }),
+                    onBulkUpdate: selectedRows => new Promise((resolve, reject) => {
+                        const rows = Object.values(selectedRows);
+                        const updatedRows = [...data];
+                        // let index;
+                        rows.map(emp => {
+                            const index = emp.oldData.tableData.id;
+                            updatedRows[index] = emp.newData;
+                            setData(updatedRows);
+                            resolve();
+                            return ''
+                        })
                     })
                 }}
                 options={{
                     actionsColumnIndex: -1,
-                    addRowPosition: 'first'
+                    addRowPosition: 'first',
+                    // filtering: filter,
+                    // columnsButton:true,
+                    pageSize: 10
                 }}
+            // actions={[
+            //     {
+            //         icon: () => <Checkbox
+            //             checked={filter}
+            //             onChange={handleChange}
+            //             color="primary"
+            //             inputProps={{ 'aria-label': 'primary checkbox' }}
+            //         />,
+            //         tooltip: 'Hide/Show Filter',
+            //         isFreeAction: true
+            //     },
+            //     // {
+            //     //     icon: () => <Select
+            //     //         labelId="demo-simple-select-label"
+            //     //         id="demo-simple-select"
+            //     //         style={{ width: 100 }}
+            //     //         // value={filterBy}
+            //     //         // onChange={(e) => setFilterBy(e.target.value)}
+            //     //     >
+            //     //         <MenuItem value={10}>Ten</MenuItem>
+            //     //         <MenuItem value={20}>Twenty</MenuItem>
+            //     //         <MenuItem value={30}>Thirty</MenuItem>
+            //     //     </Select>,
+            //     //     tooltip: 'Filter By',
+            //     //     isFreeAction: true
+            //     // }
+            // ]}
             />
         </div>
     );
