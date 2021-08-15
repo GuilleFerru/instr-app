@@ -1,58 +1,47 @@
 import React from 'react'
 import MaterialTable from 'material-table'
 import { tableIcons } from './tableIcons';
-// import { Checkbox, Select, MenuItem } from '@material-ui/core';
+import AddCommentIcon from '@material-ui/icons/AddComment';
+// import { CheckBox } from '@material-ui/icons';
 
-// const columns = [
-//     {
-//         field: 'id',
-//         title: 'Numero',
-//         hidden: true
-//     },
-//     {
-//         field: 'legajo',
-//         title: 'Legajo',
-//     },
-//     {
-//         field: 'fullName',
-//         title: 'Nombre Completo',
-//         lookup: {301: 'Jorge Reinoso', 303: 'Cleri Cattaneo',649: 'Fabian Monzon', 657: 'Edgardo Heredia', 672: 'Juan Machado', 1151: 'Ezequiel Lopez'}
-//     },
-//     {
-//         field: 'shift',
-//         title: 'Horario',
-//         lookup: {1: '05 a 13 hs',2: '13 a 21 hs',3: '21 a 05 hs',4: 'Franco',5: '08 a 17 hs',}
-//     },
-//     {
-//         field: 'date',
-//         title: 'Fecha',
-//     },
-// ];
-
-export const MuiTable = ({data, setData, title, columns}) => {
-    // const [data, setData] = useState(scheduleEmp);
-    // const [filter, setFilter] = useState(false)
-    // const [filteredData, setFilteredData] = useState(data)
-    // const [filterBy, setFilterBy] = useState('')
-
-    // const handleChange = () => {
-    //     setFilter(!filter)
-    // }
-
-    // useEffect(() => {
-    //     // setFilteredData(filterBy === '' ? data : data.filter(dt => dt.fullName))
-    //     console.log(onRowAddCancelled)
-    // }, [])
+export const MuiTable = ({ data, setData, title, columns, updateRow, handleAditional }) => {
 
     return (
         <div>
             <MaterialTable
                 icons={tableIcons}
-                title= {title}
+                title={title}
                 data={data}
                 columns={columns}
+                localization={{
+                    header:{
+                        actions: 'Acciones'
+                    },
+                    body: {
+                        emptyDataSourceMessage: 'No hay filas para mostrar',
+                        deleteTooltip: 'Borrar',
+                        editTooltip: 'Editar',
+                        addTooltip: 'Agregar',
+                        filterRow: 'Filtrar por',
+                        editRow: {
+                            deleteText: 'Esta seguro de borrar esta fila?'
+                        }
+                    },
+                    toolbar: {
+                        searchTooltip: 'Buscar',
+                        searchPlaceholder: 'Buscar'
+                        
+                    },
+                    pagination: {
+                        labelRowsSelect: 'filas',
+                        labelDisplayedRows: '{count} de {from}-{to}',
+                        firstTooltip: 'Primera página',
+                        previousTooltip: 'Página anterior',
+                        nextTooltip: 'Próxima página',
+                        lastTooltip: 'Última página'
+                    }
+                }}
                 editable={{
-                    
                     onRowAdd: (newRow) => new Promise((resolve, reject) => {
                         const updatedRows = [...data, newRow];
                         setTimeout(() => {
@@ -68,11 +57,7 @@ export const MuiTable = ({data, setData, title, columns}) => {
                         resolve()
                     }),
                     onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
-                        const index = oldRow.tableData.id;
-                        console.log(oldRow.tableData.id)
-                        const updatedRows = [...data];
-                        updatedRows[index] = updatedRow;
-                        setData(updatedRows);
+                        setData(updateRow(updatedRow, oldRow));
                         resolve();
                     }),
                     onBulkUpdate: selectedRows => new Promise((resolve, reject) => {
@@ -91,21 +76,16 @@ export const MuiTable = ({data, setData, title, columns}) => {
                 options={{
                     actionsColumnIndex: -1,
                     addRowPosition: 'first',
-                    // filtering: filter,
-                    // columnsButton:true,
                     pageSize: 10
                 }}
-            // actions={[
-            //     {
-            //         icon: () => <Checkbox
-            //             checked={filter}
-            //             onChange={handleChange}
-            //             color="primary"
-            //             inputProps={{ 'aria-label': 'primary checkbox' }}
-            //         />,
-            //         tooltip: 'Hide/Show Filter',
-            //         isFreeAction: true
-            //     },
+            actions={[
+                {
+                    icon: () =><AddCommentIcon/>,
+                    tooltip:'Agregar Adicional',
+                    isFreeAction:true,
+                    onClick:(e,row)=> handleAditional(row),
+                  
+                },
             //     // {
             //     //     icon: () => <Select
             //     //         labelId="demo-simple-select-label"
@@ -121,7 +101,7 @@ export const MuiTable = ({data, setData, title, columns}) => {
             //     //     tooltip: 'Filter By',
             //     //     isFreeAction: true
             //     // }
-            // ]}
+            ]}
             />
         </div>
     );

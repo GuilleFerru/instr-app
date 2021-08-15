@@ -6,14 +6,13 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { appBarContainerStyle } from './AppBarContainerStyle';
 import { Title } from '../../commonComponents/Title';
 import { DateTime } from '../../DateTime/DateTime'
+import { green } from '@material-ui/core/colors';
 
 
 const useStyles = makeStyles((theme) => appBarContainerStyle(theme));
 
 export const AppBarContainer = ({ handleDrawerOpen, open }) => {
-    const classes = useStyles();
-
-
+    const classes = useStyles({green:green});
 
     return <AppBar
         position="absolute"
