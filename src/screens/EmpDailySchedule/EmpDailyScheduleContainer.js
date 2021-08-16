@@ -1,10 +1,9 @@
 import React from "react";
-// import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { empDailyScheduleContainerStyle } from "./EmpDailyScheduleContainerStyle";
 import { Grid, Paper } from "@material-ui/core";
 import { EmpDailyScheduleTable } from "./Tables/EmpDailyScheduleTable";
-// import { Title } from '../../components/commonComponents/Title'
+
 
 
 
@@ -19,10 +18,11 @@ export const EmpDailyScheduleContainer = () => {
         <Grid  container>
             <Grid item md={12} lg={12}>
                 <Paper className={classes.paper}>
-                    <EmpDailyScheduleTable />
+                <EmpDailyScheduleTable />
                 </Paper>
             </Grid>
         </Grid>
+        
         {/* <MuiTable /> */}
     </div>
 }

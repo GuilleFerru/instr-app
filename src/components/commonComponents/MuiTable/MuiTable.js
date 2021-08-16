@@ -1,10 +1,15 @@
 import React from 'react'
 import MaterialTable from 'material-table'
 import { tableIcons } from './tableIcons';
-import AddCommentIcon from '@material-ui/icons/AddComment';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 // import { CheckBox } from '@material-ui/icons';
 
-export const MuiTable = ({ data, setData, title, columns, updateRow, handleAditional }) => {
+export const MuiTable = ({ data, setData, title, dataColumns, updateRow, bulkUpdate, handleAditional }) => {
+
+    //arregla el browser freezing
+    const columns = dataColumns.map((column) => {
+        return { ...column };
+    });
 
     return (
         <div>
@@ -14,7 +19,7 @@ export const MuiTable = ({ data, setData, title, columns, updateRow, handleAditi
                 data={data}
                 columns={columns}
                 localization={{
-                    header:{
+                    header: {
                         actions: 'Acciones'
                     },
                     body: {
@@ -30,7 +35,7 @@ export const MuiTable = ({ data, setData, title, columns, updateRow, handleAditi
                     toolbar: {
                         searchTooltip: 'Buscar',
                         searchPlaceholder: 'Buscar'
-                        
+
                     },
                     pagination: {
                         labelRowsSelect: 'filas',
@@ -42,35 +47,28 @@ export const MuiTable = ({ data, setData, title, columns, updateRow, handleAditi
                     }
                 }}
                 editable={{
-                    onRowAdd: (newRow) => new Promise((resolve, reject) => {
-                        const updatedRows = [...data, newRow];
-                        setTimeout(() => {
-                            setData(updatedRows);
-                            resolve();
-                        }, 1000)
-                    }),
-                    onRowDelete: selectedRow => new Promise((resolve, reject) => {
+                    // onRowAdd: (newRow) => new Promise((resolve, reject) => {
+                    //     const updatedRows = [...data, newRow];
+                    //     setTimeout(() => {
+                    //         setData(updatedRows);
+                    //         resolve();
+                    //     }, 1000)
+                    // }),
+                    onRowDelete: selectedRow => new Promise((resolve,_) => {
                         const index = selectedRow.tableData.id
                         const updatedRows = [...data]
                         updatedRows.splice(index, 1)
                         setData(updatedRows)
                         resolve()
                     }),
-                    onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
+                    onRowUpdate: (updatedRow, oldRow) => new Promise((resolve,_) => {
                         setData(updateRow(updatedRow, oldRow));
                         resolve();
                     }),
-                    onBulkUpdate: selectedRows => new Promise((resolve, reject) => {
-                        const rows = Object.values(selectedRows);
-                        const updatedRows = [...data];
-                        // let index;
-                        rows.map(emp => {
-                            const index = emp.oldData.tableData.id;
-                            updatedRows[index] = emp.newData;
-                            setData(updatedRows);
-                            resolve();
-                            return ''
-                        })
+                    onBulkUpdate: selectedRows => new Promise((resolve,_) => {
+                        bulkUpdate(selectedRows, resolve);
+                        
+
                     })
                 }}
                 options={{
@@ -78,30 +76,15 @@ export const MuiTable = ({ data, setData, title, columns, updateRow, handleAditi
                     addRowPosition: 'first',
                     pageSize: 10
                 }}
-            actions={[
-                {
-                    icon: () =><AddCommentIcon/>,
-                    tooltip:'Agregar Adicional',
-                    isFreeAction:true,
-                    onClick:(e,row)=> handleAditional(row),
-                  
-                },
-            //     // {
-            //     //     icon: () => <Select
-            //     //         labelId="demo-simple-select-label"
-            //     //         id="demo-simple-select"
-            //     //         style={{ width: 100 }}
-            //     //         // value={filterBy}
-            //     //         // onChange={(e) => setFilterBy(e.target.value)}
-            //     //     >
-            //     //         <MenuItem value={10}>Ten</MenuItem>
-            //     //         <MenuItem value={20}>Twenty</MenuItem>
-            //     //         <MenuItem value={30}>Thirty</MenuItem>
-            //     //     </Select>,
-            //     //     tooltip: 'Filter By',
-            //     //     isFreeAction: true
-            //     // }
-            ]}
+                actions={[
+                    {
+                        icon: () => <DynamicFeedIcon />,
+                        tooltip: 'Agregar Adicional',
+                        isFreeAction: true,
+                        onClick: () => handleAditional(),
+
+                    },
+                ]}
             />
         </div>
     );

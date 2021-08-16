@@ -6,7 +6,7 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
     const [data, setData] = useState(scheduleEmpOfDay.employees);
     const [date, setDate] = useState(scheduleEmpOfDay.date);
     const [workedHours, setWorkedHours] = useState(scheduleEmpOfDay.workedHours);
-    const [aditionalCount, setAditionalCount] = useState(0);
+    const [aditionalCount, setAditionalCount] = useState(1);
     const [dataColumns, setDataColumns] = useState(columns);
     // const [aditionalField, setAditionalField] = useState('');
     // const [aditionalTitle, setAditionalTitle] = useState('');
@@ -30,32 +30,48 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
         setDate(e.target.value.toDateString())
     }
 
+    const compareOldAndNewData = (oldData, newData) => {
+
+        // try{
+        //     console.log(newData.aditional_1)
+        // }catch (error){
+        //     console.log(error)
+        // }
+
+        if (oldData.shift !== newData.shift) {
+            newData.shift >= 8 && newData.shift <= 15
+                ? newData.workedHours = 12 : newData.shift === '16'
+                    ? newData.workedHours = 0 : newData.workedHours = 8;
+        }
+        newData.legajo !== newData.fullName && (newData.legajo = newData.fullName);
+        
+    }
+
+    const bulkUpdate = (selectedRows, resolve) => {
+        const rows = Object.values(selectedRows);
+        const updatedRows = [...data];
+        rows.map(emp => {
+            const index = emp.oldData.tableData.id;
+            compareOldAndNewData(emp.oldData,emp.newData);
+            updatedRows[index] = emp.newData;
+            setData(updatedRows);
+            resolve();
+            return ''
+        })
+    }
 
     const updateRow = (updatedRow, oldRow) => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
-
-        if (oldRow.shift !== updatedRow.shift) {
-            updatedRow.shift >= 8 && updatedRow.shift <= 15
-                ? updatedRow.workedHours = 12 : updatedRow.shift === '16'
-                    ? updatedRow.workedHours = 0 : updatedRow.workedHours = 8;
-        }
-        updatedRow.legajo !== updatedRow.fullName && (updatedRow.legajo = updatedRow.fullName);
-        console.log(updatedRow.shift)
+        compareOldAndNewData(oldRow,updatedRow)
         updatedRows[index] = updatedRow;
-        console.log(updatedRow)
         return updatedRows;
     }
 
 
 
 
-    const handleAditional = (row) => {
-
-        console.log(data)
-
-        // const aditionalField = `additional_${row.legajo}_${aditionalCount}`;
-        // const aditionalTitle = `Adicional ${aditionalCount}`;
+    const handleAditional = () => {
 
         setAditionalCount(aditionalCount + 1)
 
@@ -64,13 +80,16 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
             title: `Adicional ${aditionalCount}`,
             lookup: initialAditionalColumn.lookup,
         }
-        data.map((emp, i) => {
-            return emp[`additional_${aditionalCount}`] = ''
-        })
+        setDataColumns([...dataColumns, newAditionalObject])
+
+        // const dataAditional = `additional_${aditionalCount}`;
+
+        // const updatedData = data.map(emp => ({...emp, dataAditional}))
+
+        // setData(updatedData)
 
         // setNewAditional(newAditionalObject)
 
-        setDataColumns([...dataColumns, newAditionalObject])
         // setDataColumns([...data, `additional_${aditionalCount}`])
 
         // row[newAditionalObject.field] = 0;
@@ -78,9 +97,9 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
     }
 
     useEffect(() => {
-        console.log(date)
 
-    }, [date])
+        // console.log(data)
+    }, [])
 
 
 
@@ -92,6 +111,7 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
         workedHours,
         setWorkedHours,
         updateRow,
+        bulkUpdate,
         handleAditional,
         dataColumns,
         handleDatePicker

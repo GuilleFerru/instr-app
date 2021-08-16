@@ -59,7 +59,7 @@ export const EmpDailyScheduleTable = props => {
     const classes = useStyles();
 
 
-    const { data, setData, date, updateRow, handleAditional, dataColumns, handleDatePicker } = useDailyScheduleTable(scheduleEmp, initialAditionalColumn, columns);
+    const { data, setData, date, updateRow, bulkUpdate, handleAditional, dataColumns, handleDatePicker } = useDailyScheduleTable(scheduleEmp, initialAditionalColumn, columns);
 
 
     return <>
@@ -74,14 +74,10 @@ export const EmpDailyScheduleTable = props => {
             }
             data={data}
             setData={setData}
-            columns={dataColumns}
+            dataColumns={dataColumns}
             updateRow={updateRow}
             handleAditional={handleAditional}
-
-
+            bulkUpdate = {bulkUpdate}
         />
-
-
-
     </>
 }

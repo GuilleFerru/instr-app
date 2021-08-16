@@ -11,7 +11,7 @@ export const DateTime = () => {
     const [time, setTime] = useState(new Date().toLocaleString());
 
     const updateTime = () => {
-        setTime(new Date().toLocaleString())
+        setTime(new Date().toLocaleString("es-Ar"))
     }
 
     setInterval(updateTime, 1000)
