@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksContainerStyle } from "./DailyWorksContainerStyle";
 import { Grid, Paper } from "@material-ui/core";
+import { DailyWorksTable } from './Tables/DailyWorksTable';
 
 
 
@@ -16,7 +17,7 @@ export const DailyWorksContainer = () => {
         <Grid container>
             <Grid item md={12} lg={12}>
                 <Paper className={classes.paper}>
-                    Tareas Diarias
+                    <DailyWorksTable/>
                 </Paper>
             </Grid>
         </Grid>

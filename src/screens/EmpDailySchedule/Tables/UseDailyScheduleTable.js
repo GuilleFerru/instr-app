@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 
-export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, columns) => {
+export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) => {
 
     const [data, setData] = useState(scheduleEmpOfDay.employees);
     const [date, setDate] = useState(scheduleEmpOfDay.date);
@@ -44,7 +44,7 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
                     ? newData.workedHours = 0 : newData.workedHours = 8;
         }
         newData.legajo !== newData.fullName && (newData.legajo = newData.fullName);
-        
+
     }
 
     const bulkUpdate = (selectedRows, resolve) => {
@@ -52,7 +52,7 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
         const updatedRows = [...data];
         rows.map(emp => {
             const index = emp.oldData.tableData.id;
-            compareOldAndNewData(emp.oldData,emp.newData);
+            compareOldAndNewData(emp.oldData, emp.newData);
             updatedRows[index] = emp.newData;
             setData(updatedRows);
             resolve();
@@ -63,7 +63,7 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
     const updateRow = (updatedRow, oldRow) => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
-        compareOldAndNewData(oldRow,updatedRow)
+        compareOldAndNewData(oldRow, updatedRow)
         updatedRows[index] = updatedRow;
         return updatedRows;
     }
@@ -75,12 +75,19 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, initialAditionalColumn, 
 
         setAditionalCount(aditionalCount + 1)
 
-        const newAditionalObject = {
+        const adictionanlSelect = {
             field: `additional_${aditionalCount}`,
             title: `Adicional ${aditionalCount}`,
-            lookup: initialAditionalColumn.lookup,
+            lookup: adicionales,
+            align: 'right',
         }
-        setDataColumns([...dataColumns, newAditionalObject])
+        const aditionalInput = {
+            field: `additional_${aditionalCount}_info`,
+            title: `Anexo ${aditionalCount}`,
+            align: 'left',
+        }
+
+        setDataColumns([...dataColumns, adictionanlSelect, aditionalInput])
 
         // const dataAditional = `additional_${aditionalCount}`;
 
