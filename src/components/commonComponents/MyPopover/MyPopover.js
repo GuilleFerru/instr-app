@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => myPopoverStyle(theme));
 
 export const MyPopover = (props) => {
     const classes = useStyles();
-    const { divRef, texto } = props;
-    const [anchorEl, setAnchorEl] = useState(divRef);
+    const { positionRef, texto } = props;
+    const [anchorEl, setAnchorEl] = useState(positionRef);
 
     const handleClose = () => {
         setAnchorEl(null);

@@ -7,7 +7,7 @@ import DatePicker from '../Controls/DatePicker';
 import { MyPopover } from '../MyPopover/MyPopover';
 
 export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActive, dataColumns, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
-    const tableRef = React.useRef();
+    const positionRef = React.useRef();
     const [showPopover, setShowPopover] = useState(false)
 
     //arregla el browser freezing
@@ -27,7 +27,7 @@ export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActi
     })
 
     return (
-        <div ref={tableRef}>
+        <div ref={positionRef}>
             <MaterialTable
                 icons={tableIcons}
                 title={title}
@@ -122,7 +122,7 @@ export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActi
                 }}
 
             />
-            {showPopover && <MyPopover divRef={tableRef.current} texto='No se pueden agregar datos en esta tabla' />}
+            {showPopover && <MyPopover positionRef={positionRef.current} texto='No se pueden agregar datos en esta tabla' />}
         </div>
 
     );
