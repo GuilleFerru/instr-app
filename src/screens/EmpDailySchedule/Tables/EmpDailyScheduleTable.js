@@ -25,7 +25,6 @@ const columns = [
         field: 'fullName',
         title: 'Nombre Completo',
         lookup: employees,
-
     },
     {
         field: 'shift',
@@ -60,6 +59,7 @@ export const EmpDailyScheduleTable = props => {
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             date={date}
+            onRowAddActive = {false}
 
         />
     </>

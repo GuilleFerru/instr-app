@@ -1,19 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MaterialTable from 'material-table';
-import { MTableToolbar, MTableEditField } from 'material-table';
+import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import DatePicker from '../Controls/DatePicker';
+import { MyPopover } from '../MyPopover/MyPopover';
 
-export const MuiTable = ({ data, setData, title, dataColumns, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
+export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActive, dataColumns, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
+    const tableRef = React.useRef();
+    const [showPopover, setShowPopover] = useState(false)
 
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
 
+    const showLog = () => new Promise((resolve, _) => {
+        setShowPopover(true)
+        resolve();
+    })
+
+    const addRow = (newRow) => new Promise((resolve, _) => {
+        const updatedRows = [...data, newRow];
+        setData(updatedRows);
+        resolve();
+    })
+
     return (
-        <div>
+        <div ref={tableRef}>
             <MaterialTable
                 icons={tableIcons}
                 title={title}
@@ -49,13 +63,13 @@ export const MuiTable = ({ data, setData, title, dataColumns, updateRow, bulkUpd
                     }
                 }}
                 editable={{
-                    onRowAdd: (newRow) => new Promise((resolve, reject) => {
-                        const updatedRows = [...data, newRow];
-                        setTimeout(() => {
-                            setData(updatedRows);
-                            resolve();
-                        }, 1000)
-                    }),
+                    onRowAdd: (newRow) => {
+                        if (onRowAddActive) {
+                            return addRow(newRow)
+                        } else {
+                            return showLog()
+                        }
+                    },
                     onRowDelete: selectedRow => new Promise((resolve, _) => {
                         const index = selectedRow.tableData.id
                         const updatedRows = [...data]
@@ -69,14 +83,12 @@ export const MuiTable = ({ data, setData, title, dataColumns, updateRow, bulkUpd
                     }),
                     onBulkUpdate: selectedRows => new Promise((resolve, _) => {
                         bulkUpdate(selectedRows, resolve);
-
-
                     })
                 }}
                 options={{
                     actionsColumnIndex: -1,
                     addRowPosition: 'first',
-                    pageSize: 15
+                    pageSize: 20
                 }}
                 actions={[
                     {
@@ -110,7 +122,9 @@ export const MuiTable = ({ data, setData, title, dataColumns, updateRow, bulkUpd
                 }}
 
             />
+            {showPopover && <MyPopover divRef={tableRef.current} texto='No se pueden agregar datos en esta tabla' />}
         </div>
+
     );
 }
 

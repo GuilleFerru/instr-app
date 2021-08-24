@@ -1,12 +1,12 @@
 import React from 'react'
 import { makeStyles } from "@material-ui/core/styles";
-
-import { TextField, TextareaAutosize } from '@material-ui/core';
 import { dailyWorksTableStyle } from './DailyWorksTableStyle'
 import { useDailyWorksTable } from './UseDailyWorksTable'
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { dayWorks } from '../../../Services/DayWorks';
 import { plants } from '../../../Services/Plants';
+import {employees} from '../../../Services/Employees';
+import {shifts} from '../../../Services/Shifts';
 import { actions } from '../../../Services/Actions';
 
 
@@ -24,6 +24,16 @@ const columns = [
     {
         field: 'tag',
         title: 'TAG',
+    },
+    {
+        field: 'fullName',
+        title: 'Nombre Completo',
+        lookup: employees,
+    },
+    {
+        field: 'shift',
+        title: 'Horario',
+        lookup: shifts,
     },
     {
         field: 'action',
@@ -59,6 +69,7 @@ export const DailyWorksTable = props => {
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             date={date}
+            onRowAddActive = {true}
         />
     </>
 }
