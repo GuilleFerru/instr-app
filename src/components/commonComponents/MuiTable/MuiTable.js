@@ -1,30 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import DatePicker from '../Controls/DatePicker';
-import { MyPopover } from '../MyPopover/MyPopover';
 
-export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActive, dataColumns, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
+
+export const MuiTable = ({ data, setData, title, disableAditionalButton, disableAddButton, dataColumns, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
     const positionRef = React.useRef();
-    const [showPopover, setShowPopover] = useState(false)
+
 
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
 
-    const showLog = () => new Promise((resolve, _) => {
-        setShowPopover(true)
-        resolve();
-    })
-
-    const addRow = (newRow) => new Promise((resolve, _) => {
-        const updatedRows = [...data, newRow];
-        setData(updatedRows);
-        resolve();
-    })
 
     return (
         <div ref={positionRef}>
@@ -63,13 +53,13 @@ export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActi
                     }
                 }}
                 editable={{
-                    onRowAdd: (newRow) => {
-                        if (onRowAddActive) {
-                            return addRow(newRow)
-                        } else {
-                            return showLog()
-                        }
-                    },
+                    onRowAdd: disableAddButton ? undefined : (newRow) => new Promise((resolve, _) => {
+                        const updatedRows = [...data, newRow];
+                        setData(updatedRows);
+                        resolve();
+                    }),
+                    disabled: true
+                    ,
                     onRowDelete: selectedRow => new Promise((resolve, _) => {
                         const index = selectedRow.tableData.id
                         const updatedRows = [...data]
@@ -96,6 +86,7 @@ export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActi
                         tooltip: 'Agregar Adicional',
                         isFreeAction: true,
                         onClick: () => handleAditional(),
+                        disabled: disableAditionalButton
 
                     },
                 ]}
@@ -122,7 +113,7 @@ export const MuiTable = ({ data, setData, title, onRowUpdateActive, onRowAddActi
                 }}
 
             />
-            {showPopover && <MyPopover positionRef={positionRef.current} texto='No se pueden agregar datos en esta tabla' />}
+
         </div>
 
     );

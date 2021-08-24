@@ -27,7 +27,7 @@ const columns = [
     },
     {
         field: 'fullName',
-        title: 'Nombre Completo',
+        title: 'Nombre del Operador',
         lookup: employees,
     },
     {
@@ -69,7 +69,8 @@ export const DailyWorksTable = props => {
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             date={date}
-            onRowAddActive = {true}
+            disableAddButton = {false}
+            disableAditionalButton={true}
         />
     </>
 }

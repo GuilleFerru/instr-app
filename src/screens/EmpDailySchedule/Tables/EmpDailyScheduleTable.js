@@ -59,7 +59,8 @@ export const EmpDailyScheduleTable = props => {
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             date={date}
-            onRowAddActive = {false}
+            disableAddButton = {true}
+            disableAditionalButton={false}
 
         />
     </>
