@@ -11,6 +11,7 @@ export const drawerContainerStyle = theme => {
         drawerPaper: {
             position: "relative",
             whiteSpace: "nowrap",
+            height: '100%',
             width: drawerWidth,
             transition: theme.transitions.create("width", {
                 easing: theme.transitions.easing.sharp,
@@ -19,6 +20,7 @@ export const drawerContainerStyle = theme => {
         },
         drawerPaperClose: {
             overflowX: "hidden",
+            height: '100%',
             transition: theme.transitions.create("width", {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,

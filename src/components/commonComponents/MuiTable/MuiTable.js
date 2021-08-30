@@ -6,7 +6,7 @@ import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import DatePicker from '../Controls/DatePicker';
 
 
-export const MuiTable = ({ data, setData, title, disableAditionalButton, disableAddButton, dataColumns, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
+export const MuiTable = ({ data, setData, title, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
     const positionRef = React.useRef();
 
 
@@ -54,24 +54,20 @@ export const MuiTable = ({ data, setData, title, disableAditionalButton, disable
                 }}
                 editable={{
                     onRowAdd: disableAddButton ? undefined : (newRow) => new Promise((resolve, _) => {
-                        const updatedRows = [...data, newRow];
-                        setData(updatedRows);
-                        resolve();
+                        rowAdd(newRow, resolve);
                     }),
-                    disabled: true
-                    ,
-                    onRowDelete: selectedRow => new Promise((resolve, _) => {
+                    onRowDelete: disableDeleteButton ? undefined : selectedRow => new Promise((resolve, _) => {
                         const index = selectedRow.tableData.id
                         const updatedRows = [...data]
                         updatedRows.splice(index, 1)
                         setData(updatedRows)
                         resolve()
                     }),
-                    onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, _) => {
+                    onRowUpdate: disableOnRowUpdate ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
                         setData(updateRow(updatedRow, oldRow));
                         resolve();
                     }),
-                    onBulkUpdate: selectedRows => new Promise((resolve, _) => {
+                    onBulkUpdate: disableOnBulkUpdate ? undefined : selectedRows => new Promise((resolve, _) => {
                         bulkUpdate(selectedRows, resolve);
                     })
                 }}

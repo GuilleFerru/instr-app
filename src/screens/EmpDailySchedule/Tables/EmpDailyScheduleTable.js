@@ -60,6 +60,9 @@ export const EmpDailyScheduleTable = props => {
             handleDatePicker={handleDatePicker}
             date={date}
             disableAddButton = {true}
+            disableDeleteButton = {false}
+            disableOnRowUpdate = {false}
+            disableOnBulkUpdate = {false}
             disableAditionalButton={false}
 
         />

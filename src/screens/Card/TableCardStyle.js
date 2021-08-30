@@ -1,4 +1,4 @@
-export const dailyWorksContainerStyle = theme => {
+export const tableCardStyle = theme => {
     return ({
         paper: {
             margin: theme.spacing(2),
@@ -15,7 +15,9 @@ export const dailyWorksContainerStyle = theme => {
             paddingTop: theme.spacing(1),
             paddingBottom: theme.spacing(5),
             display: 'flex',
-            flexFlow:'column noWrap'
+            flexFlow:'column noWrap',
+            height: '100vh',
+            
         }
     })
 }

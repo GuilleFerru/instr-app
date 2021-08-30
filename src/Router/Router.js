@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Dashboard } from '../components/Dashboard/Dashboard';
 import { DailyWorksContainer } from '../screens/DailyWorks/DailyWorksContainer';
 import { EmpDailyScheduleContainer } from '../screens/EmpDailySchedule/EmpDailyScheduleContainer';
+import { StoreListContainer } from '../screens/StoreList/StoreListContainer';
 
 export const Router = () => {
     return <Switch>
@@ -14,6 +15,9 @@ export const Router = () => {
         </Route>
         <Route exact path="/tareasDiarias">
             <DailyWorksContainer/>
+        </Route>
+        <Route exact path="/listadoAlmacen">
+            <StoreListContainer/>
         </Route>
     </Switch>
 }

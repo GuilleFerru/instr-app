@@ -1,75 +1,44 @@
 import { useState, useEffect } from 'react'
+import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 
 
 export const useDailyWorksTable = (dayWorks) => {
 
-    const [data, setData] = useState(dayWorks.works);
-    const [date, setDate] = useState(dayWorks.date);
-    
-   
+    const [data, setData] = useState(dayWorks[0].works);
+    const [date, setDate] = useState(dayWorks[0].date);
+    const [dayWork, setDayWork] = useState(dayWorks)
+    const { handleDatePicker, bulkUpdate} = muiTableCommonActions(data, setData, setDate);
 
-    const handleDatePicker = e => {
-        setDate(e.target.value.toDateString())
+
+    const dayWorksUpdate = (updatedRows) => {
+        const updateDayWork = [
+            {
+                date: date,
+                works: [...updatedRows]
+            }
+        ];
+        return updateDayWork;
     }
 
-    const compareOldAndNewData = (oldData, newData) => {
-        if (oldData.shift !== newData.shift) {
-            newData.shift >= 8 && newData.shift <= 15
-                ? newData.workedHours = 12 : newData.shift === '16'
-                    ? newData.workedHours = 0 : newData.workedHours = 8;
-        }
-        newData.legajo !== newData.fullName && (newData.legajo = newData.fullName);
-    }
-
-    const bulkUpdate = (selectedRows, resolve) => {
-        const rows = Object.values(selectedRows);
-        const updatedRows = [...data];
-        rows.map(emp => {
-            const index = emp.oldData.tableData.id;
-            compareOldAndNewData(emp.oldData, emp.newData);
-            updatedRows[index] = emp.newData;
-            setData(updatedRows);
-            resolve();
-            return ''
-        })
+    const rowAdd = (newRow, resolve) => {
+        const updatedRows = [...data, newRow];
+        setData(updatedRows);
+        setDayWork(dayWorksUpdate(updatedRows));
+        resolve();
     }
 
     const updateRow = (updatedRow, oldRow) => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
-        compareOldAndNewData(oldRow, updatedRow)
         updatedRows[index] = updatedRow;
+        setDayWork(dayWorksUpdate(updatedRows));
         return updatedRows;
     }
 
 
-
-
-    // const handleAditional = () => {
-
-    //     setAditionalCount(aditionalCount + 1)
-
-    //     const adictionanlSelect = {
-    //         field: `additional_${aditionalCount}`,
-    //         title: `Adicional ${aditionalCount}`,
-    //         lookup: adicionales,
-    //         align: 'right',
-    //     }
-    //     const aditionalInput = {
-    //         field: `additional_${aditionalCount}_info`,
-    //         title: `Anexo ${aditionalCount}`,
-    //         align: 'left',
-    //     }
-
-    //     setDataColumns([...dataColumns, adictionanlSelect, aditionalInput])
-
-    // }
-
     useEffect(() => {
-
-        // console.log(data)
-    }, [])
-
+        console.log(dayWork);
+    }, [dayWork])
 
 
     return {
@@ -79,7 +48,7 @@ export const useDailyWorksTable = (dayWorks) => {
         setDate,
         updateRow,
         bulkUpdate,
-        
-        handleDatePicker
+        handleDatePicker,
+        rowAdd
     }
 }

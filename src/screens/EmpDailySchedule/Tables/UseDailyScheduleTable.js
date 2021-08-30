@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-
+import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 
 export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) => {
 
@@ -8,35 +8,9 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) =>
     const [workedHours, setWorkedHours] = useState(scheduleEmpOfDay.workedHours);
     const [aditionalCount, setAditionalCount] = useState(1);
     const [dataColumns, setDataColumns] = useState(columns);
-    // const [aditionalField, setAditionalField] = useState('');
-    // const [aditionalTitle, setAditionalTitle] = useState('');
-
-    // const renderColumns = [
-    //     dataColumns.map(data => {
-    //         return {
-    //             field: data.field,
-    //             title: data.title,
-    //             render: rowData =>
-    //                 (<div style={{ minWidth: data.field === "columnToChange" ? "250px" : null, paddingLeft: "10px" }}>  {rowData[data.field]}  </div>)
-    //         };
-    //     })
-    // ]
-
-    // setDataColumns(
-    //     renderColumns
-    // )
-
-    const handleDatePicker = e => {
-        setDate(e.target.value.toDateString())
-    }
-
+    const { handleDatePicker } = muiTableCommonActions(setDate);
+   
     const compareOldAndNewData = (oldData, newData) => {
-
-        // try{
-        //     console.log(newData.aditional_1)
-        // }catch (error){
-        //     console.log(error)
-        // }
 
         if (oldData.shift !== newData.shift) {
             newData.shift >= 8 && newData.shift <= 15
@@ -44,7 +18,6 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) =>
                     ? newData.workedHours = 0 : newData.workedHours = 8;
         }
         newData.legajo !== newData.fullName && (newData.legajo = newData.fullName);
-
     }
 
     const bulkUpdate = (selectedRows, resolve) => {
@@ -68,13 +41,8 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) =>
         return updatedRows;
     }
 
-
-
-
     const handleAditional = () => {
-
         setAditionalCount(aditionalCount + 1)
-
         const adictionanlSelect = {
             field: `additional_${aditionalCount}`,
             title: `Adicional ${aditionalCount}`,
@@ -89,23 +57,9 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) =>
 
         setDataColumns([...dataColumns, adictionanlSelect, aditionalInput])
 
-        // const dataAditional = `additional_${aditionalCount}`;
-
-        // const updatedData = data.map(emp => ({...emp, dataAditional}))
-
-        // setData(updatedData)
-
-        // setNewAditional(newAditionalObject)
-
-        // setDataColumns([...data, `additional_${aditionalCount}`])
-
-        // row[newAditionalObject.field] = 0;
-
     }
 
     useEffect(() => {
-
-        // console.log(data)
     }, [])
 
 

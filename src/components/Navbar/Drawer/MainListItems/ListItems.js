@@ -4,6 +4,7 @@ import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core/";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PeopleIcon from '@material-ui/icons/People';
 import TodayIcon from '@material-ui/icons/Today';
+import AllInboxIcon from '@material-ui/icons/AllInbox';
 
 export const listItems = (
   <div>
@@ -24,6 +25,12 @@ export const listItems = (
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Personal" />
+    </ListItem>
+    <ListItem button component={Link} to="/listadoAlmacen">
+      <ListItemIcon>
+        <AllInboxIcon />
+      </ListItemIcon>
+      <ListItemText primary="Listado Almacen" />
     </ListItem>
   </div>
 )

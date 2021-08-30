@@ -38,12 +38,6 @@ export const AppBarContainer = ({ handleDrawerOpen, open }) => {
                     color={'inherit'}
                     value={'INSTRUMENTOS PR3'}
                 />
-                {/* <Title
-                    component={'h1'}
-                    variant={'h6'}
-                    color={'inherit'}
-                    value={seccionName}
-                /> */}
                 <DateTime />
             </Box>
         </Toolbar>

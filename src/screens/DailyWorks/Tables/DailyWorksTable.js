@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
 export const DailyWorksTable = props => {
     const classes = useStyles();
 
-    const { data, setData, date, updateRow, bulkUpdate, handleAditional, handleDatePicker } = useDailyWorksTable(dayWorks);
+    const { data, setData, date, updateRow, bulkUpdate, handleAditional, handleDatePicker, rowAdd } = useDailyWorksTable(dayWorks);
 
 
     return <>
@@ -66,10 +66,14 @@ export const DailyWorksTable = props => {
             dataColumns={columns}
             updateRow={updateRow}
             handleAditional={handleAditional}
+            rowAdd={rowAdd}
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             date={date}
             disableAddButton = {false}
+            disableDeleteButton = {false}
+            disableOnRowUpdate = {false}
+            disableOnBulkUpdate = {false}
             disableAditionalButton={true}
         />
     </>
