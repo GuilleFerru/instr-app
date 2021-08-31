@@ -75,6 +75,6 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) =>
         bulkUpdate,
         handleAditional,
         dataColumns,
-        handleDatePicker
+        handleDatePicker,
     }
 }

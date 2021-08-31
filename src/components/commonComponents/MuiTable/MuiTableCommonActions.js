@@ -20,7 +20,7 @@ export const muiTableCommonActions = (data, setData, setDate) => {
             updatedRows[index] = row.newData;
             setData(updatedRows);
             resolve();
-            return ''
+            return '';
         })
     }
 
@@ -31,11 +31,25 @@ export const muiTableCommonActions = (data, setData, setDate) => {
         return updatedRows;
     }
 
+    // const deleteRow = (selectedRow, resolve) => {
+        
+    //     const index = selectedRow.tableData.id
+    //     console.log(index)
+    //     console.log(data)
+    //     const updatedRows = [...data]
+        
+    //     updatedRows.splice(index, 1)
+    //     setData(updatedRows)
+    //     resolve();
+        
+    // }
+
     return {
         handleDatePicker,
         bulkUpdate,
         updateRow,
-        rowAdd
+        rowAdd,
+        
 
     }
 }

@@ -7,7 +7,7 @@ export const useDailyWorksTable = (dayWorks) => {
     const [data, setData] = useState(dayWorks[0].works);
     const [date, setDate] = useState(dayWorks[0].date);
     const [dayWork, setDayWork] = useState(dayWorks)
-    const { handleDatePicker, bulkUpdate} = muiTableCommonActions(data, setData, setDate);
+    const { handleDatePicker} = muiTableCommonActions(data, setData, setDate);
 
 
     const dayWorksUpdate = (updatedRows) => {
@@ -35,6 +35,19 @@ export const useDailyWorksTable = (dayWorks) => {
         return updatedRows;
     }
 
+    const bulkUpdate = (selectedRows, resolve) => {
+        const rows = Object.values(selectedRows);
+        const updatedRows = [...data];
+        rows.map(row => {
+            const index = row.oldData.tableData.id;
+            updatedRows[index] = row.newData;
+            setData(updatedRows);
+            setDayWork(dayWorksUpdate(updatedRows));
+            resolve();
+            return ''
+        })
+    }
+
 
     useEffect(() => {
         console.log(dayWork);
@@ -49,6 +62,6 @@ export const useDailyWorksTable = (dayWorks) => {
         updateRow,
         bulkUpdate,
         handleDatePicker,
-        rowAdd
+        rowAdd,
     }
 }

@@ -5,8 +5,8 @@ import { useDailyWorksTable } from './UseDailyWorksTable'
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { dayWorks } from '../../../Services/DayWorks';
 import { plants } from '../../../Services/Plants';
-import {employees} from '../../../Services/Employees';
-import {shifts} from '../../../Services/Shifts';
+import { employees } from '../../../Services/Employees';
+import { shifts } from '../../../Services/Shifts';
 import { actions } from '../../../Services/Actions';
 
 
@@ -70,10 +70,10 @@ export const DailyWorksTable = props => {
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             date={date}
-            disableAddButton = {false}
-            disableDeleteButton = {false}
-            disableOnRowUpdate = {false}
-            disableOnBulkUpdate = {false}
+            disableAddButton={false}
+            disableDeleteButton={false}
+            disableOnRowUpdate={false}
+            disableOnBulkUpdate={false}
             disableAditionalButton={true}
         />
     </>

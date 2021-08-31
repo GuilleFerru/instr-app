@@ -74,7 +74,7 @@ export const MuiTable = ({ data, setData, title, disableAditionalButton, disable
                 options={{
                     actionsColumnIndex: -1,
                     addRowPosition: 'first',
-                    pageSize: 20
+                    pageSize: 10
                 }}
                 actions={[
                     {

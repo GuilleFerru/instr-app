@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => empDailyScheduleTableStyle(theme));
 
 export const EmpDailyScheduleTable = props => {
     const classes = useStyles();
-    const { data, setData, date, updateRow, bulkUpdate, handleAditional, dataColumns, handleDatePicker } = useDailyScheduleTable(scheduleEmp, adicionales, columns);
+    const { data, setData, date, updateRow, bulkUpdate, handleAditional, dataColumns, handleDatePicker, deleteRow } = useDailyScheduleTable(scheduleEmp, adicionales, columns);
 
     return <>
         <MuiTable className={classes.table}
@@ -58,6 +58,7 @@ export const EmpDailyScheduleTable = props => {
             handleAditional={handleAditional}
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
+            deleteRow={deleteRow}
             date={date}
             disableAddButton = {true}
             disableDeleteButton = {false}

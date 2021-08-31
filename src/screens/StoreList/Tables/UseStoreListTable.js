@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 export const useStoreListTable = () => {
 
-    const [colDefs, setColDefs] = useState();
+    const [colDefs, setColDefs] = useState([]);
     const [data, setData] = useState();
 
     return {
