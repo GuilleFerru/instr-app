@@ -23,5 +23,6 @@ export const adicionales = {
     24: '24 - Horas extras 400%',
     25: '25 - Turno 25%',
     26: '26 - Turno 9%',
+    27: '27 - Brigada',
     
 }

@@ -11,9 +11,10 @@ export const useDailyWorksTable = (dayWorks) => {
 
 
     const dayWorksUpdate = (updatedRows) => {
+        
         const updateDayWork = [
             {
-                date: date,
+                date: [date],
                 works: [...updatedRows]
             }
         ];

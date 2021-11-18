@@ -9,7 +9,7 @@ export const useDailyScheduleTable = (scheduleEmpOfDay, adicionales, columns) =>
     const [aditionalCount, setAditionalCount] = useState(1);
     const [dataColumns, setDataColumns] = useState(columns);
     const { handleDatePicker } = muiTableCommonActions(setDate);
-   
+
     const compareOldAndNewData = (oldData, newData) => {
 
         if (oldData.shift !== newData.shift) {

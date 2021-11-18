@@ -14,7 +14,6 @@ const App = (props) => {
         <ThemeProvider theme={theme}>
           <LayOut>
             <Router />
-            {/* <Footer/> */}
           </LayOut>
         </ThemeProvider>
       </BrowserRouter>

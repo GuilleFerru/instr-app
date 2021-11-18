@@ -14,9 +14,10 @@ export const Footer = () => {
       <Typography variant="body2" color="textSecondary" align="center" >
         {"Copyright © "}
         <Link color="inherit" to={'/'}>
-          Instrumentos PRII
+          Instrumentos PRII 
         </Link >{" "}
-        {new Date().getFullYear()}
+        {new Date().getFullYear()}{" "}
+        - Guillermo Ferrucci
         {"."}
       </Typography>
     </Box>

@@ -1,5 +1,5 @@
 export const scheduleEmp = {
-    date: new Date().toDateString(),
+    date: [new Date().toDateString()],
     employees: [
         {
             id: 1,

@@ -1,14 +1,18 @@
 export const footerStyle = (theme) => {
   return {
     content: {
-      display:"flex",
+      // display:"flex",
       justifyContent:"center",
-      flexGrow: "1",
-      overflow: "auto",
+      // flexGrow: "1",
+      // overflow: "auto",
+      // border:'1px solid red',
+      marginTop:'auto',
+      marginBottom:'10px',
       "& a": {
         textDecoration: "none",
         color: "inherit",
       },
+      
     },
   };
 };
