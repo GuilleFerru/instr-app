@@ -5,7 +5,7 @@ export const scheduleEmp = {
             id: 1,
             legajo: '301',
             fullName: '301',
-            shift: 6,
+            timeSchedule: 1,
             workedHours: 8,
 
         },
@@ -13,7 +13,7 @@ export const scheduleEmp = {
             id: 2,
             legajo: '303',
             fullName: '303',
-            shift: 2,
+            timeSchedule: 2,
             workedHours: 8,
 
         },
@@ -21,7 +21,7 @@ export const scheduleEmp = {
             id: 3,
             legajo: '657',
             fullName: '657',
-            shift: 3,
+            timeSchedule: 3,
             workedHours: 8,
 
         },
@@ -29,35 +29,35 @@ export const scheduleEmp = {
             id: 4,
             legajo: '649',
             fullName: '649',
-            shift: 16,
+            timeSchedule: 1,
             workedHours: 8,
         },
         {
             id: 5,
             legajo: '672',
             fullName: '672',
-            shift: 5,
+            timeSchedule: 2,
             workedHours: 9,
         },
         {
             id: 7,
             legajo: '1069',
             fullName: '1069',
-            shift: 6,
+            timeSchedule: 3,
             workedHours: 8,
         },
         {
             id: 8,
             legajo: '1151',
             fullName: '1151',
-            shift: 6,
+            timeSchedule: 1,
             workedHours: 8,
         },
         {
             id: 9,
             legajo: '1296',
             fullName: '1296',
-            shift: 1,
+            timeSchedule: 1,
             workedHours: 8,
 
         },
@@ -65,28 +65,28 @@ export const scheduleEmp = {
             id: 10,
             legajo: '1297',
             fullName: '1297',
-            shift: 6,
+            timeSchedule: 2,
             workedHours: 9,
         },
         {
             id: 11,
             legajo: '401',
             fullName: '401',
-            shift: 6,
+            timeSchedule: 3,
             workedHours: 9,
         },
         {
             id: 12,
             legajo: '909',
             fullName: '909',
-            shift: 6,
+            timeSchedule: 1,
             workedHours: 9,
         },
         {
             id: 13,
             legajo: '992',
             fullName: '992',
-            shift: 6,
+            timeSchedule: 1,
             workedHours: 9,
         },
     ]
@@ -95,6 +95,6 @@ export const scheduleEmp = {
     //     legajo: '1069',
     //     fullName: 'Cañadas Facundo',
     //     date: '30-7-2021',
-    //     shift: 5
+    //     timeSchedule: 5
     // },
 };

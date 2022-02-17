@@ -1,8 +1,9 @@
-export const muiTableCommonActions = (data, setData, setDate) => {
+export const muiTableCommonActions = (data, setData, getNewDate) => {
 
     const handleDatePicker = e => {
-        // console.log(e.target.value.toDateString())
-        setDate(e.target.value.toDateString())
+        // console.log(e.target.value)
+        // console.log(getNewDate)
+        getNewDate(e.target.value)
     }
 
     const rowAdd = (newRow, resolve) => {
