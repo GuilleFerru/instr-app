@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles";
-import { dailyWorksTableStyle } from './DailyWorksTableStyle'
-import { useDailyWorksTable } from './UseDailyWorksTable'
-import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
+import { dailyWorksTableStyle } from './DailyWorksTableStyle';
+import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
+import { DateContext } from '../../../context/DateContext';
 import { dayWorks } from '../../../Services/DayWorks';
 import { plants } from '../../../Services/Plants';
 import { employees } from '../../../Services/Employees';
 import { shifts } from '../../../Services/Shifts';
 import { actions } from '../../../Services/Actions';
+import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 
 
 const columns = [
@@ -52,10 +54,69 @@ const columns = [
 
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
 
+
 export const DailyWorksTable = props => {
     const classes = useStyles();
 
-    const { data, setData, date, updateRow, bulkUpdate, handleAditional, handleDatePicker, rowAdd } = useDailyWorksTable(dayWorks);
+    // const { data, setData, date, updateRow, bulkUpdate, handleAditional, handleDatePicker, rowAdd } = useDailyWorksTable(dayWorks);
+
+    const [data, setData] = useState(dayWorks[0].works);
+    const { date, getNewDate } = useContext(DateContext);
+    const [dayWork, setDayWork] = useState(dayWorks)
+    const { handleDatePicker } = muiTableCommonActions(data, setData, getNewDate);
+
+    useEffect(() => {
+        let cancel = false;
+        axios.get(`/dailyWork/get/${date}`).then(res => {
+
+            if (!cancel) {
+
+            } else {
+                return;
+            }
+        });
+        return () => {
+            cancel = true;
+        }
+    }, [date]);
+
+    const dayWorksUpdate = (updatedRows) => {
+        const updateDayWork = [
+            {
+                date: [date],
+                works: [...updatedRows]
+            }
+        ];
+        return updateDayWork;
+    }
+
+    const rowAdd = (newRow, resolve) => {
+        const updatedRows = [...data, newRow];
+        setData(updatedRows);
+        setDayWork(dayWorksUpdate(updatedRows));
+        resolve();
+    }
+
+    const updateRow = (updatedRow, oldRow) => {
+        const index = oldRow.tableData.id;
+        const updatedRows = [...data];
+        updatedRows[index] = updatedRow;
+        setDayWork(dayWorksUpdate(updatedRows));
+        return updatedRows;
+    }
+
+    const bulkUpdate = (selectedRows, resolve) => {
+        const rows = Object.values(selectedRows);
+        const updatedRows = [...data];
+        rows.map(row => {
+            const index = row.oldData.tableData.id;
+            updatedRows[index] = row.newData;
+            setData(updatedRows);
+            setDayWork(dayWorksUpdate(updatedRows));
+            resolve();
+            return ''
+        })
+    }
 
 
     return <>
@@ -65,7 +126,25 @@ export const DailyWorksTable = props => {
             setData={setData}
             dataColumns={columns}
             updateRow={updateRow}
-            handleAditional={handleAditional}
+            handleAditional={false}
+            rowAdd={rowAdd}
+            bulkUpdate={bulkUpdate}
+            handleDatePicker={handleDatePicker}
+            date={date}
+            disableAddButton={false}
+            disableDeleteButton={false}
+            disableOnRowUpdate={false}
+            disableOnBulkUpdate={false}
+            disableAditionalButton={true}
+        />
+
+        <MuiTable className={classes.table}
+            title={'Rutinas del día'}
+            data={data}
+            setData={setData}
+            dataColumns={columns}
+            updateRow={updateRow}
+            handleAditional={false}
             rowAdd={rowAdd}
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
