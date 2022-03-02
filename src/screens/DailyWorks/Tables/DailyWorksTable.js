@@ -1,55 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { axiosPost, axiosPut, axiosDelete } from '../../../Services/Axios.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
 import { DateContext } from '../../../context/DateContext';
-import { dayWorks } from '../../../Services/DayWorks';
-import { plants } from '../../../Services/Plants';
-import { employees } from '../../../Services/Employees';
-import { shifts } from '../../../Services/Shifts';
-import { actions } from '../../../Services/Actions';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 
 
-const columns = [
-    {
-        field: 'id',
-        title: 'Numero',
-        hidden: true,
-    },
-    {
-        field: 'plant',
-        title: 'Planta',
-        lookup: plants
-    },
-    {
-        field: 'tag',
-        title: 'TAG',
-    },
-    {
-        field: 'fullName',
-        title: 'Nombre del Operador',
-        lookup: employees,
-    },
-    {
-        field: 'shift',
-        title: 'Horario',
-        lookup: shifts,
-    },
-    {
-        field: 'action',
-        title: 'Acción',
-        lookup: actions
-    },
-    {
-        field: 'description',
-        title: 'Descripción',
-        multiline: true,
-        width: '40%'
-
-    },
-];
 
 
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
@@ -58,19 +16,20 @@ const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
 export const DailyWorksTable = props => {
     const classes = useStyles();
 
-    // const { data, setData, date, updateRow, bulkUpdate, handleAditional, handleDatePicker, rowAdd } = useDailyWorksTable(dayWorks);
-
-    const [data, setData] = useState(dayWorks[0].works);
     const { date, getNewDate } = useContext(DateContext);
-    const [dayWork, setDayWork] = useState(dayWorks)
+    const [data, setData] = useState([]);
+    const [dataColumns, setDataColumns] = useState([]);
+
+    // const [dayWork, setDayWork] = useState(dayWorks)
     const { handleDatePicker } = muiTableCommonActions(data, setData, getNewDate);
 
     useEffect(() => {
         let cancel = false;
         axios.get(`/dailyWork/get/${date}`).then(res => {
-
+            const { dayWorks, columns } = res.data;
             if (!cancel) {
-
+                setData(dayWorks);
+                setDataColumns(columns);
             } else {
                 return;
             }
@@ -80,20 +39,24 @@ export const DailyWorksTable = props => {
         }
     }, [date]);
 
-    const dayWorksUpdate = (updatedRows) => {
-        const updateDayWork = [
-            {
-                date: [date],
-                works: [...updatedRows]
-            }
-        ];
-        return updateDayWork;
-    }
+    // const dayWorksUpdate = (updatedRows) => {
+    //     const updateDayWork = [
+    //         {
+    //             date: [date],
+    //             works: [...updatedRows]
+    //         }
+    //     ];
+    //     return updateDayWork;
+    // }
 
     const rowAdd = (newRow, resolve) => {
         const updatedRows = [...data, newRow];
         setData(updatedRows);
-        setDayWork(dayWorksUpdate(updatedRows));
+        // setDayWork(dayWorksUpdate(updatedRows));
+        const newDayWork = newRow;
+        // le agrego la fecha de inicio y lo envio al servidor
+        newDayWork.beginDate = date;
+        axiosPost(`/dailyWork/create`, newDayWork);
         resolve();
     }
 
@@ -101,7 +64,8 @@ export const DailyWorksTable = props => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
-        setDayWork(dayWorksUpdate(updatedRows));
+        const updatedWork = updatedRow;
+        axiosPut(`/dailyWork/update/${date}`, { updatedWork })
         return updatedRows;
     }
 
@@ -112,10 +76,23 @@ export const DailyWorksTable = props => {
             const index = row.oldData.tableData.id;
             updatedRows[index] = row.newData;
             setData(updatedRows);
-            setDayWork(dayWorksUpdate(updatedRows));
+            // setDayWork(dayWorksUpdate(updatedRows));
             resolve();
             return ''
         })
+        const newDailyWorks = updatedRows;
+        console.log(newDailyWorks);
+        // axiosPut(`/schedule/update/${date}`, { newDailyWorks })
+    }
+
+    const deleteRow = (selectedRow, resolve) => {
+        const index = selectedRow.tableData.id
+        const updatedRows = [...data]
+        updatedRows.splice(index, 1)
+        setData(updatedRows)
+        axiosDelete(`/dailyWork/delete`, { id: selectedRow._id });
+        resolve();
+
     }
 
 
@@ -124,31 +101,15 @@ export const DailyWorksTable = props => {
             title={'Tareas Diarias'}
             data={data}
             setData={setData}
-            dataColumns={columns}
+            dataColumns={dataColumns}
             updateRow={updateRow}
             handleAditional={false}
             rowAdd={rowAdd}
             bulkUpdate={bulkUpdate}
+            deleteRow={deleteRow}
             handleDatePicker={handleDatePicker}
             date={date}
-            disableAddButton={false}
-            disableDeleteButton={false}
-            disableOnRowUpdate={false}
-            disableOnBulkUpdate={false}
-            disableAditionalButton={true}
-        />
-
-        <MuiTable className={classes.table}
-            title={'Rutinas del día'}
-            data={data}
-            setData={setData}
-            dataColumns={columns}
-            updateRow={updateRow}
-            handleAditional={false}
-            rowAdd={rowAdd}
-            bulkUpdate={bulkUpdate}
-            handleDatePicker={handleDatePicker}
-            date={date}
+            disableCheckButton={true}
             disableAddButton={false}
             disableDeleteButton={false}
             disableOnRowUpdate={false}

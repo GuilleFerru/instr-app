@@ -6,9 +6,8 @@ import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import DatePicker from '../Controls/DatePicker';
 
 
-export const MuiTable = ({ data, setData, title, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, handleAditional, handleDatePicker, date }) => {
+export const MuiTable = ({ data, setData, title, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional, handleDatePicker, date }) => {
     const positionRef = React.useRef();
-
 
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
@@ -57,11 +56,12 @@ export const MuiTable = ({ data, setData, title, disableAditionalButton, disable
                         rowAdd(newRow, resolve);
                     }),
                     onRowDelete: disableDeleteButton ? undefined : selectedRow => new Promise((resolve, _) => {
-                        const index = selectedRow.tableData.id
-                        const updatedRows = [...data]
-                        updatedRows.splice(index, 1)
-                        setData(updatedRows)
-                        resolve()
+                        deleteRow(selectedRow, resolve);
+                        // const index = selectedRow.tableData.id
+                        // const updatedRows = [...data]
+                        // updatedRows.splice(index, 1)
+                        // setData(updatedRows)
+                        // resolve()
                     }),
                     onRowUpdate: disableOnRowUpdate ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
                         setData(updateRow(updatedRow, oldRow));
@@ -74,7 +74,9 @@ export const MuiTable = ({ data, setData, title, disableAditionalButton, disable
                 options={{
                     actionsColumnIndex: -1,
                     addRowPosition: 'first',
-                    pageSize: 10
+                    pageSize: 15,
+                    pageSizeOptions: [15, 30, 50, 100],
+                    selection: disableCheckButton
                 }}
                 actions={[
                     {

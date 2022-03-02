@@ -1,8 +1,6 @@
 export const muiTableCommonActions = (data, setData, getNewDate) => {
 
     const handleDatePicker = e => {
-        // console.log(e.target.value)
-        // console.log(getNewDate)
         getNewDate(e.target.value)
     }
 

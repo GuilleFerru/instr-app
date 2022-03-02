@@ -9,7 +9,7 @@ export const navbarStyle = theme => {
         content: {
             flexGrow: "1",
             height: "100vh",
-            overflow: "auto",
+            // overflow: "auto",
         },
     })
 }

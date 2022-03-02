@@ -13,7 +13,19 @@ export const layOutStyle = theme => {
             }
         },
         pages: {
-            width: '100%'
+            display: "flex",
+            flexFlow: 'column noWrap',
+            
+            width: '100%',
+            height:'auto',
+            // border: '1px solid blue',
+        },
+        content: {            
+            // border: '1px solid black',
+            display: 'flex',
+            flexFlow: 'column noWrap',
+            width: '100%',
+            height:'auto'
         }
     })
 }

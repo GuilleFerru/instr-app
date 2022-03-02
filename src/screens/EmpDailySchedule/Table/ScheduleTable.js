@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { axiosPut } from '../../../Services/Axios.js';
 import { DateContext } from '../../../context/DateContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { scheduleTableStyle } from './ScheduleTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { axiosPut } from '../../../Services/Axios.js'
+
 
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
@@ -23,7 +24,7 @@ export const ScheduleTable = props => {
     useEffect(() => {
         let cancel = false;
         axios.get(`/schedule/get/${date}`).then(res => {
-            const { schedule,  aditionals, columns } = res.data;
+            const { schedule, aditionals, columns } = res.data;
             if (!cancel) {
                 setData(schedule);
                 setDataColumns(columns)
@@ -50,12 +51,12 @@ export const ScheduleTable = props => {
             return ''
         })
         const newSchedule = updatedRows;
-        axiosPut(`/schedule/update/${date}`,{ newSchedule })
+        axiosPut(`/schedule/update/${date}`, { newSchedule })
     }
 
     // MEJORAR ESTO
     const compareOldAndNewData = (oldData, newData) => {
-        
+
         if (oldData.timeSchedule !== newData.timeSchedule) {
             newData.timeSchedule >= 7 && newData.timeSchedule <= 14 ? newData.workedHours = 12 : newData.timeSchedule === 4 ? newData.workedHours = 0 : newData.workedHours = 8;
         }
@@ -68,15 +69,15 @@ export const ScheduleTable = props => {
         compareOldAndNewData(oldRow, updatedRow);
         updatedRows[index] = updatedRow;
         const newSchedule = updatedRows;
-        axiosPut(`/schedule/update/${date}`,{ newSchedule })
+        axiosPut(`/schedule/update/${date}`, { newSchedule })
         return updatedRows;
     }
 
     const handleAditional = () => {
 
         if (dataColumns.length > 5) {
-            const getNumberOfAditionals =  parseInt((dataColumns[dataColumns.length - 2].field).match(/\d+/)[0]) + 1;
-            setAditionalCount(getNumberOfAditionals + 1);           
+            const getNumberOfAditionals = parseInt((dataColumns[dataColumns.length - 2].field).match(/\d+/)[0]) + 1;
+            setAditionalCount(getNumberOfAditionals + 1);
         } else {
             setAditionalCount(aditionalCount + 1);
         }
@@ -92,13 +93,13 @@ export const ScheduleTable = props => {
             align: 'left',
         }
         const newColumns = [...dataColumns, adictionanlSelect, aditionalInput];
-        axiosPut(`/schedule/update/columns/${date}`,{ newColumns })
+        axiosPut(`/schedule/update/columns/${date}`, { newColumns })
         setDataColumns([...dataColumns, adictionanlSelect, aditionalInput]);
     }
 
 
-    return <>
-        <MuiTable className={classes.table}
+    return <div className={classes.table}>
+        <MuiTable
             title={'PERSONAL'}
             data={data}
             setData={setData}
@@ -109,11 +110,13 @@ export const ScheduleTable = props => {
             handleDatePicker={handleDatePicker}
             deleteRow={false}
             date={date}
+            disableCheckButton={false}
             disableAddButton={true}
             disableDeleteButton={false}
             disableOnRowUpdate={false}
             disableOnBulkUpdate={false}
             disableAditionalButton={false}
         />
-    </>
+    </div>
+
 }

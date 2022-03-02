@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const DateContext = createContext();
 
@@ -10,9 +10,9 @@ export const DateComponentContext = props => {
         setDate(newDate);
     }
     
-    useEffect(() => {
-        console.log('DateComponentContext: useEffect', date);
-    }, [date]);
+    // useEffect(() => {
+    //     console.log('DateComponentContext: useEffect', date);
+    // }, [date]);
 
     return <DateContext.Provider value={{ date, getNewDate }}>
         {props.children}

@@ -1,7 +1,7 @@
 export const tableCardStyle = theme => {
     return ({
         paper: {
-            margin: theme.spacing(2),
+            margin: theme.spacing(1),
             padding: theme.spacing(1)
             // display: "flex",
             // // overflow: "auto",
@@ -16,7 +16,7 @@ export const tableCardStyle = theme => {
             paddingBottom: theme.spacing(5),
             display: 'flex',
             flexFlow:'column noWrap',
-            height: '100vh',
+            height: 'auto',
             
         }
     })
