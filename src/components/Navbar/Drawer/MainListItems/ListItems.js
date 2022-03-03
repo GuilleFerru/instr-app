@@ -5,6 +5,9 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PeopleIcon from '@material-ui/icons/People';
 import TodayIcon from '@material-ui/icons/Today';
 import AllInboxIcon from '@material-ui/icons/AllInbox';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+
+
 
 export const listItems = (
   <div>
@@ -13,6 +16,12 @@ export const listItems = (
         <TodayIcon />
       </ListItemIcon>
       <ListItemText primary="Tareas Diarias" />
+    </ListItem> 
+    <ListItem button component={Link} to="/rutinas">
+      <ListItemIcon>
+        <ScheduleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Rutinas" />
     </ListItem> 
     <ListItem button component={Link} to="/dashboard">
       <ListItemIcon>
