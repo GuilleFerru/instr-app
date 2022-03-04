@@ -1,6 +1,14 @@
 const drawerWidth = 240;
 export const drawerContainerStyle = theme => {
     return ({
+        root: {
+            width: '100%',
+            maxWidth: 360,
+            backgroundColor: theme.palette.background.paper,
+        },
+        nested: {
+            paddingLeft: theme.spacing(4),
+        },
         toolbarIcon: {
             display: "flex",
             alignItems: "center",
