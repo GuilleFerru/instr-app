@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { axiosPut } from '../../../Services/Axios.js';
+import {scheduleEmpDefault} from '../../../Services/scheduleEmpDefault.js';
 import { DateContext } from '../../../context/DateContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
@@ -26,10 +27,10 @@ export const ScheduleTable = props => {
         axios.get(`/schedule/get/${date}`).then(res => {
             const { schedule, aditionals, columns } = res.data;
             if (!cancel) {
-                setData(schedule);
-                setDataColumns(columns)
-                setAditionals(aditionals);
-                columns.length > 5 ? setAditionalCount(parseInt((columns[columns.length - 2].field).match(/\d+/)[0]) + 1) : setAditionalCount(1);
+                schedule === undefined ? setData([]) :setData(schedule);
+               columns === undefined ? setDataColumns(scheduleEmpDefault) : setDataColumns(columns)
+                aditionals === undefined ? setAditionals({}) : setAditionals(aditionals);
+                columns !== undefined && columns.length > 5 ? setAditionalCount(parseInt((columns[columns.length - 2].field).match(/\d+/)[0]) + 1) : setAditionalCount(1);
             } else {
                 return;
             }
