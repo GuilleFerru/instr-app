@@ -1,38 +1,33 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { axiosPut } from '../../../Services/Axios.js';
-import { scheduleEmpDefault } from '../../../Services/scheduleEmpDefault.js';
+import { monthPicker } from '../../../Services/DatePickers'
 import { DateContext } from '../../../context/DateContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
-import { scheduleTableStyle } from './ScheduleTableStyle'
+import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { datePicker } from '../../../Services/DatePickers'
 
 
+const useStyles = makeStyles((theme) => routineTableStyle(theme));
 
-const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
-
-export const ScheduleTable = props => {
+export const RoutineTable = props => {
 
     const classes = useStyles();
-    const { date, getNewDate } = useContext(DateContext);
+    const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
     const [aditionals, setAditionals] = useState({});
     const [aditionalCount, setAditionalCount] = useState(1);
-    const { handleDatePicker } = muiTableCommonActions(data, setData, getNewDate);
     const [dataColumns, setDataColumns] = useState([]);
+    const { handleDatePicker } = muiTableCommonActions(data, setData, setDate);
 
 
     useEffect(() => {
+        console.log(date)
         let cancel = false;
-        axios.get(`/schedule/get/${date}`).then(res => {
-            const { schedule, aditionals, columns } = res.data;
+        axios.get(`/routine/get/${date}`).then(res => {
+            console.log(res.data)
             if (!cancel) {
-                schedule === undefined ? setData([]) : setData(schedule);
-                columns === undefined ? setDataColumns(scheduleEmpDefault) : setDataColumns(columns)
-                aditionals === undefined ? setAditionals({}) : setAditionals(aditionals);
-                columns !== undefined && columns.length > 5 ? setAditionalCount(parseInt((columns[columns.length - 2].field).match(/\d+/)[0]) + 1) : setAditionalCount(1);
             } else {
                 return;
             }
@@ -101,19 +96,22 @@ export const ScheduleTable = props => {
     }
 
 
+ 
+
+
     return <div className={classes.table}>
         <MuiTable
-            title={'PERSONAL'}
-            datepicker={datePicker(date, handleDatePicker)}
+            title={'RUTINAS'}
+            datepicker={monthPicker(date, handleDatePicker)}
             data={data}
             setData={setData}
             dataColumns={dataColumns}
             updateRow={updateRow}
             handleAditional={handleAditional}
             bulkUpdate={bulkUpdate}
-            handleDatePicker={handleDatePicker}
+            handleDatePicker={false}
             deleteRow={false}
-            date={date}
+
             disableCheckButton={false}
             disableAddButton={true}
             disableDeleteButton={false}

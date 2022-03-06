@@ -6,6 +6,7 @@ import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
 import { DateContext } from '../../../context/DateContext';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
+import { datePicker } from '../../../Services/DatePickers'
 
 
 
@@ -99,6 +100,7 @@ export const DailyWorksTable = props => {
     return <>
         <MuiTable className={classes.table}
             title={'Tareas Diarias'}
+            datepicker={datePicker(date, handleDatePicker)}
             data={data}
             setData={setData}
             dataColumns={dataColumns}

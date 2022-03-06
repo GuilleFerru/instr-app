@@ -3,17 +3,14 @@ import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
-import DatePicker from '../Controls/DatePicker';
 
-
-export const MuiTable = ({ data, setData, title, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional, handleDatePicker, date }) => {
+export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional }) => {
     const positionRef = React.useRef();
 
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
-
 
     return (
         <div ref={positionRef}>
@@ -57,11 +54,6 @@ export const MuiTable = ({ data, setData, title, disableCheckButton, disableAdit
                     }),
                     onRowDelete: disableDeleteButton ? undefined : selectedRow => new Promise((resolve, _) => {
                         deleteRow(selectedRow, resolve);
-                        // const index = selectedRow.tableData.id
-                        // const updatedRows = [...data]
-                        // updatedRows.splice(index, 1)
-                        // setData(updatedRows)
-                        // resolve()
                     }),
                     onRowUpdate: disableOnRowUpdate ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
                         setData(updateRow(updatedRow, oldRow));
@@ -83,7 +75,7 @@ export const MuiTable = ({ data, setData, title, disableCheckButton, disableAdit
                         icon: () => <DynamicFeedIcon />,
                         tooltip: 'Agregar Adicional',
                         isFreeAction: true,
-                        onClick: () => handleAditional(),
+                        onClick: () => handleAditional() ? handleAditional() : null,
                         disabled: disableAditionalButton
 
                     },
@@ -93,12 +85,7 @@ export const MuiTable = ({ data, setData, title, disableCheckButton, disableAdit
                         <div>
                             <MTableToolbar {...props} />
                             <div style={{ padding: '0 8px 0px 24px' }}>
-                                <DatePicker
-                                    name='date'
-                                    label="Fecha"
-                                    value={date}
-                                    onChange={handleDatePicker}
-                                />
+                            {datepicker}
                             </div>
                         </div>
                     ),
