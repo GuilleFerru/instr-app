@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { axiosPut } from '../../../Services/Axios.js';
-import { scheduleEmpDefault } from '../../../Services/scheduleEmpDefault.js';
+import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 import { DateContext } from '../../../context/DateContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
@@ -105,15 +105,18 @@ export const ScheduleTable = props => {
         <MuiTable
             title={'PERSONAL'}
             datepicker={datePicker(date, handleDatePicker)}
+            
             data={data}
             setData={setData}
             dataColumns={dataColumns}
+            pageSize={15}
             updateRow={updateRow}
             handleAditional={handleAditional}
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             deleteRow={false}
             date={date}
+            disableGroupingOption = {false}
             disableCheckButton={false}
             disableAddButton={true}
             disableDeleteButton={false}

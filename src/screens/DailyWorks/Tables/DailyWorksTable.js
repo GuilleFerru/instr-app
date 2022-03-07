@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { axiosPost, axiosPut, axiosDelete } from '../../../Services/Axios.js';
+import { dailyWorksDefault } from '../../../Services/defaultTables.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
@@ -29,8 +30,8 @@ export const DailyWorksTable = props => {
         axios.get(`/dailyWork/get/${date}`).then(res => {
             const { dayWorks, columns } = res.data;
             if (!cancel) {
-                setData(dayWorks);
-                setDataColumns(columns);
+                dayWorks === undefined ? setData([]) :setData(dayWorks);
+                columns === undefined ? setDataColumns([dailyWorksDefault]) :setDataColumns(columns);
             } else {
                 return;
             }
@@ -104,6 +105,7 @@ export const DailyWorksTable = props => {
             data={data}
             setData={setData}
             dataColumns={dataColumns}
+            pageSize={15}
             updateRow={updateRow}
             handleAditional={false}
             rowAdd={rowAdd}
@@ -111,6 +113,7 @@ export const DailyWorksTable = props => {
             deleteRow={deleteRow}
             handleDatePicker={handleDatePicker}
             date={date}
+            disableGroupingOption = {true}
             disableCheckButton={true}
             disableAddButton={false}
             disableDeleteButton={false}

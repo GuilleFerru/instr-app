@@ -16,7 +16,7 @@ export const StoreListTable = props => {
 
 
 
-    const { data, setData, colDefs, setColDefs, updateRow, handleAditional, bulkUpdate, handleDatePicker, date } = useStoreListTable();
+    const { data, setData, colDefs, setColDefs, date } = useStoreListTable();
 
     const getExention = (file) => {
         const parts = file.name.split('.');
@@ -72,6 +72,7 @@ export const StoreListTable = props => {
             data={data}
             setData={setData}
             dataColumns={colDefs}
+            pageSize={15}
             // updateRow={updateRow}
             // handleAditional={handleAditional}
             // bulkUpdate={bulkUpdate}

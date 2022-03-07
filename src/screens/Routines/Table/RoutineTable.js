@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { axiosPut } from '../../../Services/Axios.js';
+import { otherRoutinesDefault } from '../../../Services/defaultTables.js';
 import { monthPicker } from '../../../Services/DatePickers'
-import { DateContext } from '../../../context/DateContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
+
 
 
 const useStyles = makeStyles((theme) => routineTableStyle(theme));
@@ -16,18 +17,17 @@ export const RoutineTable = props => {
     const classes = useStyles();
     const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
-    const [aditionals, setAditionals] = useState({});
-    const [aditionalCount, setAditionalCount] = useState(1);
     const [dataColumns, setDataColumns] = useState([]);
     const { handleDatePicker } = muiTableCommonActions(data, setData, setDate);
 
 
     useEffect(() => {
-        console.log(date)
         let cancel = false;
         axios.get(`/routine/get/${date}`).then(res => {
-            console.log(res.data)
+            const { otherRoutines, columns } = res.data;
             if (!cancel) {
+                otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) :setData(otherRoutines);
+                columns === undefined ? setDataColumns([otherRoutinesDefault]) :setDataColumns(columns);
             } else {
                 return;
             }
@@ -42,7 +42,6 @@ export const RoutineTable = props => {
         const updatedRows = [...data];
         rows.map(emp => {
             const index = emp.oldData.tableData.id;
-            compareOldAndNewData(emp.oldData, emp.newData);
             updatedRows[index] = emp.newData;
             setData(updatedRows);
             resolve();
@@ -52,72 +51,39 @@ export const RoutineTable = props => {
         axiosPut(`/schedule/update/${date}`, { newSchedule })
     }
 
-    // MEJORAR ESTO
-    const compareOldAndNewData = (oldData, newData) => {
 
-        if (oldData.timeSchedule !== newData.timeSchedule) {
-            newData.timeSchedule >= 7 && newData.timeSchedule <= 14 ? newData.workedHours = 12 : newData.timeSchedule === 4 ? newData.workedHours = 0 : newData.workedHours = 8;
-        }
-        newData.legajo !== newData.fullName && (newData.legajo = newData.fullName);
-    }
 
     const updateRow = (updatedRow, oldRow) => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
-        compareOldAndNewData(oldRow, updatedRow);
         updatedRows[index] = updatedRow;
-        const newSchedule = updatedRows;
-        axiosPut(`/schedule/update/${date}`, { newSchedule })
         return updatedRows;
     }
 
-    const handleAditional = () => {
 
-        if (dataColumns.length > 5) {
-            const getNumberOfAditionals = parseInt((dataColumns[dataColumns.length - 2].field).match(/\d+/)[0]) + 1;
-            setAditionalCount(getNumberOfAditionals + 1);
-        } else {
-            setAditionalCount(aditionalCount + 1);
-        }
-        const adictionanlSelect = {
-            field: `additional_${aditionalCount}`,
-            title: `Adicional ${aditionalCount}`,
-            lookup: aditionals,
-            align: 'left',
-        }
-        const aditionalInput = {
-            field: `additional_${aditionalCount}_info`,
-            title: `Anexo ${aditionalCount}`,
-            align: 'left',
-        }
-        const newColumns = [...dataColumns, adictionanlSelect, aditionalInput];
-        axiosPut(`/schedule/update/columns/${date}`, { newColumns })
-        setDataColumns([...dataColumns, adictionanlSelect, aditionalInput]);
-    }
-
-
- 
 
 
     return <div className={classes.table}>
         <MuiTable
             title={'RUTINAS'}
             datepicker={monthPicker(date, handleDatePicker)}
+            date = {date}
             data={data}
             setData={setData}
             dataColumns={dataColumns}
+            pageSize={15}
             updateRow={updateRow}
-            handleAditional={handleAditional}
+            handleAditional={false}
             bulkUpdate={bulkUpdate}
             handleDatePicker={false}
             deleteRow={false}
-
-            disableCheckButton={false}
+            disableGroupingOption = {false}
+            disableCheckButton={true}
             disableAddButton={true}
             disableDeleteButton={false}
-            disableOnRowUpdate={false}
-            disableOnBulkUpdate={false}
-            disableAditionalButton={false}
+            disableOnRowUpdate={true}
+            disableOnBulkUpdate={true}
+            disableAditionalButton={true}
         />
     </div>
 

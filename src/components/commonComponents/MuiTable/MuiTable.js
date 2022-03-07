@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional }) => {
+export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional, pageSize, disableGroupingOption, date }) => {
     const positionRef = React.useRef();
+
+    const [progress, setProgress] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setProgress(false), 5000);
+        return () => clearTimeout(timer);
+    }, [date]);
+
 
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
@@ -24,7 +33,7 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                         actions: 'Acciones'
                     },
                     body: {
-                        emptyDataSourceMessage: 'No hay filas para mostrar',
+                        emptyDataSourceMessage: progress ? <CircularProgress size='6rem' color="inherit" /> : 'No existen filas para mostrar',
                         deleteTooltip: 'Borrar',
                         editTooltip: 'Editar',
                         editAllTooltipo: 'Editar todo',
@@ -66,11 +75,17 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                 options={{
                     actionsColumnIndex: -1,
                     addRowPosition: 'first',
-                    pageSize: 15,
+                    pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
-                    selection: disableCheckButton
+                    selection: disableCheckButton,
+                    grouping: disableGroupingOption
                 }}
                 actions={[
+                    {
+                        tooltip: 'Completar Tarea',
+                        icon: tableIcons.Complete,
+                        onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
+                    },
                     {
                         icon: () => <DynamicFeedIcon />,
                         tooltip: 'Agregar Adicional',
@@ -85,7 +100,7 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                         <div>
                             <MTableToolbar {...props} />
                             <div style={{ padding: '0 8px 0px 24px' }}>
-                            {datepicker}
+                                {datepicker}
                             </div>
                         </div>
                     ),
