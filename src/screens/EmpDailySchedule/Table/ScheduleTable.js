@@ -105,8 +105,8 @@ export const ScheduleTable = props => {
         <MuiTable
             title={'PERSONAL'}
             datepicker={datePicker(date, handleDatePicker)}
-            
             data={data}
+            date={date}
             setData={setData}
             dataColumns={dataColumns}
             pageSize={15}
@@ -115,9 +115,8 @@ export const ScheduleTable = props => {
             bulkUpdate={bulkUpdate}
             handleDatePicker={handleDatePicker}
             deleteRow={false}
-            date={date}
             disableGroupingOption = {false}
-            disableCheckButton={false}
+            disableCheckButton={true}
             disableAddButton={true}
             disableDeleteButton={false}
             disableOnRowUpdate={false}
