@@ -69,14 +69,15 @@ export const RoutineTable = props => {
     const handleSelection = (selectedRows, ) => {
         const rows = Object.values(selectedRows);
         const updatedRows = [...data];
+        const dataToAxiosPut = [];
         rows.map(routine => {
             const index = routine.tableData.id;
             updatedRows[index] = { ...routine, complete: 'C' };
+            dataToAxiosPut.push({...routine, complete: 'C'});
             setData(updatedRows);
             return ''
         })
-        axiosPut(`/routine/update`, { data: updatedRows});
-        
+        axiosPut(`/routine/update`, { data: dataToAxiosPut});
     }
 
 
