@@ -113,6 +113,7 @@ export const ScheduleTable = props => {
             updateRow={updateRow}
             handleAditional={handleAditional}
             bulkUpdate={bulkUpdate}
+            handleSelection={false}
             handleDatePicker={handleDatePicker}
             deleteRow={false}
             disableGroupingOption = {false}

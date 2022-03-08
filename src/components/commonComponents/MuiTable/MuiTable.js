@@ -5,15 +5,15 @@ import { tableIcons } from './tableIcons';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional, pageSize, disableGroupingOption, date }) => {
+export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional, pageSize, disableGroupingOption, date, handleSelection }) => {
     const positionRef = React.useRef();
 
-    const [progress, setProgress] = useState(true);
+    // const [progress, setProgress] = useState(true);
 
-    useEffect(() => {
-        const timer = setTimeout(() => setProgress(false), 5000);
-        return () => clearTimeout(timer);
-    }, [date]);
+    // useEffect(() => {
+    //     const timer = setTimeout(() => setProgress(false), 10000);
+    //     return () => clearTimeout(timer);
+    // }, [date]);
 
 
     //arregla el browser freezing
@@ -33,7 +33,7 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                         actions: 'Acciones'
                     },
                     body: {
-                        emptyDataSourceMessage: progress ? <CircularProgress size='6rem' color="inherit" /> : 'No existen filas para mostrar',
+                        emptyDataSourceMessage:  <CircularProgress size='6rem' color="inherit" /> ,
                         deleteTooltip: 'Borrar',
                         editTooltip: 'Editar',
                         editAllTooltipo: 'Editar todo',
@@ -84,7 +84,7 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                     {
                         tooltip: 'Completar Tarea',
                         icon: tableIcons.Complete,
-                        onClick: (evt, data) => alert('You want to delete ' + data.length + ' rows')
+                        onClick: (evt, data) => handleSelection(data) ? handleSelection(data) : null
                     },
                     {
                         icon: () => <DynamicFeedIcon />,

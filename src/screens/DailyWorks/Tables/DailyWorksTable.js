@@ -110,6 +110,7 @@ export const DailyWorksTable = props => {
             handleAditional={false}
             rowAdd={rowAdd}
             bulkUpdate={bulkUpdate}
+            handleSelection={false}
             deleteRow={deleteRow}
             handleDatePicker={handleDatePicker}
             date={date}

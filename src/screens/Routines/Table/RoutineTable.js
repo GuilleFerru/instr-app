@@ -26,8 +26,8 @@ export const RoutineTable = props => {
         axios.get(`/routine/get/${date}`).then(res => {
             const { otherRoutines, columns } = res.data;
             if (!cancel) {
-                otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) :setData(otherRoutines);
-                columns === undefined ? setDataColumns([otherRoutinesDefault]) :setDataColumns(columns);
+                otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
+                columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
             } else {
                 return;
             }
@@ -47,8 +47,10 @@ export const RoutineTable = props => {
             resolve();
             return ''
         })
-        const newSchedule = updatedRows;
-        axiosPut(`/schedule/update/${date}`, { newSchedule })
+
+        
+        
+        
     }
 
 
@@ -60,6 +62,24 @@ export const RoutineTable = props => {
         return updatedRows;
     }
 
+    // const handleSelection = (selectedRows) => new Promise((resolve, _) => {
+    //     handleSelectionResolve(selectedRows, resolve);
+    // })
+
+    const handleSelection = (selectedRows, ) => {
+        const rows = Object.values(selectedRows);
+        const updatedRows = [...data];
+        rows.map(routine => {
+            const index = routine.tableData.id;
+            updatedRows[index] = { ...routine, complete: 'C' };
+            setData(updatedRows);
+            return ''
+        })
+        axiosPut(`/routine/update`, { data: updatedRows});
+        
+    }
+
+
 
 
 
@@ -67,7 +87,7 @@ export const RoutineTable = props => {
         <MuiTable
             title={'RUTINAS'}
             datepicker={monthPicker(date, handleDatePicker)}
-            date = {date}
+            date={date}
             data={data}
             setData={setData}
             dataColumns={dataColumns}
@@ -75,15 +95,17 @@ export const RoutineTable = props => {
             updateRow={updateRow}
             handleAditional={false}
             bulkUpdate={bulkUpdate}
+            handleSelection={handleSelection}
             handleDatePicker={false}
             deleteRow={false}
-            disableGroupingOption = {false}
+            disableGroupingOption={false}
             disableCheckButton={true}
             disableAddButton={true}
             disableDeleteButton={false}
             disableOnRowUpdate={true}
             disableOnBulkUpdate={true}
             disableAditionalButton={true}
+
         />
     </div>
 
