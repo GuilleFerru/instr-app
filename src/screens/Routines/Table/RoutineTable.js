@@ -25,6 +25,7 @@ export const RoutineTable = props => {
         let cancel = false;
         axios.get(`/routine/get/${date}`).then(res => {
             const { otherRoutines, columns } = res.data;
+            console.log(otherRoutines)
             if (!cancel) {
                 otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
                 columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);

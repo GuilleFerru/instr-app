@@ -33,7 +33,7 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                         actions: 'Acciones'
                     },
                     body: {
-                        emptyDataSourceMessage:  <CircularProgress size='6rem' color="inherit" /> ,
+                        emptyDataSourceMessage: <CircularProgress size='5rem' color="inherit" />,
                         deleteTooltip: 'Borrar',
                         editTooltip: 'Editar',
                         editAllTooltipo: 'Editar todo',
@@ -42,6 +42,10 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                         editRow: {
                             deleteText: 'Esta seguro de borrar esta fila?'
                         }
+                    },
+                    grouping: {
+                        placeholder: 'Arrastre para agrupar',
+                        groupedBy: 'Agrupado por'
                     },
                     toolbar: {
                         searchTooltip: 'Buscar',
@@ -78,6 +82,11 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton,
+                    selectionProps: rowData => ({
+                        // seguir viendo esto que es rarooo
+                        disabled:  rowData.checkDay.includes('Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo',','),
+                        color: 'primary'
+                    }),
                     grouping: disableGroupingOption
                 }}
                 actions={[
