@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
@@ -14,6 +14,10 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
     //     const timer = setTimeout(() => setProgress(false), 10000);
     //     return () => clearTimeout(timer);
     // }, [date]);
+
+
+    
+
 
 
     //arregla el browser freezing
@@ -82,10 +86,9 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton,
-                    selectionProps: rowData => ({
-                        // seguir viendo esto que es rarooo
-                        disabled:  rowData.checkDay.includes('Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo',','),
-                        color: 'primary'
+                    selectionProps: rowData => ({                       
+                        disabled: rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay),
+                        color: 'default'
                     }),
                     grouping: disableGroupingOption
                 }}
