@@ -100,27 +100,49 @@ export const DailyWorksTable = props => {
 
     return <>
         <MuiTable className={classes.table}
-            title={'Tareas Diarias'}
-            datepicker={datePicker(date, handleDatePicker)}
+            // title={'Tareas Diarias'}
+            // datepicker={datePicker(date, handleDatePicker)}
+            // data={data}
+            // setData={setData}
+            // dataColumns={dataColumns}
+            // pageSize={15}
+            // updateRow={updateRow}
+            // handleAditional={false}
+            // rowAdd={rowAdd}
+            // bulkUpdate={bulkUpdate}
+            // handleSelection={false}
+            // deleteRow={deleteRow}
+            // handleDatePicker={handleDatePicker}
+            // date={date}
+            // disableGroupingOption = {true}
+            // disableCheckButton={true}
+            // disableAddButton={false}
+            // disableDeleteButton={false}
+            // disableOnRowUpdate={false}
+            // disableOnBulkUpdate={false}
+            // disableAditionalButton={true}
+
+
             data={data}
             setData={setData}
-            dataColumns={dataColumns}
-            pageSize={15}
-            updateRow={updateRow}
-            handleAditional={false}
-            rowAdd={rowAdd}
-            bulkUpdate={bulkUpdate}
-            handleSelection={false}
-            deleteRow={deleteRow}
-            handleDatePicker={handleDatePicker}
-            date={date}
-            disableGroupingOption = {true}
+            title={'TAREAS DIARIAS'}
+            datepicker={datePicker(date, handleDatePicker)}
             disableCheckButton={true}
+            disableAditionalButton={true}
             disableAddButton={false}
             disableDeleteButton={false}
             disableOnRowUpdate={false}
             disableOnBulkUpdate={false}
-            disableAditionalButton={true}
+            dataColumns={dataColumns}
+            rowAdd={rowAdd}
+            updateRow={updateRow}
+            bulkUpdate={bulkUpdate}
+            deleteRow={deleteRow}
+            handleAditional={false}
+            pageSize={15}
+            disableGroupingOption={false}
+            date={date}
+            handleSelection={false}
         />
     </>
 }

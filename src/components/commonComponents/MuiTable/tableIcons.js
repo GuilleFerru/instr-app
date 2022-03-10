@@ -1,4 +1,4 @@
-import  { forwardRef  } from 'react';
+import { forwardRef } from 'react';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -14,6 +14,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 export const tableIcons = {
@@ -34,5 +35,6 @@ export const tableIcons = {
     SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-    Complete: forwardRef((props, ref) => <AssignmentTurnedInIcon {...props} ref={ref} />)
+    Complete: forwardRef((props, ref) => <AssignmentTurnedInIcon {...props} ref={ref} />),
+    Aditional: forwardRef((props, ref) => <DynamicFeedIcon {...props} ref={ref} />)
 };

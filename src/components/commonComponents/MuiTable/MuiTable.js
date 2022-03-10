@@ -2,23 +2,10 @@ import React from 'react'
 import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
-import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional, pageSize, disableGroupingOption, date, handleSelection }) => {
     const positionRef = React.useRef();
-
-    // const [progress, setProgress] = useState(true);
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => setProgress(false), 10000);
-    //     return () => clearTimeout(timer);
-    // }, [date]);
-
-
-    
-
-
 
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
@@ -85,25 +72,29 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                     addRowPosition: 'first',
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
-                    selection: disableCheckButton,
-                    selectionProps: rowData => ({                       
+                    selection: disableCheckButton ? undefined : true,
+                    selectionProps: rowData => ({
                         disabled: rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay),
                         color: 'default'
                     }),
-                    grouping: disableGroupingOption
+                    grouping: disableGroupingOption ? undefined : true,
                 }}
                 actions={[
                     {
                         tooltip: 'Completar Tarea',
                         icon: tableIcons.Complete,
-                        onClick: (evt, data) => handleSelection(data) ? handleSelection(data) : null
+                        onClick: (evt, data) => handleSelection(data) ? handleSelection(data) : null,
+                        disabled: disableCheckButton,
+                        hidden: disableCheckButton
                     },
                     {
-                        icon: () => <DynamicFeedIcon />,
+                        icon: tableIcons.Aditional,
                         tooltip: 'Agregar Adicional',
                         isFreeAction: true,
                         onClick: () => handleAditional() ? handleAditional() : null,
-                        disabled: disableAditionalButton
+                        disabled: disableAditionalButton,
+                        hidden: disableAditionalButton,
+
 
                     },
                 ]}

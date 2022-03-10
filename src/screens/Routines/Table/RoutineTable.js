@@ -48,66 +48,55 @@ export const RoutineTable = props => {
             resolve();
             return ''
         })
-
-        
-        
-        
+        // const newSchedule = updatedRows;
+        // axiosPut(`/schedule/update/${date}`, { newSchedule })
     }
-
-
-
     const updateRow = (updatedRow, oldRow) => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
+        // const updatedWork = updatedRow;
+        // axiosPut(`/dailyWork/update/${date}`, { updatedWork })
         return updatedRows;
     }
 
-    // const handleSelection = (selectedRows) => new Promise((resolve, _) => {
-    //     handleSelectionResolve(selectedRows, resolve);
-    // })
-
-    const handleSelection = (selectedRows, ) => {
+    const handleSelection = (selectedRows,) => {
         const rows = Object.values(selectedRows);
         const updatedRows = [...data];
         const dataToAxiosPut = [];
         rows.map(routine => {
             const index = routine.tableData.id;
             updatedRows[index] = { ...routine, complete: 'C' };
-            dataToAxiosPut.push({...routine, complete: 'C'});
+            dataToAxiosPut.push({ ...routine, complete: 'C' });
             setData(updatedRows);
             return ''
         })
-        axiosPut(`/routine/update`, { data: dataToAxiosPut});
+        axiosPut(`/routine/update`, { data: dataToAxiosPut });
     }
-
-
-
 
 
     return <div className={classes.table}>
         <MuiTable
-            title={'RUTINAS'}
-            datepicker={monthPicker(date, handleDatePicker)}
-            date={date}
             data={data}
             setData={setData}
-            dataColumns={dataColumns}
-            pageSize={15}
-            updateRow={updateRow}
-            handleAditional={false}
-            bulkUpdate={bulkUpdate}
-            handleSelection={handleSelection}
-            handleDatePicker={false}
-            deleteRow={false}
-            disableGroupingOption={false}
-            disableCheckButton={true}
-            disableAddButton={true}
-            disableDeleteButton={false}
-            disableOnRowUpdate={true}
-            disableOnBulkUpdate={true}
+            title={'RUTINAS'}
+            datepicker={monthPicker(date, handleDatePicker)}
+            disableCheckButton={false}
             disableAditionalButton={true}
-
+            disableAddButton={true}
+            disableDeleteButton={true}
+            disableOnRowUpdate={false}
+            disableOnBulkUpdate={false}
+            dataColumns={dataColumns}
+            rowAdd={false}
+            updateRow={updateRow}
+            bulkUpdate={bulkUpdate}
+            deleteRow={false}
+            handleAditional={false}
+            pageSize={15}
+            disableGroupingOption={true}
+            date={date}
+            handleSelection={handleSelection}
         />
     </div>
 

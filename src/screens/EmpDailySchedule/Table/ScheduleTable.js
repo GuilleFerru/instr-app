@@ -103,26 +103,48 @@ export const ScheduleTable = props => {
 
     return <div className={classes.table}>
         <MuiTable
+            
+            
+            // data={data}
+            // date={date}
+            // setData={setData}
+            // dataColumns={dataColumns}
+            // pageSize={15}
+            // updateRow={updateRow}
+            // handleAditional={handleAditional}
+            // bulkUpdate={bulkUpdate}
+            // handleSelection={false}
+            // handleDatePicker={handleDatePicker}
+            // deleteRow={false}
+            // disableGroupingOption = {false}
+            // disableCheckButton={true}
+            // disableAddButton={true}
+            // disableDeleteButton={false}
+            // disableOnRowUpdate={false}
+            // disableOnBulkUpdate={false}
+            // disableAditionalButton={false}
+
+
+            data={data}
+            setData={setData}
             title={'PERSONAL'}
             datepicker={datePicker(date, handleDatePicker)}
-            data={data}
-            date={date}
-            setData={setData}
-            dataColumns={dataColumns}
-            pageSize={15}
-            updateRow={updateRow}
-            handleAditional={handleAditional}
-            bulkUpdate={bulkUpdate}
-            handleSelection={false}
-            handleDatePicker={handleDatePicker}
-            deleteRow={false}
-            disableGroupingOption = {false}
             disableCheckButton={true}
+            disableAditionalButton={false}
             disableAddButton={true}
             disableDeleteButton={false}
             disableOnRowUpdate={false}
             disableOnBulkUpdate={false}
-            disableAditionalButton={false}
+            dataColumns={dataColumns}
+            rowAdd={false}
+            updateRow={updateRow}
+            bulkUpdate={bulkUpdate}
+            deleteRow={false}
+            handleAditional={handleAditional}
+            pageSize={15}
+            disableGroupingOption={true}
+            date={date}
+            handleSelection={false}
         />
     </div>
 
