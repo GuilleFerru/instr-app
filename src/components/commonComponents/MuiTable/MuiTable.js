@@ -60,7 +60,6 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                         deleteRow(selectedRow, resolve);
                     }),
                     onRowUpdate: disableOnRowUpdate ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
-                        console.log('updatedRow, oldRow');
                         setData(updateRow(updatedRow, oldRow));
                         resolve();
                     }),

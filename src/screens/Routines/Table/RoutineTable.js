@@ -25,7 +25,6 @@ export const RoutineTable = props => {
         let cancel = false;
         axios.get(`/routine/get/${date}`).then(res => {
             const { otherRoutines, columns } = res.data;
-            console.log(otherRoutines)
             if (!cancel) {
                 otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
                 columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
@@ -55,8 +54,8 @@ export const RoutineTable = props => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
-        // const updatedWork = updatedRow;
-        // axiosPut(`/dailyWork/update/${date}`, { updatedWork })
+        const updatedWork = updatedRow;
+        axiosPut(`/routine/updateOt`, { data : updatedWork })
         return updatedRows;
     }
 
@@ -81,7 +80,7 @@ export const RoutineTable = props => {
             setData={setData}
             title={'RUTINAS'}
             datepicker={monthPicker(date, handleDatePicker)}
-            disableCheckButton={true}
+            disableCheckButton={false}
             disableAditionalButton={true}
             disableAddButton={true}
             disableDeleteButton={true}
