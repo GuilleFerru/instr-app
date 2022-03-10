@@ -81,7 +81,7 @@ export const RoutineTable = props => {
             setData={setData}
             title={'RUTINAS'}
             datepicker={monthPicker(date, handleDatePicker)}
-            disableCheckButton={false}
+            disableCheckButton={true}
             disableAditionalButton={true}
             disableAddButton={true}
             disableDeleteButton={true}
