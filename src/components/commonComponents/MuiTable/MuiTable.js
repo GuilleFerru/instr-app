@@ -1,16 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton, disableAditionalButton, disableAddButton, disableDeleteButton, disableOnRowUpdate, disableOnBulkUpdate, dataColumns, rowAdd, updateRow, bulkUpdate, deleteRow, handleAditional, pageSize, disableGroupingOption, date, handleSelection }) => {
+export const MuiTable = (
+    {
+        data,
+        setData,
+        title,
+        datepicker,
+        disableCheckButton,
+        disableAditionalButton,
+        disableAddButton,
+        disableDeleteButton,
+        disableOnRowUpdate,
+        disableOnBulkUpdate,
+        dataColumns,
+        rowAdd,
+        updateRow,
+        bulkUpdate,
+        deleteRow,
+        handleAditional,
+        pageSize,
+        disableGroupingOption,
+        handleSelection,
+        disableViewDailyWorksRoutine,
+        handleDailyWorksRoutine
+    }) => {
     const positionRef = React.useRef();
 
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
+
+    const [selectedRow, setSelectedRow] = useState(null);
 
     return (
         <div ref={positionRef}>
@@ -25,9 +50,11 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                     },
                     body: {
                         emptyDataSourceMessage: <CircularProgress size='5rem' color="inherit" />,
-                        deleteTooltip: 'Borrar',
-                        editTooltip: 'Editar',
-                        editAllTooltipo: 'Editar todo',
+                        deleteTooltip: 'Borrar Fila',
+                        editTooltip: 'Editar Fila',
+                        bulkEditTooltip: 'Editar todo',
+                        bulkEditApprove: 'Aprobar',
+                        bulkEditCancel: 'Cancelar',
                         addTooltip: 'Agregar',
                         filterRow: 'Filtrar por',
                         editRow: {
@@ -40,8 +67,8 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                     },
                     toolbar: {
                         searchTooltip: 'Buscar',
-                        searchPlaceholder: 'Buscar'
-
+                        searchPlaceholder: 'Buscar',
+                        nRowsSelected: '{0} fila(s) seleccionada(s)',
                     },
                     pagination: {
                         labelRowsSelect: 'filas',
@@ -69,15 +96,20 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                 }}
                 options={{
                     actionsColumnIndex: -1,
+                    actionsCellStyle: {  justifyContent: "center"},
                     addRowPosition: 'first',
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton ? undefined : true,
                     selectionProps: rowData => ({
-                        disabled: rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay),
-                        color: 'default'
+                        disabled: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C'),
+                        color: 'primary',
                     }),
                     grouping: disableGroupingOption ? undefined : true,
+                    rowStyle: rowData => ({
+                        backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
+                    }),
+
                 }}
                 actions={[
                     {
@@ -94,9 +126,15 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                         onClick: () => handleAditional() ? handleAditional() : null,
                         disabled: disableAditionalButton,
                         hidden: disableAditionalButton,
-
-
                     },
+                    {
+                        icon: tableIcons.Aditional,
+                        tooltip: 'Ver mas',
+                        onClick: (evt, data) => handleDailyWorksRoutine(data) ? handleDailyWorksRoutine(data) : null,
+                        disabled: disableViewDailyWorksRoutine,
+                        hidden: disableViewDailyWorksRoutine,
+                        alignItems: 'center',
+                    }
                 ]}
                 components={{
                     Toolbar: props => (
@@ -114,13 +152,11 @@ export const MuiTable = ({ data, setData, title, datepicker, disableCheckButton,
                     //     />
                     // )
                 }}
+                onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
 
             />
-
         </div>
-
     );
 }
-
 
 

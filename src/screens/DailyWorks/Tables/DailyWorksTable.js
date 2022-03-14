@@ -29,9 +29,10 @@ export const DailyWorksTable = props => {
         let cancel = false;
         axios.get(`/dailyWork/get/${date}`).then(res => {
             const { dayWorks, columns } = res.data;
+
             if (!cancel) {
-                dayWorks === undefined ? setData([]) :setData(dayWorks);
-                columns === undefined ? setDataColumns([dailyWorksDefault]) :setDataColumns(columns);
+                dayWorks === undefined ? setData([]) : setData(dayWorks);
+                columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
             } else {
                 return;
             }
@@ -74,17 +75,17 @@ export const DailyWorksTable = props => {
     const bulkUpdate = (selectedRows, resolve) => {
         const rows = Object.values(selectedRows);
         const updatedRows = [...data];
-        rows.map(row => {
-            const index = row.oldData.tableData.id;
-            updatedRows[index] = row.newData;
+
+        rows.map(work => {
+            const index = work.oldData.tableData.id;
+            updatedRows[index] = work.newData;
             setData(updatedRows);
-            // setDayWork(dayWorksUpdate(updatedRows));
-            resolve();
             return ''
         })
         const newDailyWorks = updatedRows;
         console.log(newDailyWorks);
-        // axiosPut(`/schedule/update/${date}`, { newDailyWorks })
+        axiosPut(`/dailyWork/updateBulk/${date}`, { newDailyWorks })
+        resolve();
     }
 
     const deleteRow = (selectedRow, resolve) => {
@@ -100,29 +101,6 @@ export const DailyWorksTable = props => {
 
     return <>
         <MuiTable className={classes.table}
-            // title={'Tareas Diarias'}
-            // datepicker={datePicker(date, handleDatePicker)}
-            // data={data}
-            // setData={setData}
-            // dataColumns={dataColumns}
-            // pageSize={15}
-            // updateRow={updateRow}
-            // handleAditional={false}
-            // rowAdd={rowAdd}
-            // bulkUpdate={bulkUpdate}
-            // handleSelection={false}
-            // deleteRow={deleteRow}
-            // handleDatePicker={handleDatePicker}
-            // date={date}
-            // disableGroupingOption = {true}
-            // disableCheckButton={true}
-            // disableAddButton={false}
-            // disableDeleteButton={false}
-            // disableOnRowUpdate={false}
-            // disableOnBulkUpdate={false}
-            // disableAditionalButton={true}
-
-
             data={data}
             setData={setData}
             title={'TAREAS DIARIAS'}
@@ -143,6 +121,8 @@ export const DailyWorksTable = props => {
             disableGroupingOption={false}
             date={date}
             handleSelection={false}
+            disableViewDailyWorksRoutine={true}
+            handleDailyWorksRoutine={false}
         />
     </>
 }

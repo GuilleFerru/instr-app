@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import theme from '../../../components/commonComponents/MuiTable/theme';
 import axios from 'axios';
 import { axiosPut } from '../../../Services/Axios.js';
 import { otherRoutinesDefault } from '../../../Services/defaultTables.js';
@@ -44,9 +46,9 @@ export const RoutineTable = props => {
             const index = emp.oldData.tableData.id;
             updatedRows[index] = emp.newData;
             setData(updatedRows);
-            resolve();
             return ''
         })
+        resolve();
         // const newSchedule = updatedRows;
         // axiosPut(`/schedule/update/${date}`, { newSchedule })
     }
@@ -55,7 +57,7 @@ export const RoutineTable = props => {
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        axiosPut(`/routine/updateOt`, { data : updatedWork })
+        axiosPut(`/routine/updateOt`, { data: updatedWork })
         return updatedRows;
     }
 
@@ -73,30 +75,38 @@ export const RoutineTable = props => {
         axiosPut(`/routine/update`, { data: dataToAxiosPut });
     }
 
+    const handleDailyWorksRoutine = (selectedRows) => {
+        console.log(selectedRows)
+    }
+
 
     return <div className={classes.table}>
-        <MuiTable
-            data={data}
-            setData={setData}
-            title={'RUTINAS'}
-            datepicker={monthPicker(date, handleDatePicker)}
-            disableCheckButton={false}
-            disableAditionalButton={true}
-            disableAddButton={true}
-            disableDeleteButton={true}
-            disableOnRowUpdate={false}
-            disableOnBulkUpdate={false}
-            dataColumns={dataColumns}
-            rowAdd={false}
-            updateRow={updateRow}
-            bulkUpdate={bulkUpdate}
-            deleteRow={false}
-            handleAditional={false}
-            pageSize={15}
-            disableGroupingOption={true}
-            date={date}
-            handleSelection={handleSelection}
-        />
+        <ThemeProvider theme={theme}>
+            <MuiTable
+                data={data}
+                setData={setData}
+                title={'RUTINAS'}
+                datepicker={monthPicker(date, handleDatePicker)}
+                disableCheckButton={false}
+                disableAditionalButton={true}
+                disableAddButton={true}
+                disableDeleteButton={true}
+                disableOnRowUpdate={false}
+                disableOnBulkUpdate={false}
+                dataColumns={dataColumns}
+                rowAdd={false}
+                updateRow={updateRow}
+                bulkUpdate={bulkUpdate}
+                deleteRow={false}
+                handleAditional={false}
+                pageSize={15}
+                disableGroupingOption={true}
+                date={date}
+                handleSelection={handleSelection}
+                disableViewDailyWorksRoutine={false}
+                handleDailyWorksRoutine={handleDailyWorksRoutine}
+            />
+        </ThemeProvider>
     </div>
 
 }

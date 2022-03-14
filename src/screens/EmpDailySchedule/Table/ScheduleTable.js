@@ -50,11 +50,11 @@ export const ScheduleTable = props => {
             compareOldAndNewData(emp.oldData, emp.newData);
             updatedRows[index] = emp.newData;
             setData(updatedRows);
-            resolve();
             return ''
         })
         const newSchedule = updatedRows;
         axiosPut(`/schedule/update/${date}`, { newSchedule })
+        resolve();
     }
 
     // MEJORAR ESTO
@@ -103,28 +103,6 @@ export const ScheduleTable = props => {
 
     return <div className={classes.table}>
         <MuiTable
-            
-            
-            // data={data}
-            // date={date}
-            // setData={setData}
-            // dataColumns={dataColumns}
-            // pageSize={15}
-            // updateRow={updateRow}
-            // handleAditional={handleAditional}
-            // bulkUpdate={bulkUpdate}
-            // handleSelection={false}
-            // handleDatePicker={handleDatePicker}
-            // deleteRow={false}
-            // disableGroupingOption = {false}
-            // disableCheckButton={true}
-            // disableAddButton={true}
-            // disableDeleteButton={false}
-            // disableOnRowUpdate={false}
-            // disableOnBulkUpdate={false}
-            // disableAditionalButton={false}
-
-
             data={data}
             setData={setData}
             title={'PERSONAL'}
@@ -145,6 +123,8 @@ export const ScheduleTable = props => {
             disableGroupingOption={true}
             date={date}
             handleSelection={false}
+            disableViewDailyWorksRoutine={true}
+            handleDailyWorksRoutine={false}
         />
     </div>
 
