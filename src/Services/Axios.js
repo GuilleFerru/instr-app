@@ -6,6 +6,15 @@ export const options = {
     },
 };
 
+export const axiosGet = async (url) => {
+    try {
+        const _res = await axios.get(url, options);
+        return _res.status;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export const axiosPut = (url, body) => {
     axios.put(url, body, options).then(_res => _res.status).catch(err => { console.log(err) });
 };

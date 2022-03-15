@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import axios from 'axios';
-import { axiosPut } from '../../../Services/Axios.js';
+import { axiosGet, axiosPut } from '../../../Services/Axios.js';
 import { otherRoutinesDefault } from '../../../Services/defaultTables.js';
 import { monthPicker } from '../../../Services/DatePickers'
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,6 +20,7 @@ export const RoutineTable = props => {
     const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
+    const [routineMore, setRoutineMore] = useState([]);
     const { handleDatePicker } = muiTableCommonActions(data, setData, setDate);
 
 
@@ -27,6 +28,7 @@ export const RoutineTable = props => {
         let cancel = false;
         axios.get(`/routine/get/${date}`).then(res => {
             const { otherRoutines, columns } = res.data;
+            console.log(otherRoutines);
             if (!cancel) {
                 otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
                 columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
@@ -63,7 +65,14 @@ export const RoutineTable = props => {
     }
 
     const handleDailyWorksRoutine = (selectedRows) => {
-        console.log(selectedRows)
+        selectedRows.map(routine => {
+            console.log(routine);
+            const routineScheduleId = routine.routineId;
+            const dailyWorkRoutine = axiosGet(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`);
+            console.log(dailyWorkRoutine)
+            return ''
+        })
+
     }
 
 

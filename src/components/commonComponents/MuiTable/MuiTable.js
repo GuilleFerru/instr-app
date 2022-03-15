@@ -112,9 +112,8 @@ export const MuiTable = (
                     }),
                 }}
                 onSelectionChange={(rows) => {
-                    const checkBoxStatus = rows.every((row) => {
-                        const result = (row.checkDay !== undefined && /[aeiou]/g.test(row.checkDay)) || (row.complete !== 'C');
-                        console.log(row);
+                    const checkBoxStatus = rows.some((row) => {
+                        const result = (row.checkDay !== undefined && /[aeiou]/g.test(row.checkDay)) || (row.complete === 'C');
                         return result
                     });
                     

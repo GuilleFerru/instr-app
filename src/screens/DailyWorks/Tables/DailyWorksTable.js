@@ -83,7 +83,6 @@ export const DailyWorksTable = props => {
             return ''
         })
         const newDailyWorks = updatedRows;
-        console.log(newDailyWorks);
         axiosPut(`/dailyWork/updateBulk/${date}`, { newDailyWorks })
         resolve();
     }
