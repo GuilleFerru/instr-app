@@ -36,6 +36,7 @@ export const MuiTable = (
     });
 
     const [selectedRow, setSelectedRow] = useState(null);
+    const [selectionEnable, setSelectionEnable] = useState(disableCheckButton);
 
     return (
         <div ref={positionRef}>
@@ -96,28 +97,36 @@ export const MuiTable = (
                 }}
                 options={{
                     actionsColumnIndex: -1,
-                    actionsCellStyle: {  justifyContent: "center"},
+                    actionsCellStyle: { justifyContent: "center" },
                     addRowPosition: 'first',
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton ? undefined : true,
                     selectionProps: rowData => ({
-                        disabled: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C'),
+                        // disabled: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C'),
                         color: 'primary',
                     }),
                     grouping: disableGroupingOption ? undefined : true,
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
                     }),
-
+                }}
+                onSelectionChange={(rows) => {
+                    const checkBoxStatus = rows.every((row) => {
+                        const result = (row.checkDay !== undefined && /[aeiou]/g.test(row.checkDay)) || (row.complete !== 'C');
+                        console.log(row);
+                        return result
+                    });
+                    
+                    setSelectionEnable(checkBoxStatus);
                 }}
                 actions={[
                     {
                         tooltip: 'Completar Tarea',
                         icon: tableIcons.Complete,
                         onClick: (evt, data) => handleSelection(data) ? handleSelection(data) : null,
-                        disabled: disableCheckButton,
-                        hidden: disableCheckButton
+                        disabled: selectionEnable,
+                        hidden: selectionEnable
                     },
                     {
                         icon: tableIcons.Aditional,
@@ -128,7 +137,7 @@ export const MuiTable = (
                         hidden: disableAditionalButton,
                     },
                     {
-                        icon: tableIcons.Aditional,
+                        icon: tableIcons.ListAll,
                         tooltip: 'Ver mas',
                         onClick: (evt, data) => handleDailyWorksRoutine(data) ? handleDailyWorksRoutine(data) : null,
                         disabled: disableViewDailyWorksRoutine,

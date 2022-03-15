@@ -39,19 +39,6 @@ export const RoutineTable = props => {
         }
     }, [date]);
 
-    const bulkUpdate = (selectedRows, resolve) => {
-        const rows = Object.values(selectedRows);
-        const updatedRows = [...data];
-        rows.map(emp => {
-            const index = emp.oldData.tableData.id;
-            updatedRows[index] = emp.newData;
-            setData(updatedRows);
-            return ''
-        })
-        resolve();
-        // const newSchedule = updatedRows;
-        // axiosPut(`/schedule/update/${date}`, { newSchedule })
-    }
     const updateRow = (updatedRow, oldRow) => {
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
@@ -92,11 +79,11 @@ export const RoutineTable = props => {
                 disableAddButton={true}
                 disableDeleteButton={true}
                 disableOnRowUpdate={false}
-                disableOnBulkUpdate={false}
+                disableOnBulkUpdate={true}
                 dataColumns={dataColumns}
                 rowAdd={false}
                 updateRow={updateRow}
-                bulkUpdate={bulkUpdate}
+                bulkUpdate={false}
                 deleteRow={false}
                 handleAditional={false}
                 pageSize={15}
