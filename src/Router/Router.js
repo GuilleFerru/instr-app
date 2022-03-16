@@ -11,6 +11,9 @@ export const Router = () => {
         <Route exact path="/tareasDiarias">
             <DailyWorksContainer />
         </Route>
+        <Route exact path="/tareasDiarias/:routineScheduleId">
+            <DailyWorksContainer />
+        </Route>
         <Route exact path="/rutinas">
             <RoutineContainer />
         </Route>

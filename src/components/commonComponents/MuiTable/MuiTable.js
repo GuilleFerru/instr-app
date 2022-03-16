@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
+import { Link, useHistory } from "react-router-dom";
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const MuiTable = (
@@ -37,6 +39,12 @@ export const MuiTable = (
 
     const [selectedRow, setSelectedRow] = useState(null);
     const [selectionEnable, setSelectionEnable] = useState(disableCheckButton);
+    const history = useHistory();
+    // history.location.state = {
+    //     selectedRow: selectedRow,
+    //     selectionEnable: selectionEnable
+    // }
+
 
     return (
         <div ref={positionRef}>
@@ -116,7 +124,6 @@ export const MuiTable = (
                         const result = (row.checkDay !== undefined && /[aeiou]/g.test(row.checkDay)) || (row.complete === 'C');
                         return result
                     });
-                    
                     setSelectionEnable(checkBoxStatus);
                 }}
                 actions={[
@@ -135,14 +142,23 @@ export const MuiTable = (
                         disabled: disableAditionalButton,
                         hidden: disableAditionalButton,
                     },
+                    // {
+                    //     icon: () => <Link to={`/tareasDiarias/`} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon  /></Link>,
+                    //     tooltip: 'Ver mas',
+                    //     onClick: (evt, data) => handleDailyWorksRoutine(data) ? handleDailyWorksRoutine(data) : null,
+                    //     disabled: disableViewDailyWorksRoutine,
+                    //     hidden: disableViewDailyWorksRoutine,
+
+                    // },
+
                     {
                         icon: tableIcons.ListAll,
                         tooltip: 'Ver mas',
-                        onClick: (evt, data) => handleDailyWorksRoutine(data) ? handleDailyWorksRoutine(data) : null,
+                        onClick: (evt, routineScheduleId) => history.push(`/tareasDiarias/${routineScheduleId[0]._id}`, {data: routineScheduleId}),
                         disabled: disableViewDailyWorksRoutine,
                         hidden: disableViewDailyWorksRoutine,
-                        alignItems: 'center',
                     }
+
                 ]}
                 components={{
                     Toolbar: props => (

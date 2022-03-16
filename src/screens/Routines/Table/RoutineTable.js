@@ -28,7 +28,6 @@ export const RoutineTable = props => {
         let cancel = false;
         axios.get(`/routine/get/${date}`).then(res => {
             const { otherRoutines, columns } = res.data;
-            console.log(otherRoutines);
             if (!cancel) {
                 otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
                 columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
@@ -64,15 +63,12 @@ export const RoutineTable = props => {
         axiosPut(`/routine/update`, { data: dataToAxiosPut });
     }
 
-    const handleDailyWorksRoutine = (selectedRows) => {
-        selectedRows.map(routine => {
-            console.log(routine);
-            const routineScheduleId = routine.routineId;
-            const dailyWorkRoutine = axiosGet(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`);
-            console.log(dailyWorkRoutine)
-            return ''
-        })
-
+    const handleDailyWorksRoutine = async (selectedRows) => {
+        for (const routine of selectedRows) {
+            const routineScheduleId = routine._id;
+            const dailyWorkRoutine = await axiosGet(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`);
+            setRoutineMore(dailyWorkRoutine);
+        }
     }
 
 

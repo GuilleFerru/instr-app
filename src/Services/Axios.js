@@ -9,7 +9,7 @@ export const options = {
 export const axiosGet = async (url) => {
     try {
         const _res = await axios.get(url, options);
-        return _res.status;
+        return _res.data;
     } catch (err) {
         console.log(err);
     }
