@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import axios from 'axios';
-import { axiosGet, axiosPut } from '../../../Services/Axios.js';
+import { axiosPut } from '../../../Services/Axios.js';
 import { otherRoutinesDefault } from '../../../Services/defaultTables.js';
 import { monthPicker } from '../../../Services/DatePickers'
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,7 +20,7 @@ export const RoutineTable = props => {
     const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
-    const [routineMore, setRoutineMore] = useState([]);
+    // const [routineMore, setRoutineMore] = useState([]);
     const { handleDatePicker } = muiTableCommonActions(data, setData, setDate);
 
 
@@ -49,7 +49,7 @@ export const RoutineTable = props => {
         return updatedRows;
     }
 
-    const handleSelection = (selectedRows,) => {
+    const handleRoutineSchedule = (selectedRows,) => {
         const rows = Object.values(selectedRows);
         const updatedRows = [...data];
         const dataToAxiosPut = [];
@@ -63,13 +63,13 @@ export const RoutineTable = props => {
         axiosPut(`/routine/update`, { data: dataToAxiosPut });
     }
 
-    const handleDailyWorksRoutine = async (selectedRows) => {
-        for (const routine of selectedRows) {
-            const routineScheduleId = routine._id;
-            const dailyWorkRoutine = await axiosGet(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`);
-            setRoutineMore(dailyWorkRoutine);
-        }
-    }
+    // const handleDailyWorksRoutine = async (selectedRows) => {
+    //     for (const routine of selectedRows) {
+    //         const routineScheduleId = routine._id;
+    //         const dailyWorkRoutine = await axiosGet(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`);
+    //         setRoutineMore(dailyWorkRoutine);
+    //     }
+    // }
 
 
     return <div className={classes.table}>
@@ -79,7 +79,7 @@ export const RoutineTable = props => {
                 setData={setData}
                 title={'RUTINAS'}
                 datepicker={monthPicker(date, handleDatePicker)}
-                disableCheckButton={false}
+                disableCheckButton={true}
                 disableAditionalButton={true}
                 disableAddButton={true}
                 disableDeleteButton={true}
@@ -94,9 +94,10 @@ export const RoutineTable = props => {
                 pageSize={15}
                 disableGroupingOption={true}
                 date={date}
-                handleSelection={handleSelection}
-                disableViewDailyWorksRoutine={false}
-                handleDailyWorksRoutine={handleDailyWorksRoutine}
+                handleRoutineSchedule={handleRoutineSchedule}
+                disableRoutinesDetails={false}
+                disableCompleteTaskButton={false}
+                
             />
         </ThemeProvider>
     </div>

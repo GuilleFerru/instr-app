@@ -4,6 +4,7 @@ import { Dashboard } from '../components/Dashboard/Dashboard';
 import { DailyWorksContainer } from '../screens/DailyWorks/DailyWorksContainer';
 import { RoutineContainer } from '../screens/Routines/RoutineContainer';
 import { ScheduleContainer } from '../screens/EmpDailySchedule/ScheduleContainer';
+import { RoutineDetailsContainer } from '../screens/Routines/RoutinesDetails/RoutineDetailsContainer';
 import { StoreListContainer } from '../screens/StoreList/StoreListContainer';
 
 export const Router = () => {
@@ -11,8 +12,8 @@ export const Router = () => {
         <Route exact path="/tareasDiarias">
             <DailyWorksContainer />
         </Route>
-        <Route exact path="/tareasDiarias/:routineScheduleId">
-            <DailyWorksContainer />
+        <Route exact path="/rutinasDetalles">
+            <RoutineDetailsContainer />
         </Route>
         <Route exact path="/rutinas">
             <RoutineContainer />

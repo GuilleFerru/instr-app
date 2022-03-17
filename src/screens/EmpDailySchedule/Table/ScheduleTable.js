@@ -122,9 +122,10 @@ export const ScheduleTable = props => {
             pageSize={15}
             disableGroupingOption={true}
             date={date}
-            handleSelection={false}
-            disableViewDailyWorksRoutine={true}
-            handleDailyWorksRoutine={false}
+            handleRoutineSchedule={false}
+            disableRoutinesDetails={true}
+            disableCompleteTaskButton={true}
+            
         />
     </div>
 

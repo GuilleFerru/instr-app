@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -26,9 +26,9 @@ export const MuiTable = (
         handleAditional,
         pageSize,
         disableGroupingOption,
-        handleSelection,
-        disableViewDailyWorksRoutine,
-        handleDailyWorksRoutine
+        handleRoutineSchedule,
+        disableRoutinesDetails,
+        disableCompleteTaskButton
     }) => {
     const positionRef = React.useRef();
 
@@ -38,12 +38,16 @@ export const MuiTable = (
     });
 
     const [selectedRow, setSelectedRow] = useState(null);
-    const [selectionEnable, setSelectionEnable] = useState(disableCheckButton);
-    const history = useHistory();
+    // const [selectionEnable, setSelectionEnable] = useState(false);
+    // const history = useHistory();
     // history.location.state = {
     //     selectedRow: selectedRow,
     //     selectionEnable: selectionEnable
     // }
+
+    useEffect(() => {
+        // console.log(data)
+    }, [data])
 
 
     return (
@@ -110,33 +114,39 @@ export const MuiTable = (
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton ? undefined : true,
-                    selectionProps: rowData => ({
-                        // disabled: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C'),
-                        color: 'primary',
-                    }),
+                    // selectionProps: rowData => ({
+                    //     // disabled: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C'),
+                    //     color: 'primary',
+                    // }),
                     grouping: disableGroupingOption ? undefined : true,
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
                     }),
                 }}
-                onSelectionChange={(rows) => {
-                    const checkBoxStatus = rows.some((row) => {
-                        const result = (row.checkDay !== undefined && /[aeiou]/g.test(row.checkDay)) || (row.complete === 'C');
-                        return result
-                    });
-                    setSelectionEnable(checkBoxStatus);
-                }}
+                // onSelectionChange={(rows) => {
+                //     const checkBoxStatus = rows.some((row) => {
+                //         const result = (row.checkDay !== undefined && /[aeiou]/g.test(row.checkDay)) || (row.complete === 'C');
+                //         return result
+                //     });
+                //     setSelectionEnable(checkBoxStatus);
+                // }}
                 actions={[
-                    {
+                    rowData => ({
                         tooltip: 'Completar Tarea',
                         icon: tableIcons.Complete,
-                        onClick: (evt, data) => handleSelection(data) ? handleSelection(data) : null,
-                        disabled: selectionEnable,
-                        hidden: selectionEnable
-                    },
+                        onClick: (evt, data) => handleRoutineSchedule(data) ? handleRoutineSchedule(data) : null,
+                        hidden: disableCompleteTaskButton ? true : (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C')
+                    }),
+                    // {
+                    //     tooltip: 'Completar Tarea',
+                    //     icon: tableIcons.Complete,
+                    //     onClick: (evt, data) => handleSelection(data) ? handleSelection(data) : null,
+                    //     disabled: selectionEnable,
+                    //     hidden: selectionEnable
+                    // },
                     {
-                        icon: tableIcons.Aditional,
                         tooltip: 'Agregar Adicional',
+                        icon: tableIcons.Aditional,
                         isFreeAction: true,
                         onClick: () => handleAditional() ? handleAditional() : null,
                         disabled: disableAditionalButton,
@@ -150,14 +160,27 @@ export const MuiTable = (
                     //     hidden: disableViewDailyWorksRoutine,
 
                     // },
-
-                    {
-                        icon: tableIcons.ListAll,
+                    rowData => ({
                         tooltip: 'Ver mas',
-                        onClick: (evt, routineScheduleId) => history.push(`/tareasDiarias/${routineScheduleId[0]._id}`, {data: routineScheduleId}),
-                        disabled: disableViewDailyWorksRoutine,
-                        hidden: disableViewDailyWorksRoutine,
-                    }
+                        icon: () => <Link to={{
+                            pathname: `/rutinasDetalles`,
+                            state: {
+                                routineScheduleId: rowData._id,
+                                from:'rutinas'
+                            },
+                        }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
+                        // onClick: {rowData},
+                        disabled: disableRoutinesDetails,
+                        hidden: disableRoutinesDetails,
+                    }),
+
+                    // {
+                    //     icon: tableIcons.ListAll,
+                    //     tooltip: 'Ver mas',
+                    //     onClick: (evt, routineScheduleId) => history.push(`/tareasDiarias/${routineScheduleId[0]._id}`, { data: routineScheduleId }),
+                    //     disabled: disableViewDailyWorksRoutine,
+                    //     hidden: disableViewDailyWorksRoutine,
+                    // }
 
                 ]}
                 components={{
