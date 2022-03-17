@@ -50,17 +50,23 @@ export const RoutineTable = props => {
     }
 
     const handleRoutineSchedule = (selectedRows,) => {
-        const rows = Object.values(selectedRows);
+        // const rows = Object.values(selectedRows);
+        // const updatedRows = [...data];
+        // const dataToAxiosPut = [];
+        
+        const index = selectedRows.tableData.id;
         const updatedRows = [...data];
-        const dataToAxiosPut = [];
-        rows.map(routine => {
-            const index = routine.tableData.id;
-            updatedRows[index] = { ...routine, complete: 'C' };
-            dataToAxiosPut.push({ ...routine, complete: 'C' });
-            setData(updatedRows);
-            return ''
-        })
-        axiosPut(`/routine/update`, { data: dataToAxiosPut });
+        updatedRows[index] = { ...selectedRows, complete: 'C' };
+        setData(updatedRows);
+        axiosPut(`/routine/update`, { data: updatedRows[index] });
+        // rows.map(routine => {
+        //     const index = routine.tableData.id;
+        //     updatedRows[index] = { ...routine, complete: 'C' };
+        //     dataToAxiosPut.push({ ...routine, complete: 'C' });
+        //     setData(updatedRows);
+        //     return ''
+        // })
+        //
     }
 
     // const handleDailyWorksRoutine = async (selectedRows) => {
