@@ -26,7 +26,7 @@ export const RoutineTable = props => {
 
     useEffect(() => {
         let cancel = false;
-        axios.get(`/routine/get/${date}`).then(res => {
+        axios.get(`http://localhost:8080/api/routine/get/${date}`).then(res => {
             const { otherRoutines, columns } = res.data;
             if (!cancel) {
                 otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
@@ -45,7 +45,7 @@ export const RoutineTable = props => {
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        axiosPut(`/routine/updateOt`, { data: updatedWork })
+        axiosPut(`http://localhost:8080/api/routine/updateOt`, { data: updatedWork })
         return updatedRows;
     }
 
@@ -58,7 +58,7 @@ export const RoutineTable = props => {
         const updatedRows = [...data];
         updatedRows[index] = { ...selectedRows, complete: 'C' };
         setData(updatedRows);
-        axiosPut(`/routine/update`, { data: updatedRows[index] });
+        axiosPut(`http://localhost:8080/api/routine/update`, { data: updatedRows[index] });
         // rows.map(routine => {
         //     const index = routine.tableData.id;
         //     updatedRows[index] = { ...routine, complete: 'C' };

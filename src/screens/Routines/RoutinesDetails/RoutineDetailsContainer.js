@@ -13,7 +13,7 @@ export const RoutineDetailsContainer = () => {
 
     useEffect(() => {
         let cancel = false;
-        axios.get(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`).then(res => {
+        axios.get(`http://localhost:8080/api/dailyWork/getDailyWorkRoutine/${routineScheduleId}`).then(res => {
             const { data } = res;
             if (!cancel) {
                 data === undefined ? setData([]) : setData(data);

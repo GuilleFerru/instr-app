@@ -27,7 +27,7 @@ export const DailyWorksTable = props => {
 
     useEffect(() => {
         let cancel = false;
-        axios.get(`/dailyWork/get/${date}`).then(res => {
+        axios.get(`http://localhost:8080/api/dailyWork/get/${date}`).then(res => {
             const { dayWorks, columns } = res.data;
 
             if (!cancel) {
@@ -59,7 +59,7 @@ export const DailyWorksTable = props => {
         const newDayWork = newRow;
         // le agrego la fecha de inicio y lo envio al servidor
         newDayWork.beginDate = date;
-        axiosPost(`/dailyWork/create`, newDayWork);
+        axiosPost(`http://localhost:8080/api/dailyWork/create`, newDayWork);
         resolve();
     }
 
@@ -68,7 +68,7 @@ export const DailyWorksTable = props => {
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        axiosPut(`/dailyWork/update/${date}`, { updatedWork })
+        axiosPut(`http://localhost:8080/api/dailyWork/update/${date}`, { updatedWork })
         return updatedRows;
     }
 
@@ -83,7 +83,7 @@ export const DailyWorksTable = props => {
             return ''
         })
         const newDailyWorks = updatedRows;
-        axiosPut(`/dailyWork/updateBulk/${date}`, { newDailyWorks })
+        axiosPut(`http://localhost:8080/api/dailyWork/updateBulk/${date}`, { newDailyWorks })
         resolve();
     }
 
@@ -92,7 +92,7 @@ export const DailyWorksTable = props => {
         const updatedRows = [...data]
         updatedRows.splice(index, 1)
         setData(updatedRows)
-        axiosDelete(`/dailyWork/delete`, { id: selectedRow._id });
+        axiosDelete(`http://localhost:8080/api/dailyWork/delete`, { id: selectedRow._id });
         resolve();
 
     }
