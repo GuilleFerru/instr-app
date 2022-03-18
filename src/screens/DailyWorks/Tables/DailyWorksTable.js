@@ -122,6 +122,7 @@ export const DailyWorksTable = props => {
             handleRoutineSchedule={false}
             disableRoutinesDetails={true}
             disableCompleteTaskButton={true}
+            disableDatePicker={false}
             
         />
     </>

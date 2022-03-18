@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import theme from '../../../components/commonComponents/MuiTable/theme';
+import theme from '../../../../components/commonComponents/MuiTable/theme';
 import axios from 'axios';
-import { axiosPut } from '../../../Services/Axios.js';
-import { otherRoutinesDefault } from '../../../Services/defaultTables.js';
-import { monthPicker } from '../../../Services/DatePickers'
+import { axiosPut } from '../../../../Services/Axios.js';
+import { otherRoutinesDefault } from '../../../../Services/defaultTables.js';
+import { monthPicker } from '../../../../Services/DatePickers'
 import { makeStyles } from "@material-ui/core/styles";
-import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
+import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineTableStyle } from './RoutineTableStyle'
-import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
+import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 
 
 
@@ -103,6 +103,7 @@ export const RoutineTable = props => {
                 handleRoutineSchedule={handleRoutineSchedule}
                 disableRoutinesDetails={false}
                 disableCompleteTaskButton={false}
+                disableDatePicker={false}
                 
             />
         </ThemeProvider>

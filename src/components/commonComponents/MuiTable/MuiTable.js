@@ -28,7 +28,8 @@ export const MuiTable = (
         disableGroupingOption,
         handleRoutineSchedule,
         disableRoutinesDetails,
-        disableCompleteTaskButton
+        disableCompleteTaskButton,
+        disableDatePicker
     }) => {
     const positionRef = React.useRef();
 
@@ -109,7 +110,7 @@ export const MuiTable = (
                 }}
                 options={{
                     actionsColumnIndex: -1,
-                    actionsCellStyle: { justifyContent: "center" },
+                    actionsCellStyle: { justifyContent: 'flex-end' },
                     addRowPosition: 'first',
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
@@ -166,7 +167,7 @@ export const MuiTable = (
                             pathname: `/rutinasDetalles`,
                             state: {
                                 routineScheduleId: rowData._id,
-                                from:'rutinas'
+                                from: 'rutinas'
                             },
                         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
                         // onClick: {rowData},
@@ -187,10 +188,13 @@ export const MuiTable = (
                     Toolbar: props => (
                         <div>
                             <MTableToolbar {...props} />
-                            <div style={{ padding: '0 8px 0px 24px' }}>
-                                {datepicker}
-                            </div>
+                            {disableDatePicker ? '' : (
+                                <div style={{ padding: '0 8px 0px 24px' }}>
+                                    {datepicker}
+                                </div>
+                            )}
                         </div>
+
                     ),
                     // EditField: props => (
                     //     <MTableEditField
