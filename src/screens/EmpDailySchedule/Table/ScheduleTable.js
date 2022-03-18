@@ -125,6 +125,7 @@ export const ScheduleTable = props => {
             handleRoutineSchedule={false}
             disableRoutinesDetails={true}
             disableCompleteTaskButton={true}
+            disableDatePicker={false}
             
         />
     </div>

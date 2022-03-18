@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Dashboard } from '../components/Dashboard/Dashboard';
 import { DailyWorksContainer } from '../screens/DailyWorks/DailyWorksContainer';
-import { RoutineContainer } from '../screens/Routines/RoutineContainer';
+import { RoutineContainer } from '../screens/Routines/RoutinesSchedules/RoutineContainer';
 import { ScheduleContainer } from '../screens/EmpDailySchedule/ScheduleContainer';
 import { RoutineDetailsContainer } from '../screens/Routines/RoutinesDetails/RoutineDetailsContainer';
 import { StoreListContainer } from '../screens/StoreList/StoreListContainer';

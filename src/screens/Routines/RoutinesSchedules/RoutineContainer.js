@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableCard } from '../Card/TableCard';
+import { TableCard } from '../../Card/TableCard';
 import { RoutineTable } from './Table/RoutineTable';
 
 
