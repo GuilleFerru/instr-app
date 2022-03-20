@@ -20,7 +20,6 @@ export const RoutineTable = props => {
     const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
-    // const [routineMore, setRoutineMore] = useState([]);
     const { handleDatePicker } = muiTableCommonActions(data, setData, setDate);
 
 

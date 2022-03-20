@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { axiosPut } from '../../../../Services/Axios';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
-import axios from 'axios';
-import { axiosPut } from '../../../../Services/Axios.js';
-import { otherRoutinesDefault } from '../../../../Services/defaultTables.js';
-import { monthPicker } from '../../../../Services/DatePickers'
+import { defaultDailyWorksRoutineTable } from '../../../../Services/defaultTables';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineDetailTableStyle } from './RoutineDetailTableStyle'
-import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
+
 
 
 
@@ -17,51 +15,36 @@ const useStyles = makeStyles((theme) => routineDetailTableStyle(theme));
 export const RoutineDetailTable = props => {
 
     const classes = useStyles();
-    const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
+    const [nickname, setNickname] = useState('');
     const [dataColumns, setDataColumns] = useState([]);
-    // const [routineMore, setRoutineMore] = useState([]);
-    const { handleDatePicker } = muiTableCommonActions(data, setData, setDate);
+
 
 
     useEffect(() => {
         new Promise(resolve => {
             setData(props.data.dayWorks ? props.data.dayWorks : []);
-            setDataColumns(props.data.columns ? props.data.columns : []);
+            setDataColumns(props.data.columns ? props.data.columns : [defaultDailyWorksRoutineTable]);
+            setNickname(props.nickname ? props.nickname : '');
             resolve();
         });
-    }, [props.data]);
+    }, [props]);
 
-    // const updateRow = (updatedRow, oldRow) => {
-    //     const index = oldRow.tableData.id;
-    //     const updatedRows = [...data];
-    //     updatedRows[index] = updatedRow;
-    //     const updatedWork = updatedRow;
-    //     axiosPut(`/routine/updateOt`, { data: updatedWork })
-    //     return updatedRows;
-    // }
+    const bulkUpdate = (selectedRows, resolve) => {
+        console.log('hola')
+        const rows = Object.values(selectedRows);
+        const updatedRows = [...data];
 
-    // const handleRoutineSchedule = (selectedRows,) => {
-    //     const rows = Object.values(selectedRows);
-    //     const updatedRows = [...data];
-    //     const dataToAxiosPut = [];
-    //     rows.map(routine => {
-    //         const index = routine.tableData.id;
-    //         updatedRows[index] = { ...routine, complete: 'C' };
-    //         dataToAxiosPut.push({ ...routine, complete: 'C' });
-    //         setData(updatedRows);
-    //         return ''
-    //     })
-    //     axiosPut(`/routine/update`, { data: dataToAxiosPut });
-    // }
-
-    // const handleDailyWorksRoutine = async (selectedRows) => {
-    //     for (const routine of selectedRows) {
-    //         const routineScheduleId = routine._id;
-    //         const dailyWorkRoutine = await axiosGet(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`);
-    //         setRoutineMore(dailyWorkRoutine);
-    //     }
-    // }
+        rows.map(work => {
+            const index = work.oldData.tableData.id;
+            updatedRows[index] = work.newData;
+            setData(updatedRows);
+            const updatedWork = work.newData;
+                axiosPut(`http://localhost:8080/api/dailyWork/updateFromRoutineDetail`, { updatedWork })
+            return ''
+        })
+        resolve();
+    }
 
 
     return <div className={classes.table}>
@@ -69,18 +52,18 @@ export const RoutineDetailTable = props => {
             <MuiTable
                 data={data}
                 setData={setData}
-                title={'HISTORICO DE INTERVENCIONES'}
-                datepicker={monthPicker(date, handleDatePicker)}
+                title={nickname}
+                datepicker={false}
                 disableCheckButton={true}
                 disableAditionalButton={true}
                 disableAddButton={true}
                 disableDeleteButton={true}
-                disableOnRowUpdate={false}
-                disableOnBulkUpdate={true}
+                disableOnRowUpdate={true}
+                disableOnBulkUpdate={false}
                 dataColumns={dataColumns}
                 rowAdd={false}
                 updateRow={false}
-                bulkUpdate={false}
+                bulkUpdate={bulkUpdate}
                 deleteRow={false}
                 handleAditional={false}
                 pageSize={15}
@@ -90,7 +73,6 @@ export const RoutineDetailTable = props => {
                 disableRoutinesDetails={true}
                 disableCompleteTaskButton={true}
                 disableDatePicker={true}
-
             />
         </ThemeProvider>
     </div>

@@ -9,17 +9,7 @@ const theme = createMuiTheme({
         secondary: {
             main: '#47BD77',
         },
-    },
-    // MuiTableCell: {
-    //     border: '1px solid black',
-    //     root: {
-    //         '& tr': {
-    //             '&:td:last-child div': {
-    //                 justifyContent: 'center'
-    //             }
-    //         }
-    //     }
-    // }
+    }
 })
 
 export default theme;

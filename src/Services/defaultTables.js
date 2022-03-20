@@ -146,3 +146,40 @@ export const otherRoutinesDefault = [
     type: "string",
   },
 ];
+
+export const defaultDailyWorksRoutineTable = [
+  {
+    field: "_id",
+    title: "Numero",
+    hidden: true,
+  },
+  {
+    field: "tag",
+    title: "TAG",
+    type: "string",
+  },
+  {
+    field: "timeSchedule",
+    title: "Horario",
+    lookup: {},
+  },
+  {
+    field: "beginDate",
+    title: "Fecha de inicio",
+  },
+  {
+    field: "endDate",
+    title: "Fecha de realización",
+  },
+  {
+    field: "description",
+    title: "Descripción",
+    multiline: true,
+    width: "40%",
+  },
+  {
+    field: "complete",
+    title: "Estado",
+    lookup: {},
+  },
+];

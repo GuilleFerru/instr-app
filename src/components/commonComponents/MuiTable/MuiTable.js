@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table';
+import { makeStyles } from '@material-ui/core';
+import {muiTableStyle} from './MuiTableStyle';
+import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
+import Badges from '../../Badges/Badges';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import { Link } from "react-router-dom";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+const useStyles = makeStyles((theme) => muiTableStyle(theme));
 
 export const MuiTable = (
     {
@@ -31,25 +37,18 @@ export const MuiTable = (
         disableCompleteTaskButton,
         disableDatePicker
     }) => {
-    const positionRef = React.useRef();
 
+    const positionRef = React.useRef();
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
-
     const [selectedRow, setSelectedRow] = useState(null);
-    // const [selectionEnable, setSelectionEnable] = useState(false);
-    // const history = useHistory();
-    // history.location.state = {
-    //     selectedRow: selectedRow,
-    //     selectionEnable: selectionEnable
-    // }
+    const classes = useStyles();
 
     useEffect(() => {
         // console.log(data)
     }, [data])
-
 
     return (
         <div ref={positionRef}>
@@ -115,22 +114,11 @@ export const MuiTable = (
                     pageSize: pageSize,
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton ? undefined : true,
-                    // selectionProps: rowData => ({
-                    //     // disabled: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C'),
-                    //     color: 'primary',
-                    // }),
                     grouping: disableGroupingOption ? undefined : true,
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
                     }),
                 }}
-                // onSelectionChange={(rows) => {
-                //     const checkBoxStatus = rows.some((row) => {
-                //         const result = (row.checkDay !== undefined && /[aeiou]/g.test(row.checkDay)) || (row.complete === 'C');
-                //         return result
-                //     });
-                //     setSelectionEnable(checkBoxStatus);
-                // }}
                 actions={[
                     rowData => ({
                         tooltip: 'Completar Tarea',
@@ -138,13 +126,6 @@ export const MuiTable = (
                         onClick: (evt, data) => handleRoutineSchedule(data) ? handleRoutineSchedule(data) : null,
                         hidden: disableCompleteTaskButton ? true : (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C')
                     }),
-                    // {
-                    //     tooltip: 'Completar Tarea',
-                    //     icon: tableIcons.Complete,
-                    //     onClick: (evt, data) => handleSelection(data) ? handleSelection(data) : null,
-                    //     disabled: selectionEnable,
-                    //     hidden: selectionEnable
-                    // },
                     {
                         tooltip: 'Agregar Adicional',
                         icon: tableIcons.Aditional,
@@ -153,25 +134,18 @@ export const MuiTable = (
                         disabled: disableAditionalButton,
                         hidden: disableAditionalButton,
                     },
-                    // {
-                    //     icon: () => <Link to={`/tareasDiarias/`} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon  /></Link>,
-                    //     tooltip: 'Ver mas',
-                    //     onClick: (evt, data) => handleDailyWorksRoutine(data) ? handleDailyWorksRoutine(data) : null,
-                    //     disabled: disableViewDailyWorksRoutine,
-                    //     hidden: disableViewDailyWorksRoutine,
-
-                    // },
                     rowData => ({
-                        tooltip: 'Ver mas',
+                        tooltip: rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? 'Debe completar la tarea' : 'Ver mas',
                         icon: () => <Link to={{
-                            pathname: `/rutinasDetalles`,
+                            pathname: `/rutinas/rutinasDetalles`,
                             state: {
                                 routineScheduleId: rowData._id,
+                                nickname: rowData.nickname,
+                                tag: rowData.tag,
                                 from: 'rutinas'
                             },
                         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
-                        // onClick: {rowData},
-                        disabled: disableRoutinesDetails,
+                        disabled: disableRoutinesDetails ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
                         hidden: disableRoutinesDetails,
                     }),
 
@@ -187,9 +161,13 @@ export const MuiTable = (
                 components={{
                     Toolbar: props => (
                         <div>
+                            <div className={classes.toolbar}>
+                                <Breadcrumbs />
+                                <Badges />
+                            </div>
                             <MTableToolbar {...props} />
                             {disableDatePicker ? '' : (
-                                <div style={{ padding: '0 8px 0px 24px' }}>
+                                <div className={classes.datepicker}>
                                     {datepicker}
                                 </div>
                             )}

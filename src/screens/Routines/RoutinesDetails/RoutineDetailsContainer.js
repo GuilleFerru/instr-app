@@ -5,10 +5,9 @@ import { useLocation } from 'react-router-dom';
 import { RoutineDetailTable } from './Table/RoutineDetailTable';
 
 
-
 export const RoutineDetailsContainer = () => {
     const location = useLocation();
-    const { routineScheduleId } = location.state;
+    const { routineScheduleId, nickname, tag } = location.state;
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -29,6 +28,6 @@ export const RoutineDetailsContainer = () => {
 
 
     return <TableCard>
-        <RoutineDetailTable data={data} />
+        <RoutineDetailTable data={data} nickname={`Rutina: ${nickname} - TAG: ${tag}`} />
     </TableCard>
 };

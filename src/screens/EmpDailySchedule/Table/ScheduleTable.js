@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import theme from '../../../components/commonComponents/MuiTable/theme';
 import axios from 'axios';
 import { axiosPut } from '../../../Services/Axios.js';
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
@@ -102,32 +104,34 @@ export const ScheduleTable = props => {
 
 
     return <div className={classes.table}>
-        <MuiTable
-            data={data}
-            setData={setData}
-            title={'PERSONAL'}
-            datepicker={datePicker(date, handleDatePicker)}
-            disableCheckButton={true}
-            disableAditionalButton={false}
-            disableAddButton={true}
-            disableDeleteButton={false}
-            disableOnRowUpdate={false}
-            disableOnBulkUpdate={false}
-            dataColumns={dataColumns}
-            rowAdd={false}
-            updateRow={updateRow}
-            bulkUpdate={bulkUpdate}
-            deleteRow={false}
-            handleAditional={handleAditional}
-            pageSize={15}
-            disableGroupingOption={true}
-            date={date}
-            handleRoutineSchedule={false}
-            disableRoutinesDetails={true}
-            disableCompleteTaskButton={true}
-            disableDatePicker={false}
-            
-        />
+        <ThemeProvider theme={theme}>
+            <MuiTable
+                data={data}
+                setData={setData}
+                title={'PERSONAL'}
+                datepicker={datePicker(date, handleDatePicker)}
+                disableCheckButton={true}
+                disableAditionalButton={false}
+                disableAddButton={true}
+                disableDeleteButton={false}
+                disableOnRowUpdate={false}
+                disableOnBulkUpdate={false}
+                dataColumns={dataColumns}
+                rowAdd={false}
+                updateRow={updateRow}
+                bulkUpdate={bulkUpdate}
+                deleteRow={false}
+                handleAditional={handleAditional}
+                pageSize={15}
+                disableGroupingOption={true}
+                date={date}
+                handleRoutineSchedule={false}
+                disableRoutinesDetails={true}
+                disableCompleteTaskButton={true}
+                disableDatePicker={false}
+
+            />
+        </ThemeProvider>
     </div>
 
 }
