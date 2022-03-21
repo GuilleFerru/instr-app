@@ -1,7 +1,7 @@
 export const dailyWorksTableStyle = theme => {
     return ({
         table:{
-            height:'100vh'
+            margin:'0 0 0 0',
         }
 
     })
