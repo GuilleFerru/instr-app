@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table';
 import { makeStyles } from '@material-ui/core';
-import {muiTableStyle} from './MuiTableStyle';
+import { muiTableStyle } from './MuiTableStyle';
 import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import Badges from '../../Badges/Badges';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import { Link } from "react-router-dom";
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import ListAltIcon  from '@material-ui/icons/ListAlt';
+import CachedIcon from '@material-ui/icons/Cached';
+import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles((theme) => muiTableStyle(theme));
 
@@ -35,7 +38,14 @@ export const MuiTable = (
         handleRoutineSchedule,
         disableRoutinesDetails,
         disableCompleteTaskButton,
-        disableDatePicker
+        disableDatePicker,
+        CustomSearchBar,
+        searchData,
+        disableDefaultSearch,
+        disableCustomSearch,
+        disableReloadDataButton,
+        resetData
+
     }) => {
 
     const positionRef = React.useRef();
@@ -47,7 +57,7 @@ export const MuiTable = (
     const classes = useStyles();
 
     useEffect(() => {
-        // console.log(data)
+        
     }, [data])
 
     return (
@@ -105,9 +115,11 @@ export const MuiTable = (
                     }),
                     onBulkUpdate: disableOnBulkUpdate ? undefined : selectedRows => new Promise((resolve, _) => {
                         bulkUpdate(selectedRows, resolve);
-                    })
+                    }),
                 }}
                 options={{
+                    search: disableDefaultSearch ? false : true,
+                    padding: 'dense',
                     actionsColumnIndex: -1,
                     actionsCellStyle: { justifyContent: 'flex-end' },
                     addRowPosition: 'first',
@@ -148,29 +160,36 @@ export const MuiTable = (
                         disabled: disableRoutinesDetails ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
                         hidden: disableRoutinesDetails,
                     }),
-
-                    // {
-                    //     icon: tableIcons.ListAll,
-                    //     tooltip: 'Ver mas',
-                    //     onClick: (evt, routineScheduleId) => history.push(`/tareasDiarias/${routineScheduleId[0]._id}`, { data: routineScheduleId }),
-                    //     disabled: disableViewDailyWorksRoutine,
-                    //     hidden: disableViewDailyWorksRoutine,
-                    // }
-
                 ]}
                 components={{
                     Toolbar: props => (
-                        <div>
-                            <div className={classes.toolbar}>
+                        // console.log(props),
+                        <div >
+                            <div className={classes.toolbarHeader}>
                                 <Breadcrumbs />
                                 <Badges />
                             </div>
-                            <MTableToolbar {...props} />
-                            {disableDatePicker ? '' : (
-                                <div className={classes.datepicker}>
-                                    {datepicker}
-                                </div>
-                            )}
+                            <div className={classes.toolbarBody} >
+                                <MTableToolbar {...props} />
+                                {disableCustomSearch ? null : (
+                                    <CustomSearchBar value={''} searchData={searchData} />
+                                )}
+                                {disableDatePicker ? null : (
+                                    <div className={classes.datePickerContainer}>
+                                        {disableReloadDataButton ? null : (
+                                            <div className={classes.reloadDataButton}>
+                                                <IconButton color="primary" aria-label="reload-button" component="span"
+                                                    onClick={() => resetData()}>
+                                                <CachedIcon />
+                                                </IconButton>
+                                            </div>
+                                        )}
+                                        <div className={classes.datePicker}>
+                                            {datepicker}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                     ),

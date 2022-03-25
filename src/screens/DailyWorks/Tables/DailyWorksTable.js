@@ -1,17 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react';
-import axios from 'axios';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
-import { axiosPost, axiosPut, axiosDelete } from '../../../Services/Axios.js';
+import { axiosGet, axiosPost, axiosPut, axiosDelete } from '../../../Services/Axios.js';
 import { dailyWorksDefault } from '../../../Services/defaultTables.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
 import { DateContext } from '../../../context/DateContext';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { datePicker } from '../../../Services/DatePickers'
-
-
+import { datePicker } from '../../../Services/DatePickers';
+import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
 
 
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
@@ -23,35 +21,29 @@ export const DailyWorksTable = props => {
     const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
+    const [reloadButton, setReloadButton] = useState(true);
 
     // const [dayWork, setDayWork] = useState(dayWorks)
     const { handleDatePicker } = muiTableCommonActions(data, setData, getNewDate);
 
-    useEffect(() => {
-        let cancel = false;
-        axios.get(`http://localhost:8080/api/dailyWork/get/${date}`).then(res => {
-            const { dayWorks, columns } = res.data;
-            if (!cancel) {
+    const getData = (url) => {
+        axiosGet(url).then(data => {
+            if (data) {
+                const { dayWorks, columns } = data;
                 dayWorks === undefined ? setData([]) : setData(dayWorks);
                 columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
-            } else {
-                return;
             }
-        });
-        return () => {
-            cancel = true;
-        }
-    }, [date]);
+        })
+    }
 
-    // const dayWorksUpdate = (updatedRows) => {
-    //     const updateDayWork = [
-    //         {
-    //             date: [date],
-    //             works: [...updatedRows]
-    //         }
-    //     ];
-    //     return updateDayWork;
-    // }
+    useEffect(() => {
+        let mounted = true;
+        if (mounted) {
+            getData(`http://localhost:8080/api/dailyWork/get/${date}`);
+        }
+        return () => mounted = false;
+
+    }, [date]);
 
     const rowAdd = (newRow, resolve) => {
         const updatedRows = [...data, newRow];
@@ -95,11 +87,20 @@ export const DailyWorksTable = props => {
         setData(updatedRows)
         axiosDelete(`http://localhost:8080/api/dailyWork/delete`, { id: selectedRow._id });
         resolve();
+    }
 
+    const searchData = (value) => {
+        if (value) {
+            getData(`http://localhost:8080/api/dailyWork/searchBy/${value}`);
+        } else {
+            getData(`http://localhost:8080/api/dailyWork/get/${date}`);
+        }
+        setReloadButton(!reloadButton);
     }
 
 
     return <div className={classes.table}>
+
         <ThemeProvider theme={theme}>
             <MuiTable className={classes.table}
                 data={data}
@@ -125,6 +126,13 @@ export const DailyWorksTable = props => {
                 disableRoutinesDetails={true}
                 disableCompleteTaskButton={true}
                 disableDatePicker={false}
+                CustomSearchBar={MySearchBar}
+                searchData={searchData}
+                disableDefaultSearch={true}
+                disableCustomSearch={false}
+                disableReloadDataButton={reloadButton}
+                resetData ={searchData}
+            
             />
         </ThemeProvider>
     </div>

@@ -9,7 +9,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { scheduleTableStyle } from './ScheduleTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { datePicker } from '../../../Services/DatePickers'
+import { datePicker } from '../../../Services/DatePickers';
+import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
 
 
 
@@ -129,6 +130,11 @@ export const ScheduleTable = props => {
                 disableRoutinesDetails={true}
                 disableCompleteTaskButton={true}
                 disableDatePicker={false}
+                CustomSearchBar={MySearchBar}
+                searchData={false}
+                disableDefaultSearch={true}
+                disableCustomSearch={true}
+                disableReloadDataButton={true}
 
             />
         </ThemeProvider>

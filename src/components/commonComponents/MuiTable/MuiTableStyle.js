@@ -1,6 +1,6 @@
 export const muiTableStyle = theme => {
     return ({
-        toolbar: {
+        toolbarHeader: {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -12,10 +12,25 @@ export const muiTableStyle = theme => {
                 height: '40px',
             },
         },
-        datepicker: {
-            margin: '0 8px 5px 24px'
+        toolbarBody: {
+            display: 'flex',
+            flexDirection: 'column',
+            margin: theme.spacing(1),
         },
-
+        datePickerContainer: {
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'nowrap',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            // margin: '0 8px 5px 24px'
+        },
+        reloadDataButton: {
+            margin: '0 0 0.1rem 0.1rem',
+        },
+        datePicker: {
+            margin: '0 0 1rem 1rem',
+        },
 
     })
 }

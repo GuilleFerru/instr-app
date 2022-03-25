@@ -11,7 +11,6 @@ import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 
 
-
 const useStyles = makeStyles((theme) => routineTableStyle(theme));
 
 export const RoutineTable = props => {
@@ -103,6 +102,10 @@ export const RoutineTable = props => {
                 disableRoutinesDetails={false}
                 disableCompleteTaskButton={false}
                 disableDatePicker={false}
+                searchData={false}
+                disableDefaultSearch={false}
+                disableCustomSearch={true}
+                disableReloadDataButton={true}
                 
             />
         </ThemeProvider>

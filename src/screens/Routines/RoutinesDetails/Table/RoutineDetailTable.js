@@ -5,7 +5,8 @@ import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { defaultDailyWorksRoutineTable } from '../../../../Services/defaultTables';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
-import { routineDetailTableStyle } from './RoutineDetailTableStyle'
+import { routineDetailTableStyle } from './RoutineDetailTableStyle';
+
 
 
 
@@ -72,7 +73,11 @@ export const RoutineDetailTable = props => {
                 handleRoutineSchedule={false}
                 disableRoutinesDetails={true}
                 disableCompleteTaskButton={true}
-                disableDatePicker={true}
+                disableDatePicker={true}              
+                searchData={false}
+                disableDefaultSearch={true}
+                disableCustomSearch={true}
+                disableReloadDataButton={true}
             />
         </ThemeProvider>
     </div>
