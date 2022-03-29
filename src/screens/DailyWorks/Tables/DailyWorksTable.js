@@ -131,8 +131,8 @@ export const DailyWorksTable = props => {
                 disableDefaultSearch={true}
                 disableCustomSearch={false}
                 disableReloadDataButton={reloadButton}
-                resetData ={searchData}
-            
+                resetData={searchData}
+
             />
         </ThemeProvider>
     </div>
