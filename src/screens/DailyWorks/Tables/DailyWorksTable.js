@@ -132,6 +132,7 @@ export const DailyWorksTable = props => {
                 disableCustomSearch={false}
                 disableReloadDataButton={reloadButton}
                 resetData={searchData}
+                searchPlaceHolder={'Buscar por Tag, Descripción'}
 
             />
         </ThemeProvider>

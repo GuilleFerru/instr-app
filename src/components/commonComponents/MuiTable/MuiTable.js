@@ -44,7 +44,8 @@ export const MuiTable = (
         disableDefaultSearch,
         disableCustomSearch,
         disableReloadDataButton,
-        resetData
+        resetData,
+        searchPlaceHolder
 
     }) => {
 
@@ -172,7 +173,7 @@ export const MuiTable = (
                             <div className={classes.toolbarBody} >
                                 <MTableToolbar {...props} />
                                 {disableCustomSearch ? null : (
-                                    <CustomSearchBar value={''} searchData={searchData} />
+                                    <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
                                 )}
                                 {disableDatePicker ? null : (
                                     <div className={classes.datePickerContainer}>
