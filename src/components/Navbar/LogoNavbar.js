@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../img/logoPRIII_xs.png";
 
-export const LogoNavbar = () => {
+export const LogoNavbar = (props) => {
+
+  const { linkTo } = props;
   return (
-    <Link aria-current="page" to={"/"}>
+    <Link aria-current="page" to={linkTo} style={{ textDecoration: 'none' }}>
       <img src={logo} alt="Logo de Petroquimica"></img>
     </Link>
   );

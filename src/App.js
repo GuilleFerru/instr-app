@@ -4,7 +4,7 @@ import { Router } from "./Router/Router";
 import { DateComponentContext } from "./context/DateContext";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from "./styles/theme";
-import { LayOut } from "./components/LayOut/LayOut";
+// import { LayOut } from "./components/LayOut/LayOut";
 
 
 const App = (props) => {
@@ -12,9 +12,9 @@ const App = (props) => {
     <DateComponentContext>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <LayOut>
+          {/* <LayOut> */}
             <Router />
-          </LayOut>
+          {/* </LayOut> */}
         </ThemeProvider>
       </BrowserRouter>
     </DateComponentContext>

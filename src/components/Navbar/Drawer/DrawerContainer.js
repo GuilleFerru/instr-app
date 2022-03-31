@@ -45,7 +45,7 @@ export const DrawerContainer = ({ handleDrawerClose, open }) => {
         open={open}
     >
         <div className={classes.toolbarIcon}>
-            <LogoNavbar />
+            <LogoNavbar linkTo={"/"} />
             <IconButton onClick={handleDrawerClose}>
                 <ChevronLeftIcon />
             </IconButton>

@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Input = (props) => {
-  
-    const { name, label, value, onChange, autoFocus, error = null, fullWidth, required, variant } = props
+
+    const { name, label, value, onChange, autoFocus, error = null, fullWidth, required, variant, placeholder, margin, id, autoComplete, type, inputRef } = props
     const classes = useStyles(props);
     return <TextField className={classes.textField}
         autoFocus={autoFocus || false}
@@ -23,6 +23,12 @@ export const Input = (props) => {
         name={name}
         onChange={onChange}
         variant={variant}
+        placeholder={placeholder}
+        margin={margin}
+        id={id}
+        autoComplete={autoComplete}
+        type={type}
+        inputRef={inputRef}
         {...(error && { error: true, helperText: error })}
     >
     </TextField>
