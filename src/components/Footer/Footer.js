@@ -14,7 +14,7 @@ export const Footer = () => {
       <Typography variant="body2" color="textSecondary" align="center" >
         {"Copyright © "}
         <Link color="inherit" to={'/'}>
-          Instrumentos PRII 
+          Instrumentos PRIII 
         </Link >{" "}
         {new Date().getFullYear()}{" "}
         - Guillermo Ferrucci

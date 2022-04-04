@@ -1,32 +1,33 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+import { loginCall } from "../../Services/Axios";
+import { Button, CssBaseline, Link, Grid, Box, makeStyles, Container, CircularProgress } from '@material-ui/core';
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import theme from '../../styles/theme';
 import { Footer } from '../../components/Footer/Footer';
 import { loginContainerStyle } from './LoginContainerStyle';
 import { Input } from '../../components/commonComponents/Controls/Input';
 import { LogoNavbar } from "../../components/Navbar/LogoNavbar";
 import { Title } from '../../components/commonComponents/Title';
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import theme from '../../styles/theme';
+import { AuthContext } from '../../context/AuthContext';
 
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+
 
 const useStyles = makeStyles((theme) => loginContainerStyle(theme));
 
 
 export const Login = () => {
-    const classes = useStyles();
 
-    const email = useRef();
+    const classes = useStyles();
+    const username = useRef();
     const password = useRef();
+    const { isFetching, dispatch } = useContext(AuthContext);
 
     const handleClick = (e) => {
         e.preventDefault();
-        console.log(email.current.value, password.current.value);
+        loginCall({
+            username: username.current.value,
+            password: password.current.value
+        }, dispatch)
     };
 
     return (
@@ -49,13 +50,13 @@ export const Login = () => {
                             margin={"normal"}
                             required={true}
                             fullWidth={true}
-                            id="email"
+                            id="username"
                             label={"Dirección de correo electrónico"}
-                            name={"email"}
-                            autoComplete={"email"}
+                            name={"username"}
+                            autoComplete={"username"}
                             autoFocus={true}
                             type={"email"}
-                            inputRef={email}
+                            inputRef={username}
 
                         />
                         <Input
@@ -76,8 +77,13 @@ export const Login = () => {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={isFetching}
                         >
-                            Ingresar
+                            {isFetching ? (
+                                <CircularProgress size={24} color={"secondary"} />
+                            ) : (
+                                'Iniciar sesión'
+                            )}
                         </Button>
                         <Grid container>
                             <Grid item xs>

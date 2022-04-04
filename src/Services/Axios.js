@@ -26,3 +26,15 @@ export const axiosPost = (url, body) => {
 export const axiosDelete = (url, data) => {
     axios.delete(url, { data: { data } }, options).then(_res => _res.status).catch(err => { console.log(err) });
 }
+
+export const loginCall = async (userCredential, dispatch) => {
+    dispatch({ type: "LOGIN_REQUEST" });
+    try {
+        console.log(userCredential);
+        const res = await axios.post("http://localhost:8080/api/login", userCredential);
+        
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+    } catch (err) {
+        dispatch({ type: "LOGIN_FAILURE", payload: err });
+    }
+};
