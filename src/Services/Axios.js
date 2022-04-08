@@ -3,6 +3,7 @@ import axios from 'axios';
 export const options = {
     headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Authorization": "Bearer " + localStorage.getItem('user.token')
     },
 };
 
@@ -30,9 +31,7 @@ export const axiosDelete = (url, data) => {
 export const loginCall = async (userCredential, dispatch) => {
     dispatch({ type: "LOGIN_REQUEST" });
     try {
-        console.log(userCredential);
         const res = await axios.post("http://localhost:8080/api/login", userCredential);
-        
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (err) {
         dispatch({ type: "LOGIN_FAILURE", payload: err });
