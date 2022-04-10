@@ -1,15 +1,23 @@
 import axios from 'axios';
 
-export const options = {
-    headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        "Authorization": "Bearer " + localStorage.getItem('user.token')
-    },
-};
+
+let token = null;
+export const setToken = (newToken) => {
+    token = `Bearer ${newToken}`;
+}
+
+const options = () => {
+    return {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    }
+}
 
 export const axiosGet = async (url) => {
     try {
-        const _res = await axios.get(url, options);
+        const _res = await axios.get(url, options());
         return _res.data;
     } catch (err) {
         console.log(err);
@@ -17,15 +25,15 @@ export const axiosGet = async (url) => {
 }
 
 export const axiosPut = (url, body) => {
-    axios.put(url, body, options).then(_res => _res.status).catch(err => { console.log(err) });
+    axios.put(url, body, options()).then(_res => _res.status).catch(err => { console.log(err) });
 };
 
 export const axiosPost = (url, body) => {
-    axios.post(url, body, options).then(_res => _res.status).catch(err => { console.log(err) });
+    axios.post(url, body, options()).then(_res => _res.status).catch(err => { console.log(err) });
 };
 
 export const axiosDelete = (url, data) => {
-    axios.delete(url, { data: { data } }, options).then(_res => _res.status).catch(err => { console.log(err) });
+    axios.delete(url, { data: { data } }, options()).then(_res => _res.status).catch(err => { console.log(err) });
 }
 
 export const loginCall = async (userCredential, dispatch) => {

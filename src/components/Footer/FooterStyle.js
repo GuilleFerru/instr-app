@@ -1,11 +1,11 @@
 export const footerStyle = (theme) => {
   return {
     content: {
-      // display:"flex",
+      position: "fixed",
+      left: 0,
+      bottom: 0,
+      right: 0,
       justifyContent:"center",
-      // flexGrow: "1",
-      // overflow: "auto",
-      // border:'1px solid red',
       marginTop:'auto',
       marginBottom:'10px',
       "& a": {

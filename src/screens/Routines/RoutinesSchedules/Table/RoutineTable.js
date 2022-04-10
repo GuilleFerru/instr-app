@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
-import axios from 'axios';
-import { axiosPut } from '../../../../Services/Axios.js';
+import {axiosGet, axiosPut } from '../../../../Services/Axios.js';
 import { otherRoutinesDefault } from '../../../../Services/defaultTables.js';
 import { monthPicker } from '../../../../Services/DatePickers'
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,12 +9,15 @@ import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTa
 import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 
+import { useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => routineTableStyle(theme));
 
 export const RoutineTable = props => {
 
     const classes = useStyles();
+    const history = useHistory();
     const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
@@ -24,19 +26,21 @@ export const RoutineTable = props => {
 
     useEffect(() => {
         let cancel = false;
-        axios.get(`http://localhost:8080/api/routine/get/${date}`).then(res => {
-            const { otherRoutines, columns } = res.data;
+        axiosGet(`http://localhost:8080/api/routine/get/${date}`).then(res => {
+            const { otherRoutines, columns } = res;
             if (!cancel) {
                 otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
                 columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
             } else {
                 return;
             }
-        });
+        }).catch(_err => {
+            history.push('/error');
+        });;
         return () => {
             cancel = true;
         }
-    }, [date]);
+    }, [date, history]);
 
     const updateRow = (updatedRow, oldRow) => {
         const index = oldRow.tableData.id;

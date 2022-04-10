@@ -1,6 +1,6 @@
 import { useRef, useContext } from "react";
 import { loginCall } from "../../Services/Axios";
-import { Button, CssBaseline, Link, Grid, Box, makeStyles, Container, CircularProgress } from '@material-ui/core';
+import {Fade, Button, CssBaseline, Link, Grid, Box, makeStyles, Container, CircularProgress } from '@material-ui/core';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../styles/theme';
 import { Footer } from '../../components/Footer/Footer';
@@ -32,72 +32,74 @@ export const Login = () => {
 
     return (
         <ThemeProvider theme={theme} >
-            <Container component="main" maxWidth="xs" className={classes.root}>
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <LogoNavbar linkTo={"/login"} />
-                    <Title
-                        titleClassName={classes.title}
-                        component={'h1'}
-                        variant={'h6'}
-                        color={'inherit'}
-                        value={'INSTRUMENTOS PR3'}
-                    />
-
-                    <form className={classes.form} onSubmit={handleClick}>
-                        <Input
-                            variant={"outlined"}
-                            margin={"normal"}
-                            required={true}
-                            fullWidth={true}
-                            id="username"
-                            label={"Dirección de correo electrónico"}
-                            name={"username"}
-                            autoComplete={"username"}
-                            autoFocus={true}
-                            type={"email"}
-                            inputRef={username}
-
+            <Fade in={true} timeout={800}>
+                <Container component="main" maxWidth="xs" className={classes.root}>
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                        <LogoNavbar linkTo={"/login"} />
+                        <Title
+                            titleClassName={classes.title}
+                            component={'h1'}
+                            variant={'h6'}
+                            color={'inherit'}
+                            value={'INSTRUMENTOS PR3'}
                         />
-                        <Input
-                            variant={"outlined"}
-                            margin={"normal"}
-                            required={true}
-                            fullWidth={true}
-                            id="password"
-                            label={"Contraseña"}
-                            name={"password"}
-                            autoComplete={"current-password"}
-                            type={"password"}
-                            inputRef={password}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            disabled={isFetching}
-                        >
-                            {isFetching ? (
-                                <CircularProgress size={24} color={"secondary"} />
-                            ) : (
-                                'Iniciar sesión'
-                            )}
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Olvido la contraseña?
-                                </Link>
+
+                        <form className={classes.form} onSubmit={handleClick}>
+                            <Input
+                                variant={"outlined"}
+                                margin={"normal"}
+                                required={true}
+                                fullWidth={true}
+                                id="username"
+                                label={"Dirección de correo electrónico"}
+                                name={"username"}
+                                autoComplete={"username"}
+                                autoFocus={true}
+                                type={"email"}
+                                inputRef={username}
+
+                            />
+                            <Input
+                                variant={"outlined"}
+                                margin={"normal"}
+                                required={true}
+                                fullWidth={true}
+                                id="password"
+                                label={"Contraseña"}
+                                name={"password"}
+                                autoComplete={"current-password"}
+                                type={"password"}
+                                inputRef={password}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                disabled={isFetching}
+                            >
+                                {isFetching ? (
+                                    <CircularProgress size={24} color={"secondary"} />
+                                ) : (
+                                    'Iniciar sesión'
+                                )}
+                            </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="#" variant="body2">
+                                        Olvido la contraseña?
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
-                <Box mt={2}>
-                    <Footer />
-                </Box>
-            </Container>
+                        </form>
+                    </div>
+                    <Box mt={2}>
+                        <Footer />
+                    </Box>
+                </Container>
+            </Fade>
         </ThemeProvider>
     );
 }

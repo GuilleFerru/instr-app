@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { axiosGet, axiosPost, axiosPut, axiosDelete } from '../../../Services/Axios.js';
@@ -11,13 +11,13 @@ import { muiTableCommonActions } from '../../../components/commonComponents/MuiT
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
 
-
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
 
 
-export const DailyWorksTable = props => {
+export const DailyWorksTable = _props => {
     const classes = useStyles();
-
+    const history = useHistory();
     const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
@@ -26,24 +26,54 @@ export const DailyWorksTable = props => {
     // const [dayWork, setDayWork] = useState(dayWorks)
     const { handleDatePicker } = muiTableCommonActions(data, setData, getNewDate);
 
-    const getData = (url) => {
+    const getData = useCallback((url) => {
         axiosGet(url).then(data => {
+            const { dayWorks, columns } = data;
             if (data) {
-                const { dayWorks, columns } = data;
                 dayWorks === undefined ? setData([]) : setData(dayWorks);
                 columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
             }
-        })
-    }
+        }).catch(_err => {
+            history.push('/error');
+        });
+    },[history]);
+
+
 
     useEffect(() => {
-        let mounted = true;
-        if (mounted) {
+        let cancel = false;
+        if (!cancel) {
             getData(`http://localhost:8080/api/dailyWork/get/${date}`);
-        }
-        return () => mounted = false;
 
-    }, [date]);
+        }
+
+
+
+        // console.log('useEffect')
+        // axiosGet(`http://localhost:8080/api/dailyWork/get/${date}`).then(data => {
+        //     const { dayWorks, columns } = data;
+        //     if (!cancel) {
+        //         if (data) {
+        //             dayWorks === undefined ? setData([]) : setData(dayWorks);
+        //             columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
+        //         }
+        //     } else {
+        //         console.log('useEffect error')
+        //         return;
+        //     }
+        // }).catch(_err => {
+        //     console.log('useEffect error')
+        //     history.push('/error');
+        // });
+
+
+        return () => {
+            cancel = true
+        }
+
+    }, [date, getData]);
+
+
 
     const rowAdd = (newRow, resolve) => {
         const updatedRows = [...data, newRow];

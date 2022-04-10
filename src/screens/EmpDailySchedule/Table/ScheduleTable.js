@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
-import axios from 'axios';
-import { axiosPut } from '../../../Services/Axios.js';
+import { axiosGet, axiosPut } from '../../../Services/Axios.js';
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 import { DateContext } from '../../../context/DateContext';
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,13 +12,16 @@ import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
 
 
+import { useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
-export const ScheduleTable = props => {
+export const ScheduleTable = _props => {
 
     const classes = useStyles();
     const { date, getNewDate } = useContext(DateContext);
+    const history = useHistory();
     const [data, setData] = useState([]);
     const [aditionals, setAditionals] = useState({});
     const [aditionalCount, setAditionalCount] = useState(1);
@@ -29,8 +31,9 @@ export const ScheduleTable = props => {
 
     useEffect(() => {
         let cancel = false;
-        axios.get(`http://localhost:8080/api/schedule/get/${date}`).then(res => {
-            const { schedule, aditionals, columns } = res.data;
+
+        axiosGet(`http://localhost:8080/api/schedule/get/${date}`).then(res => {
+            const { schedule, aditionals, columns } = res;
             if (!cancel) {
                 schedule === undefined ? setData([]) : setData(schedule);
                 columns === undefined ? setDataColumns(scheduleEmpDefault) : setDataColumns(columns)
@@ -39,11 +42,16 @@ export const ScheduleTable = props => {
             } else {
                 return;
             }
+        }).catch(_err => {
+            history.push('/error');
         });
+
+
         return () => {
             cancel = true;
         }
-    }, [date]);
+        
+    }, [date, history]);
 
     const bulkUpdate = (selectedRows, resolve) => {
         const rows = Object.values(selectedRows);
@@ -104,40 +112,40 @@ export const ScheduleTable = props => {
     }
 
 
-    return <div className={classes.table}>
-        <ThemeProvider theme={theme}>
-            <MuiTable
-                data={data}
-                setData={setData}
-                title={'PERSONAL'}
-                datepicker={datePicker(date, handleDatePicker)}
-                disableCheckButton={true}
-                disableAditionalButton={false}
-                disableAddButton={true}
-                disableDeleteButton={false}
-                disableOnRowUpdate={false}
-                disableOnBulkUpdate={false}
-                dataColumns={dataColumns}
-                rowAdd={false}
-                updateRow={updateRow}
-                bulkUpdate={bulkUpdate}
-                deleteRow={false}
-                handleAditional={handleAditional}
-                pageSize={15}
-                disableGroupingOption={true}
-                date={date}
-                handleRoutineSchedule={false}
-                disableRoutinesDetails={true}
-                disableCompleteTaskButton={true}
-                disableDatePicker={false}
-                CustomSearchBar={MySearchBar}
-                searchData={false}
-                disableDefaultSearch={true}
-                disableCustomSearch={true}
-                disableReloadDataButton={true}
-
-            />
-        </ThemeProvider>
-    </div>
-
+    return <>
+        <div className={classes.table}>
+            <ThemeProvider theme={theme}>
+                <MuiTable
+                    data={data}
+                    setData={setData}
+                    title={'PERSONAL'}
+                    datepicker={datePicker(date, handleDatePicker)}
+                    disableCheckButton={true}
+                    disableAditionalButton={false}
+                    disableAddButton={true}
+                    disableDeleteButton={false}
+                    disableOnRowUpdate={false}
+                    disableOnBulkUpdate={false}
+                    dataColumns={dataColumns}
+                    rowAdd={false}
+                    updateRow={updateRow}
+                    bulkUpdate={bulkUpdate}
+                    deleteRow={false}
+                    handleAditional={handleAditional}
+                    pageSize={15}
+                    disableGroupingOption={true}
+                    date={date}
+                    handleRoutineSchedule={false}
+                    disableRoutinesDetails={true}
+                    disableCompleteTaskButton={true}
+                    disableDatePicker={false}
+                    CustomSearchBar={MySearchBar}
+                    searchData={false}
+                    disableDefaultSearch={true}
+                    disableCustomSearch={true}
+                    disableReloadDataButton={true}
+                />
+            </ThemeProvider>
+        </div>
+    </>
 }

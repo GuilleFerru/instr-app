@@ -7,10 +7,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineDetailTableStyle } from './RoutineDetailTableStyle';
 
-
-
-
-
 const useStyles = makeStyles((theme) => routineDetailTableStyle(theme));
 
 export const RoutineDetailTable = props => {
@@ -19,8 +15,6 @@ export const RoutineDetailTable = props => {
     const [data, setData] = useState([]);
     const [nickname, setNickname] = useState('');
     const [dataColumns, setDataColumns] = useState([]);
-
-
 
     useEffect(() => {
         new Promise(resolve => {
@@ -32,7 +26,6 @@ export const RoutineDetailTable = props => {
     }, [props]);
 
     const bulkUpdate = (selectedRows, resolve) => {
-        console.log('hola')
         const rows = Object.values(selectedRows);
         const updatedRows = [...data];
 

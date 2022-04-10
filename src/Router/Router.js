@@ -8,6 +8,7 @@ import { RoutineContainer } from '../screens/Routines/RoutinesSchedules/RoutineC
 import { ScheduleContainer } from '../screens/EmpDailySchedule/ScheduleContainer';
 import { RoutineDetailsContainer } from '../screens/Routines/RoutinesDetails/RoutineDetailsContainer';
 import { AuthContext } from '../context/AuthContext';
+import { ErrorPage } from '../components/commonComponents/ErrorPage/ErrorPage';
 // import { StoreListContainer } from '../screens/StoreList/StoreListContainer';
 
 export const Router = () => {
@@ -16,6 +17,9 @@ export const Router = () => {
     return <Switch>
         <Route exact path="/">
             {user ? <Redirect to="/dashboard" /> : <Login />}
+        </Route>
+        <Route exact path="/error">
+            <ErrorPage />
         </Route>
         {user ?
             <LayOut>
