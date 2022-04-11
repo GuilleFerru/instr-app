@@ -29,7 +29,7 @@ export const ScheduleTable = props => {
 
     useEffect(() => {
         let cancel = false;
-        axios.get(`http://localhost:8080/api/schedule/get/${date}`).then(res => {
+        axios.get(`http://localhost:3001/api/schedule/get/${date}`).then(res => {
             const { schedule, aditionals, columns } = res.data;
             if (!cancel) {
                 schedule === undefined ? setData([]) : setData(schedule);
@@ -56,7 +56,7 @@ export const ScheduleTable = props => {
             return ''
         })
         const newSchedule = updatedRows;
-        axiosPut(`http://localhost:8080/api/schedule/update/${date}`, { newSchedule })
+        axiosPut(`http://localhost:3001/api/schedule/update/${date}`, { newSchedule })
         resolve();
     }
 
@@ -75,7 +75,7 @@ export const ScheduleTable = props => {
         compareOldAndNewData(oldRow, updatedRow);
         updatedRows[index] = updatedRow;
         const newSchedule = updatedRows;
-        axiosPut(`http://localhost:8080/api/schedule/update/${date}`, { newSchedule })
+        axiosPut(`http://localhost:3001/api/schedule/update/${date}`, { newSchedule })
         return updatedRows;
     }
 
@@ -99,7 +99,7 @@ export const ScheduleTable = props => {
             align: 'left',
         }
         const newColumns = [...dataColumns, adictionanlSelect, aditionalInput];
-        axiosPut(`http://localhost:8080/api/schedule/update/columns/${date}`, { newColumns })
+        axiosPut(`http://localhost:3001/api/schedule/update/columns/${date}`, { newColumns })
         setDataColumns([...dataColumns, adictionanlSelect, aditionalInput]);
     }
 

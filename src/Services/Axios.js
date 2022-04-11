@@ -31,7 +31,7 @@ export const axiosDelete = (url, data) => {
 export const loginCall = async (userCredential, dispatch) => {
     dispatch({ type: "LOGIN_REQUEST" });
     try {
-        const res = await axios.post("http://localhost:8080/api/login", userCredential);
+        const res = await axios.post("http://localhost:3001/api/login", userCredential);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (err) {
         dispatch({ type: "LOGIN_FAILURE", payload: err });

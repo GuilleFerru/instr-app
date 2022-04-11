@@ -39,7 +39,7 @@ export const DailyWorksTable = props => {
     useEffect(() => {
         let mounted = true;
         if (mounted) {
-            getData(`http://localhost:8080/api/dailyWork/get/${date}`);
+            getData(`http://localhost:3001/api/dailyWork/get/${date}`);
         }
         return () => mounted = false;
 
@@ -52,7 +52,7 @@ export const DailyWorksTable = props => {
         const newDayWork = newRow;
         // le agrego la fecha de inicio y lo envio al servidor
         newDayWork.beginDate = date;
-        axiosPost(`http://localhost:8080/api/dailyWork/create`, newDayWork);
+        axiosPost(`http://localhost:3001/api/dailyWork/create`, newDayWork);
         resolve();
     }
 
@@ -61,7 +61,7 @@ export const DailyWorksTable = props => {
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        axiosPut(`http://localhost:8080/api/dailyWork/update/${date}`, { updatedWork })
+        axiosPut(`http://localhost:3001/api/dailyWork/update/${date}`, { updatedWork })
         return updatedRows;
     }
 
@@ -76,7 +76,7 @@ export const DailyWorksTable = props => {
             return ''
         })
         const newDailyWorks = updatedRows;
-        axiosPut(`http://localhost:8080/api/dailyWork/updateBulk/${date}`, { newDailyWorks })
+        axiosPut(`http://localhost:3001/api/dailyWork/updateBulk/${date}`, { newDailyWorks })
         resolve();
     }
 
@@ -85,15 +85,15 @@ export const DailyWorksTable = props => {
         const updatedRows = [...data]
         updatedRows.splice(index, 1)
         setData(updatedRows)
-        axiosDelete(`http://localhost:8080/api/dailyWork/delete`, { id: selectedRow._id });
+        axiosDelete(`http://localhost:3001/api/dailyWork/delete`, { id: selectedRow._id });
         resolve();
     }
 
     const searchData = (value) => {
         if (value) {
-            getData(`http://localhost:8080/api/dailyWork/searchBy/${value}`);
+            getData(`http://localhost:3001/api/dailyWork/searchBy/${value}`);
         } else {
-            getData(`http://localhost:8080/api/dailyWork/get/${date}`);
+            getData(`http://localhost:3001/api/dailyWork/get/${date}`);
         }
         setReloadButton(!reloadButton);
     }

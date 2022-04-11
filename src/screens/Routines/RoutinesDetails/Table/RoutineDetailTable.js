@@ -41,7 +41,7 @@ export const RoutineDetailTable = props => {
             updatedRows[index] = work.newData;
             setData(updatedRows);
             const updatedWork = work.newData;
-                axiosPut(`http://localhost:8080/api/dailyWork/updateFromRoutineDetail`, { updatedWork })
+                axiosPut(`http://localhost:3001/api/dailyWork/updateFromRoutineDetail`, { updatedWork })
             return ''
         })
         resolve();
