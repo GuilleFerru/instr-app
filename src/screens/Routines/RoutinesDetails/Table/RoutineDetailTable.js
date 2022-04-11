@@ -7,10 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineDetailTableStyle } from './RoutineDetailTableStyle';
 
-
-
-
-
+const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => routineDetailTableStyle(theme));
 
 export const RoutineDetailTable = props => {
@@ -19,8 +16,6 @@ export const RoutineDetailTable = props => {
     const [data, setData] = useState([]);
     const [nickname, setNickname] = useState('');
     const [dataColumns, setDataColumns] = useState([]);
-
-
 
     useEffect(() => {
         new Promise(resolve => {
@@ -32,7 +27,6 @@ export const RoutineDetailTable = props => {
     }, [props]);
 
     const bulkUpdate = (selectedRows, resolve) => {
-        console.log('hola')
         const rows = Object.values(selectedRows);
         const updatedRows = [...data];
 
@@ -41,7 +35,7 @@ export const RoutineDetailTable = props => {
             updatedRows[index] = work.newData;
             setData(updatedRows);
             const updatedWork = work.newData;
-                axiosPut(`http://localhost:3001/api/dailyWork/updateFromRoutineDetail`, { updatedWork })
+                axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork })
             return ''
         })
         resolve();

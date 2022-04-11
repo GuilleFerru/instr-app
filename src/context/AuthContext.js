@@ -1,4 +1,5 @@
-import { createContext, useEffect, useReducer } from 'react';
+import {createContext, useEffect, useReducer } from 'react';
+import { setToken } from '../Services/Axios';
 import AuthReducer from './AuthReducer';
 
 
@@ -14,6 +15,7 @@ export const AuthComponentContext = ({ children }) => {
     const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
     useEffect(() => {
         localStorage.setItem('user', JSON.stringify(state.user));
+        state.user && setToken(state.user.token);
     }, [state.user]);
 
     return (
@@ -21,7 +23,7 @@ export const AuthComponentContext = ({ children }) => {
             user: state.user,
             isFetching: state.isFetching,
             error: state.error,
-            dispatch,
+            dispatch,          
         }}>
             {children}
         </AuthContext.Provider>
