@@ -10,9 +10,11 @@ import { DateContext } from '../../../context/DateContext';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
-
 import { useHistory } from 'react-router-dom';
+
+
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
+const baseUrl = process.env.REACT_APP_API_URL;
 
 
 export const DailyWorksTable = _props => {
@@ -43,14 +45,14 @@ export const DailyWorksTable = _props => {
     useEffect(() => {
         let cancel = false;
         if (!cancel) {
-            getData(`http://localhost:8080/api/dailyWork/get/${date}`);
+            getData(`${baseUrl}/dailyWork/get/${date}`);
 
         }
 
 
 
         // console.log('useEffect')
-        // axiosGet(`http://localhost:8080/api/dailyWork/get/${date}`).then(data => {
+        // axiosGet(`${baseUrl}/dailyWork/get/${date}`).then(data => {
         //     const { dayWorks, columns } = data;
         //     if (!cancel) {
         //         if (data) {
@@ -82,7 +84,7 @@ export const DailyWorksTable = _props => {
         const newDayWork = newRow;
         // le agrego la fecha de inicio y lo envio al servidor
         newDayWork.beginDate = date;
-        axiosPost(`http://localhost:8080/api/dailyWork/create`, newDayWork);
+        axiosPost(`${baseUrl}/dailyWork/create`, newDayWork);
         resolve();
     }
 
@@ -91,7 +93,7 @@ export const DailyWorksTable = _props => {
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        axiosPut(`http://localhost:8080/api/dailyWork/update/${date}`, { updatedWork })
+        axiosPut(`${baseUrl}/dailyWork/update/${date}`, { updatedWork })
         return updatedRows;
     }
 
@@ -106,7 +108,7 @@ export const DailyWorksTable = _props => {
             return ''
         })
         const newDailyWorks = updatedRows;
-        axiosPut(`http://localhost:8080/api/dailyWork/updateBulk/${date}`, { newDailyWorks })
+        axiosPut(`${baseUrl}/dailyWork/updateBulk/${date}`, { newDailyWorks })
         resolve();
     }
 
@@ -115,15 +117,15 @@ export const DailyWorksTable = _props => {
         const updatedRows = [...data]
         updatedRows.splice(index, 1)
         setData(updatedRows)
-        axiosDelete(`http://localhost:8080/api/dailyWork/delete`, { id: selectedRow._id });
+        axiosDelete(`${baseUrl}/dailyWork/delete`, { id: selectedRow._id });
         resolve();
     }
 
     const searchData = (value) => {
         if (value) {
-            getData(`http://localhost:8080/api/dailyWork/searchBy/${value}`);
+            getData(`${baseUrl}/dailyWork/searchBy/${value}`);
         } else {
-            getData(`http://localhost:8080/api/dailyWork/get/${date}`);
+            getData(`${baseUrl}/dailyWork/get/${date}`);
         }
         setReloadButton(!reloadButton);
     }

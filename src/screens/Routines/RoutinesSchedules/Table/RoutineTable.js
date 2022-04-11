@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
-import {axiosGet, axiosPut } from '../../../../Services/Axios.js';
+import { axiosGet, axiosPut } from '../../../../Services/Axios.js';
 import { otherRoutinesDefault } from '../../../../Services/defaultTables.js';
 import { monthPicker } from '../../../../Services/DatePickers'
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-
 import { useHistory } from 'react-router-dom';
 
-
+const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => routineTableStyle(theme));
 
 export const RoutineTable = props => {
@@ -26,16 +25,16 @@ export const RoutineTable = props => {
 
     useEffect(() => {
         let cancel = false;
-        axiosGet(`http://localhost:8080/api/routine/get/${date}`).then(res => {
-            const { otherRoutines, columns } = res;
-            if (!cancel) {
-                otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
-                columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
-            } else {
-                return;
-            }
+        axiosGet(`${baseUrl}/routine/getAllRoutines/${date}`).then(res => { 
+                const { otherRoutines, columns } = res;
+                if (!cancel) {
+                    otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
+                    columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
+                } else {
+                    return;
+                }
         }).catch(_err => {
-            history.push('/error');
+            // history.push('/error');
         });;
         return () => {
             cancel = true;
@@ -47,7 +46,7 @@ export const RoutineTable = props => {
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        axiosPut(`http://localhost:8080/api/routine/updateOt`, { data: updatedWork })
+        axiosPut(`${baseUrl}/routine/updateOt`, { data: updatedWork })
         return updatedRows;
     }
 
@@ -55,12 +54,12 @@ export const RoutineTable = props => {
         // const rows = Object.values(selectedRows);
         // const updatedRows = [...data];
         // const dataToAxiosPut = [];
-        
+
         const index = selectedRows.tableData.id;
         const updatedRows = [...data];
         updatedRows[index] = { ...selectedRows, complete: 'C' };
         setData(updatedRows);
-        axiosPut(`http://localhost:8080/api/routine/update`, { data: updatedRows[index] });
+        axiosPut(`${baseUrl}/routine/update`, { data: updatedRows[index] });
         // rows.map(routine => {
         //     const index = routine.tableData.id;
         //     updatedRows[index] = { ...routine, complete: 'C' };
@@ -110,7 +109,7 @@ export const RoutineTable = props => {
                 disableDefaultSearch={false}
                 disableCustomSearch={true}
                 disableReloadDataButton={true}
-                
+
             />
         </ThemeProvider>
     </div>

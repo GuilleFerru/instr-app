@@ -13,8 +13,7 @@ import { MySearchBar } from '../../../components/commonComponents/Controls/Searc
 
 
 import { useHistory } from 'react-router-dom';
-
-
+const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
 export const ScheduleTable = _props => {
@@ -32,7 +31,7 @@ export const ScheduleTable = _props => {
     useEffect(() => {
         let cancel = false;
 
-        axiosGet(`http://localhost:8080/api/schedule/get/${date}`).then(res => {
+        axiosGet(`${baseUrl}/schedule/get/${date}`).then(res => {
             const { schedule, aditionals, columns } = res;
             if (!cancel) {
                 schedule === undefined ? setData([]) : setData(schedule);
@@ -64,7 +63,7 @@ export const ScheduleTable = _props => {
             return ''
         })
         const newSchedule = updatedRows;
-        axiosPut(`http://localhost:8080/api/schedule/update/${date}`, { newSchedule })
+        axiosPut(`${baseUrl}/schedule/update/${date}`, { newSchedule })
         resolve();
     }
 
@@ -83,7 +82,7 @@ export const ScheduleTable = _props => {
         compareOldAndNewData(oldRow, updatedRow);
         updatedRows[index] = updatedRow;
         const newSchedule = updatedRows;
-        axiosPut(`http://localhost:8080/api/schedule/update/${date}`, { newSchedule })
+        axiosPut(`${baseUrl}/schedule/update/${date}`, { newSchedule })
         return updatedRows;
     }
 
@@ -107,7 +106,7 @@ export const ScheduleTable = _props => {
             align: 'left',
         }
         const newColumns = [...dataColumns, adictionanlSelect, aditionalInput];
-        axiosPut(`http://localhost:8080/api/schedule/update/columns/${date}`, { newColumns })
+        axiosPut(`${baseUrl}/schedule/update/columns/${date}`, { newColumns })
         setDataColumns([...dataColumns, adictionanlSelect, aditionalInput]);
     }
 

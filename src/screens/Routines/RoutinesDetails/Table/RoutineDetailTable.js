@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineDetailTableStyle } from './RoutineDetailTableStyle';
 
+const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => routineDetailTableStyle(theme));
 
 export const RoutineDetailTable = props => {
@@ -34,7 +35,7 @@ export const RoutineDetailTable = props => {
             updatedRows[index] = work.newData;
             setData(updatedRows);
             const updatedWork = work.newData;
-                axiosPut(`http://localhost:8080/api/dailyWork/updateFromRoutineDetail`, { updatedWork })
+                axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork })
             return ''
         })
         resolve();

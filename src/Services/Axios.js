@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+const baseUrl = process.env.REACT_APP_API_URL;
 
 let token = null;
 export const setToken = (newToken) => {
@@ -18,7 +18,12 @@ const options = () => {
 export const axiosGet = async (url) => {
     try {
         const _res = await axios.get(url, options());
-        return _res.data;
+        if (_res.status === 200) {
+            return _res.data;
+        }
+        else {
+            return {};
+        }
     } catch (err) {
         console.log(err);
     }
@@ -39,7 +44,7 @@ export const axiosDelete = (url, data) => {
 export const loginCall = async (userCredential, dispatch) => {
     dispatch({ type: "LOGIN_REQUEST" });
     try {
-        const res = await axios.post("http://localhost:8080/api/login", userCredential);
+        const res = await axios.post(`${baseUrl}/login`, userCredential);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (err) {
         dispatch({ type: "LOGIN_FAILURE", payload: err });

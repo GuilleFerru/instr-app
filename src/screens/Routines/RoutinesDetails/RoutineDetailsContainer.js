@@ -5,6 +5,8 @@ import { useLocation } from 'react-router-dom';
 import { RoutineDetailTable } from './Table/RoutineDetailTable';
 import { useHistory } from 'react-router-dom';
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export const RoutineDetailsContainer = () => {
     const location = useLocation();
     const history = useHistory();
@@ -13,7 +15,7 @@ export const RoutineDetailsContainer = () => {
 
     useEffect(() => {
         let cancel = false;
-        axiosGet(`http://localhost:8080/api/dailyWork/getDailyWorkRoutine/${routineScheduleId}`).then(res => {
+        axiosGet(`${baseUrl}/dailyWork/getDailyWorkRoutine/${routineScheduleId}`).then(res => {
             const data = res;
             if (!cancel) {
                 data === undefined ? setData([]) : setData(data);
