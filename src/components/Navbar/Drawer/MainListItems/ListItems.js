@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import {List} from "@material-ui/core";
+import { List } from "@material-ui/core";
 import { ListItem, ListItemIcon, ListItemText, Collapse } from "@material-ui/core/";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -9,9 +9,12 @@ import TodayIcon from '@material-ui/icons/Today';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+// ]import { mainListActions } from "./MainListActions";
 
 
 export const ListItems = ({ openList, handleClick, classes }) => {
+
+  // const { handleLeaveRoom } = mainListActions();
 
   return (
     <>

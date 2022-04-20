@@ -58,8 +58,6 @@ export const Login = () => {
                                 autoFocus={true}
                                 type={"email"}
                                 inputRef={username}
-                                
-
                             />
                             <Input
                                 variant={"outlined"}

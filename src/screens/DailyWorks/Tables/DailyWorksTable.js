@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
 import { DateContext } from '../../../context/DateContext';
+import { SocketContext } from '../../../context/SocketContext';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
@@ -20,37 +21,54 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export const DailyWorksTable = _props => {
     const classes = useStyles();
     const history = useHistory();
+    const socket = useContext(SocketContext);
     const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
     const [reloadButton, setReloadButton] = useState(true);
 
     // const [dayWork, setDayWork] = useState(dayWorks)
-    const { handleDatePicker } = muiTableCommonActions(data, setData, getNewDate);
+    const { handleDatePicker } = muiTableCommonActions(getNewDate);
 
-    const getData = useCallback((url) => {
-        axiosGet(url).then(data => {
-            const { dayWorks, columns } = data;
-            if (data) {
-                dayWorks === undefined ? setData([]) : setData(dayWorks);
-                columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
-            }
-        }).catch(_err => {
-            history.push('/error');
-        });
-    },[history]);
+
+
+
+    // const getData = useCallback((url) => {
+    //     axiosGet(url).then(data => {
+    //         const { dayWorks, columns } = data;
+    //         if (data) {
+    //             dayWorks === undefined ? setData([]) : setData(dayWorks);
+    //             columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
+    //         }
+    //     }).catch(_err => {
+    //         history.push('/error');
+    //     });
+    // }, [history]);
+
+
+
+    const getData = (data) => {
+        const { dayWorks, columns } = data;
+        if (data) {
+            dayWorks === undefined ? setData([]) : setData(dayWorks);
+            columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
+        }
+    };
 
 
 
     useEffect(() => {
         let cancel = false;
-        if (!cancel) {
-            getData(`${baseUrl}/dailyWork/get/${date}`);
-
-        }
-
-
-
+        socket.emit('getDailyWorks', date);
+        socket.on('getDailyWorks', (data) => {
+            cancel = false;
+            if (!cancel) {
+                getData(data);
+            } else {
+                return;
+            }
+        });
+console.log('getDailyWorks')
         // console.log('useEffect')
         // axiosGet(`${baseUrl}/dailyWork/get/${date}`).then(data => {
         //     const { dayWorks, columns } = data;
@@ -70,10 +88,12 @@ export const DailyWorksTable = _props => {
 
 
         return () => {
+            socket.off('getDailyWorks');
             cancel = true
         }
 
-    }, [date, getData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [date]);
 
 
 

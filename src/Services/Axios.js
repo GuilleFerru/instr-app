@@ -30,7 +30,12 @@ export const axiosGet = async (url) => {
 }
 
 export const axiosPut = (url, body) => {
-    axios.put(url, body, options()).then(_res => _res.status).catch(err => { console.log(err) });
+    try {
+        return axios.put(url, body, options());
+    } catch (err) {
+        console.log(err);
+    }
+    // axios.put(url, body, options()).then(_res => _res.status).catch(err => { console.log(err) });
 };
 
 export const axiosPost = (url, body) => {
