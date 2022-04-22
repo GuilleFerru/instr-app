@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
-import { axiosGet, axiosPost, axiosPut, axiosDelete } from '../../../Services/Axios.js';
+import { axiosGet } from '../../../Services/Axios.js';
 import { dailyWorksDefault } from '../../../Services/defaultTables.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
@@ -24,6 +24,7 @@ export const DailyWorksTable = _props => {
     const socket = useContext(SocketContext);
     const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
+    const [roomId, setRoomId] = useState(0);
     const [dataColumns, setDataColumns] = useState([]);
     const [reloadButton, setReloadButton] = useState(true);
 
@@ -55,20 +56,20 @@ export const DailyWorksTable = _props => {
         }
     };
 
-
-
     useEffect(() => {
         let cancel = false;
-        socket.emit('getDailyWorks', date);
-        socket.on('getDailyWorks', (data) => {
+        socket.emit('get_daily_works', date);
+        socket.on('get_daily_works', (data) => {
             cancel = false;
             if (!cancel) {
                 getData(data);
+                setRoomId(date);
+                socket.emit('daily_works_join_room', date);
             } else {
                 return;
             }
+
         });
-console.log('getDailyWorks')
         // console.log('useEffect')
         // axiosGet(`${baseUrl}/dailyWork/get/${date}`).then(data => {
         //     const { dayWorks, columns } = data;
@@ -85,14 +86,15 @@ console.log('getDailyWorks')
         //     console.log('useEffect error')
         //     history.push('/error');
         // });
-
+        socket.emit('daily_works_leave_room', roomId);
+        socket.on('daily_works_leave_room', () => socket.off('daily_works_leave_room'));
 
         return () => {
-            socket.off('getDailyWorks');
+            socket.off('get_daily_works');
             cancel = true
         }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date]);
 
 
@@ -104,7 +106,8 @@ console.log('getDailyWorks')
         const newDayWork = newRow;
         // le agrego la fecha de inicio y lo envio al servidor
         newDayWork.beginDate = date;
-        axiosPost(`${baseUrl}/dailyWork/create`, newDayWork);
+        socket.emit('create_daily_work', newDayWork, roomId);
+        // axiosPost(`${baseUrl}/dailyWork/create`, newDayWork);
         resolve();
     }
 
@@ -113,7 +116,8 @@ console.log('getDailyWorks')
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        axiosPut(`${baseUrl}/dailyWork/update/${date}`, { updatedWork })
+        socket.emit('update_daily_work', date, updatedWork, roomId);
+        // axiosPut(`${baseUrl}/dailyWork/update/${date}`, { updatedWork })
         return updatedRows;
     }
 
@@ -128,31 +132,41 @@ console.log('getDailyWorks')
             return ''
         })
         const newDailyWorks = updatedRows;
-        axiosPut(`${baseUrl}/dailyWork/updateBulk/${date}`, { newDailyWorks })
+        socket.emit('bulk_update_daily_work', date, newDailyWorks, roomId);
+        // axiosPut(`${baseUrl}/dailyWork/updateBulk/${date}`, { newDailyWorks })
         resolve();
     }
 
     const deleteRow = (selectedRow, resolve) => {
-        const index = selectedRow.tableData.id
-        const updatedRows = [...data]
-        updatedRows.splice(index, 1)
-        setData(updatedRows)
-        axiosDelete(`${baseUrl}/dailyWork/delete`, { id: selectedRow._id });
+        // const index = selectedRow.tableData.id
+        // const updatedRows = [...data]
+        // updatedRows.splice(index, 1)
+        // setData(updatedRows)
+        socket.emit('delete_daily_work', date, selectedRow._id, roomId);
+        // axiosDelete(`${baseUrl}/dailyWork/delete`, date, { id: selectedRow._id });
         resolve();
     }
 
     const searchData = (value) => {
         if (value) {
-            getData(`${baseUrl}/dailyWork/searchBy/${value}`);
+            axiosGet(`${baseUrl}/dailyWork/searchBy/${value}`).then(data => {
+                getData(data);
+                setReloadButton(false);
+            }).catch(_err => {
+                history.push('/error');
+            });
         } else {
-            getData(`${baseUrl}/dailyWork/get/${date}`);
+            axiosGet(`${baseUrl}/dailyWork/get/${date}`).then(data => {
+                getData(data);
+                setReloadButton(true);
+            }).catch(_err => {
+                history.push('/error');
+            });
         }
-        setReloadButton(!reloadButton);
+
     }
 
-
     return <div className={classes.table}>
-
         <ThemeProvider theme={theme}>
             <MuiTable className={classes.table}
                 data={data}
@@ -185,7 +199,6 @@ console.log('getDailyWorks')
                 disableReloadDataButton={reloadButton}
                 resetData={searchData}
                 searchPlaceHolder={'Buscar por Tag, Descripción'}
-
             />
         </ThemeProvider>
     </div>

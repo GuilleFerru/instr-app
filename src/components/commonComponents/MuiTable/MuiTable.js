@@ -164,7 +164,6 @@ export const MuiTable = (
                 ]}
                 components={{
                     Toolbar: props => (
-                        // console.log(props),
                         <div >
                             <div className={classes.toolbarHeader}>
                                 <Breadcrumbs />
