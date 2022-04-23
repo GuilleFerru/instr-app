@@ -24,6 +24,7 @@ export const RoutineTable = props => {
 
 
     useEffect(() => {
+        setData([])
         let cancel = false;
         axiosGet(`${baseUrl}/routine/getAllRoutines/${date}`).then(res => { 
                 const { otherRoutines, columns } = res;

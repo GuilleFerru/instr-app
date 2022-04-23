@@ -5,7 +5,7 @@ import theme from '../../../components/commonComponents/MuiTable/theme';
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 // import { formatDate } from '../../../Services/DateUtils.js';
 import { DateContext } from '../../../context/DateContext';
-import { SocketContext } from '../../../context/SocketContext';
+import { AuthContext } from '../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { scheduleTableStyle } from './ScheduleTableStyle'
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 export const ScheduleTable = _props => {
 
     const classes = useStyles();
-    const socket = useContext(SocketContext);
+    const {socket} = useContext(AuthContext);
     const { date, getNewDate } = useContext(DateContext);
     // const history = useHistory();
     const [data, setData] = useState([]);
@@ -35,8 +35,9 @@ export const ScheduleTable = _props => {
 
     useEffect(() => {
         let cancel = false;
-        socket.emit('getSchedule', date);
-        socket.on('getSchedule', (data) => {
+        console.log(socket);
+        socket.emit('get_schedule', date);
+        socket.on('get_schedule', (data) => {
             cancel = false;
             if (!cancel) {
                 const { schedule, aditionals, columns, id } = data;
@@ -45,49 +46,49 @@ export const ScheduleTable = _props => {
                 aditionals === undefined ? setAditionals({}) : setAditionals(aditionals);
                 columns !== undefined && columns.length > 5 ? setAditionalCount(parseInt((columns[columns.length - 2].field).match(/\d+/)[0]) + 1) : setAditionalCount(1);
                 id !== undefined ? setRoomId(id) : setRoomId(0);
-                socket.emit('scheduleRoom', id);
+                socket.emit('schedule_join_room', id);
             } else {
                 return;
             }
         })
-        socket.emit('leaveScheduleRoom', roomId);
-        socket.on('leaveScheduleRoom', () => socket.off('leaveScheduleRoom'));
+        socket.emit('schedule_leave_room', roomId);
+        socket.on('schedule_leave_room', () => socket.off('schedule_leave_room'));
         return () => {
-            socket.off('getSchedule');
+            socket.off('get_schedule');
             cancel = true;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date]);
 
 
-    useEffect(() => {
-        socket.on('updateSchedule', (data) => {
-            let cancel = false;
-            if (!cancel) {
-                setData(data);
-            } else {
-                return;
-            }
-            return () => {
-                cancel = true;
-                socket.off('updateSchedule');
-            }
-        });
+    // useEffect(() => {
+    //     socket.on('updateSchedule', (data) => {
+    //         let cancel = false;
+    //         if (!cancel) {
+    //             setData(data);
+    //         } else {
+    //             return;
+    //         }
+    //         return () => {
+    //             cancel = true;
+    //             socket.off('updateSchedule');
+    //         }
+    //     });
 
-        socket.on('updateScheduleColumns', (data, aditionalCount) => {
-            let cancel = false;
-            if (!cancel) {
-                setAditionalCount(aditionalCount);
-                setDataColumns(data);
-            } else {
-                return;
-            }
-            return () => {
-                cancel = true;
-                socket.off('updateScheduleColumns');
-            }
-        });
-    });
+    //     socket.on('updateScheduleColumns', (data, aditionalCount) => {
+    //         let cancel = false;
+    //         if (!cancel) {
+    //             setAditionalCount(aditionalCount);
+    //             setDataColumns(data);
+    //         } else {
+    //             return;
+    //         }
+    //         return () => {
+    //             cancel = true;
+    //             socket.off('updateScheduleColumns');
+    //         }
+    //     });
+    // });
 
     const bulkUpdate = (selectedRows, resolve) => {
         const rows = Object.values(selectedRows);
@@ -100,7 +101,7 @@ export const ScheduleTable = _props => {
             return ''
         })
         const newSchedule = updatedRows;
-        socket.emit('updateSchedule', date, newSchedule, roomId);
+        socket.emit('update_schedule', date, newSchedule, roomId);
         resolve();
     }
 
@@ -119,7 +120,7 @@ export const ScheduleTable = _props => {
         compareOldAndNewData(oldRow, updatedRow);
         updatedRows[index] = updatedRow;
         const newSchedule = updatedRows;
-        socket.emit('updateSchedule', date, newSchedule, roomId);
+        socket.emit('update_schedule', date, newSchedule, roomId);
         return updatedRows;
     }
 
@@ -145,7 +146,7 @@ export const ScheduleTable = _props => {
         }
         const newColumns = [...dataColumns, adictionanlSelect, aditionalInput];
 
-        socket.emit('updateScheduleColumns', date, newColumns, roomId, aditionalCount + 1);
+        socket.emit('update_schedule_columns', date, newColumns, roomId);
 
     }
 

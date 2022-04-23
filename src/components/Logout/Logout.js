@@ -2,7 +2,6 @@ import React, {useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import { ListItem, ListItemIcon, ListItemText, ListItemAvatar, Avatar } from "@material-ui/core/";
 import { AuthContext } from '../../context/AuthContext';
-// import { SocketContext } from '../../context/SocketContext';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
@@ -10,11 +9,10 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 export const Logout = () => {
 
     const history = useHistory();
-    const { user, dispatch } = useContext(AuthContext);
-    // const socket = useContext(SocketContext);
+    const { user, dispatch, socket } = useContext(AuthContext);
 
     const handleLogout = () => {
-        // socket.disconnect();
+        socket.disconnect();
         window.localStorage.removeItem('user');
         dispatch({ type: 'LOGOUT_SUCCESS' });
         history.push('/');

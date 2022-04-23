@@ -1,4 +1,5 @@
 import axios from 'axios';
+import io from 'socket.io-client';
 const baseUrl = process.env.REACT_APP_API_URL;
 
 let token = null;
@@ -50,8 +51,9 @@ export const loginCall = async (userCredential, dispatch) => {
     dispatch({ type: "LOGIN_REQUEST" });
     try {
         const res = await axios.post(`${baseUrl}/login`, userCredential);
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+        const socket = io(baseUrl.replace('/api', ""), { transports: ['websocket'] });
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data, socket : socket });
     } catch (err) {
-        dispatch({ type: "LOGIN_FAILURE", payload: err });
+        dispatch({ type: "LOGIN_FAILURE", payload: err, socket: err });
     }
 };

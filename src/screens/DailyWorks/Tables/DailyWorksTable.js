@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
 import { DateContext } from '../../../context/DateContext';
-import { SocketContext } from '../../../context/SocketContext';
+import { AuthContext } from '../../../context/AuthContext';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
@@ -21,7 +21,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export const DailyWorksTable = _props => {
     const classes = useStyles();
     const history = useHistory();
-    const socket = useContext(SocketContext);
+    const {socket} = useContext(AuthContext);
     const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
     const [roomId, setRoomId] = useState(0);
@@ -49,6 +49,7 @@ export const DailyWorksTable = _props => {
 
 
     const getData = (data) => {
+        setData([])
         const { dayWorks, columns } = data;
         if (data) {
             dayWorks === undefined ? setData([]) : setData(dayWorks);
@@ -58,6 +59,7 @@ export const DailyWorksTable = _props => {
 
     useEffect(() => {
         let cancel = false;
+        console.log(socket)
         socket.emit('get_daily_works', date);
         socket.on('get_daily_works', (data) => {
             cancel = false;
@@ -100,6 +102,7 @@ export const DailyWorksTable = _props => {
 
 
     const rowAdd = (newRow, resolve) => {
+        
         const updatedRows = [...data, newRow];
         setData(updatedRows);
         // setDayWork(dayWorksUpdate(updatedRows));
@@ -112,6 +115,7 @@ export const DailyWorksTable = _props => {
     }
 
     const updateRow = (updatedRow, oldRow) => {
+        
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
