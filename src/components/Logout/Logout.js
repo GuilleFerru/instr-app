@@ -9,9 +9,10 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 export const Logout = () => {
 
     const history = useHistory();
-    const { user, dispatch } = useContext(AuthContext);
+    const { user, dispatch, socket } = useContext(AuthContext);
 
     const handleLogout = () => {
+        socket.disconnect();
         window.localStorage.removeItem('user');
         dispatch({ type: 'LOGOUT_SUCCESS' });
         history.push('/');

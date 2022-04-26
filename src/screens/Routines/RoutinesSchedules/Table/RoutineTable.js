@@ -20,10 +20,11 @@ export const RoutineTable = props => {
     const [date, setDate] = useState(new Date());
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
-    const { handleDatePicker } = muiTableCommonActions(data, setData, setDate);
+    const { handleDatePicker } = muiTableCommonActions(setDate);
 
 
     useEffect(() => {
+        setData([])
         let cancel = false;
         axiosGet(`${baseUrl}/routine/getAllRoutines/${date}`).then(res => { 
                 const { otherRoutines, columns } = res;

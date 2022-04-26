@@ -2,7 +2,12 @@ export const tableCardStyle = theme => {
     return ({
         paper: {
             margin: theme.spacing(1),
-            padding: theme.spacing(1)
+            padding: theme.spacing(1),
+            // border: '1px solid red',
+            // display: "flex",
+            // width: 'auto',
+            // flexDirection: "column",
+
             // display: "flex",
             // // overflow: "auto",
             // flexDirection: "column",

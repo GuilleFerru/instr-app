@@ -8,16 +8,16 @@ import theme from "./styles/theme";
 // import { LayOut } from "./components/LayOut/LayOut";
 
 
-const App = (props) => {
+const App = () => {
   return (
     <AuthComponentContext>
-      <DateComponentContext>
-        <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <Router />
-          </ThemeProvider>
-        </BrowserRouter>
-      </DateComponentContext>
+        <DateComponentContext>
+          <BrowserRouter>
+            <ThemeProvider theme={theme}>
+              <Router />
+            </ThemeProvider>
+          </BrowserRouter>
+        </DateComponentContext>
     </AuthComponentContext>
   );
 };

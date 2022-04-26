@@ -7,10 +7,11 @@ import Badges from '../../Badges/Badges';
 import { MTableToolbar } from 'material-table';
 import { tableIcons } from './tableIcons';
 import { Link } from "react-router-dom";
-import ListAltIcon  from '@material-ui/icons/ListAlt';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 
 const useStyles = makeStyles((theme) => muiTableStyle(theme));
@@ -56,10 +57,14 @@ export const MuiTable = (
     });
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
+    const [progress, setProgress] = useState(true);
 
     useEffect(() => {
-        
-    }, [data])
+        setProgress(true);
+        data.length > 0 ? setProgress(false) : setProgress(true);
+        const timer = setTimeout(() => setProgress(false), 25000);
+        return () => clearTimeout(timer);
+    }, [data]);
 
     return (
         <div ref={positionRef}>
@@ -73,7 +78,7 @@ export const MuiTable = (
                         actions: 'Acciones'
                     },
                     body: {
-                        emptyDataSourceMessage: <CircularProgress size='5rem' color="inherit" />,
+                        emptyDataSourceMessage: progress ? <CircularProgress size='5rem' color="inherit" /> : 'No existen filas para mostrar',
                         deleteTooltip: 'Borrar Fila',
                         editTooltip: 'Editar Fila',
                         bulkEditTooltip: 'Editar todo',
@@ -164,7 +169,6 @@ export const MuiTable = (
                 ]}
                 components={{
                     Toolbar: props => (
-                        // console.log(props),
                         <div >
                             <div className={classes.toolbarHeader}>
                                 <Breadcrumbs />
@@ -181,7 +185,7 @@ export const MuiTable = (
                                             <div className={classes.reloadDataButton}>
                                                 <IconButton color="primary" aria-label="reload-button" component="span"
                                                     onClick={() => resetData()}>
-                                                <CachedIcon />
+                                                    <CachedIcon />
                                                 </IconButton>
                                             </div>
                                         )}
