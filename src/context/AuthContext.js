@@ -1,5 +1,4 @@
 import { createContext, useEffect, useReducer } from 'react';
-
 import { setToken } from '../Services/Axios';
 import AuthReducer from './AuthReducer';
 
@@ -19,6 +18,7 @@ export const AuthComponentContext = ({ children }) => {
     
 
     useEffect(() => {
+        
         localStorage.setItem('user', JSON.stringify(state.user));
         state.user && setToken(state.user.token);
     }, [state.user]);

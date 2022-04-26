@@ -59,7 +59,6 @@ export const DailyWorksTable = _props => {
 
     useEffect(() => {
         let cancel = false;
-        console.log(socket)
         socket.emit('get_daily_works', date);
         socket.on('get_daily_works', (data) => {
             cancel = false;

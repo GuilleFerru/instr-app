@@ -35,7 +35,7 @@ export const ScheduleTable = _props => {
 
     useEffect(() => {
         let cancel = false;
-        console.log(socket);
+        
         socket.emit('get_schedule', date);
         socket.on('get_schedule', (data) => {
             cancel = false;
