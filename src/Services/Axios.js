@@ -49,12 +49,9 @@ export const axiosDelete = (url, data) => {
 
 export const loginCall = async (userCredential, dispatch) => {
     dispatch({ type: "LOGIN_REQUEST" });
-    try {
-        console.log(baseUrl)
-        const res = await axios.post(`${baseUrl}/login`, userCredential);
-        
+    try {       
+        const res = await axios.post(`${baseUrl}/login`, userCredential);   
         const socket = io(baseUrl.replace('/api', ""), { transports: ['websocket'], auth: { token: `Bearer ${res.data.token}` } });
-        console.log(socket);
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data, socket : socket });
     } catch (err) {
         dispatch({ type: "LOGIN_FAILURE", payload: err, socket: err });
