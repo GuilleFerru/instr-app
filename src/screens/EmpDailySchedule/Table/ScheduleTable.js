@@ -13,18 +13,17 @@ import { muiTableCommonActions } from '../../../components/commonComponents/MuiT
 // import { mainListActions } from '../../../components/Navbar/Drawer/MainListItems/MainListActions'
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
+import { useHistory } from 'react-router-dom';
 
-
-// import { useHistory } from 'react-router-dom';
 // const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
 export const ScheduleTable = _props => {
 
     const classes = useStyles();
-    const {socket} = useContext(AuthContext);
+    const { socket, user } = useContext(AuthContext);
     const { date, getNewDate } = useContext(DateContext);
-    // const history = useHistory();
+    const history = useHistory();
     const [data, setData] = useState([]);
     const [aditionals, setAditionals] = useState({});
     const [aditionalCount, setAditionalCount] = useState(1);
@@ -34,31 +33,36 @@ export const ScheduleTable = _props => {
     // const { handleLeaveRoom } = mainListActions(setRoomId);
 
     useEffect(() => {
+        console.log(user)
         let cancel = false;
-        
-        socket.emit('get_schedule', date);
-        socket.on('get_schedule', (data) => {
-            cancel = false;
-            if (!cancel) {
-                const { schedule, aditionals, columns, id } = data;
-                schedule === undefined ? setData([]) : setData(schedule);
-                columns === undefined ? setDataColumns(scheduleEmpDefault) : setDataColumns(columns)
-                aditionals === undefined ? setAditionals({}) : setAditionals(aditionals);
-                columns !== undefined && columns.length > 5 ? setAditionalCount(parseInt((columns[columns.length - 2].field).match(/\d+/)[0]) + 1) : setAditionalCount(1);
-                id !== undefined ? setRoomId(id) : setRoomId(0);
-                socket.emit('schedule_join_room', id);
-            } else {
-                return;
+        if (socket) {
+            socket.emit('get_schedule', date);
+            socket.on('get_schedule', (data) => {
+                cancel = false;
+                if (!cancel) {
+                    const { schedule, aditionals, columns, id } = data;
+                    schedule === undefined ? setData([]) : setData(schedule);
+                    columns === undefined ? setDataColumns(scheduleEmpDefault) : setDataColumns(columns)
+                    aditionals === undefined ? setAditionals({}) : setAditionals(aditionals);
+                    columns !== undefined && columns.length > 5 ? setAditionalCount(parseInt((columns[columns.length - 2].field).match(/\d+/)[0]) + 1) : setAditionalCount(1);
+                    id !== undefined ? setRoomId(id) : setRoomId(0);
+                    socket.emit('schedule_join_room', id);
+                } else {
+                    return;
+                }
+            })
+            socket.emit('schedule_leave_room', roomId);
+            socket.on('schedule_leave_room', () => socket.off('schedule_leave_room'));
+            return () => {
+                socket.off('get_schedule');
+                cancel = true;
             }
-        })
-        socket.emit('schedule_leave_room', roomId);
-        socket.on('schedule_leave_room', () => socket.off('schedule_leave_room'));
-        return () => {
-            socket.off('get_schedule');
-            cancel = true;
+        } else {
+            history.push('/error');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date]);
+
 
 
     // useEffect(() => {
@@ -101,7 +105,7 @@ export const ScheduleTable = _props => {
             return ''
         })
         const newSchedule = updatedRows;
-        socket.emit('update_schedule', date, newSchedule, roomId);
+        socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
         resolve();
     }
 
@@ -120,7 +124,7 @@ export const ScheduleTable = _props => {
         compareOldAndNewData(oldRow, updatedRow);
         updatedRows[index] = updatedRow;
         const newSchedule = updatedRows;
-        socket.emit('update_schedule', date, newSchedule, roomId);
+        socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
         return updatedRows;
     }
 
@@ -145,8 +149,7 @@ export const ScheduleTable = _props => {
             align: 'left',
         }
         const newColumns = [...dataColumns, adictionanlSelect, aditionalInput];
-
-        socket.emit('update_schedule_columns', date, newColumns, roomId);
+        socket ? socket.emit('update_schedule_columns', date, newColumns, roomId) : history.push('/error');
 
     }
 

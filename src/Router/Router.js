@@ -19,7 +19,10 @@ export const Router = () => {
             {user ? <Redirect to="/dashboard" /> : <Login />}
         </Route>
         <Route exact path="/error">
-            <ErrorPage />
+            <ErrorPage error={'UPS ALGO EXPLOTO... Por favor volve a iniciar sesion'} />
+        </Route>
+        <Route exact path="/login">
+            <Login />
         </Route>
         {user ?
             <LayOut>

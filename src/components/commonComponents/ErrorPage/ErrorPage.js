@@ -12,13 +12,14 @@ import { AuthContext } from '../../../context/AuthContext';
 
 const useStyles = makeStyles((theme) => errorPageStyle(theme));
 
-export const ErrorPage = () => {
+export const ErrorPage = ({ error }) => {
     const classes = useStyles();
     const history = useHistory();
-    const { dispatch } = useContext(AuthContext);
+    const { dispatch, socket } = useContext(AuthContext);
 
     const handleLogout = () => {
-        window.localStorage.removeItem('user');
+        socket && socket.disconnect();
+        // window.localStorage.removeItem('user');
         dispatch({ type: 'LOGIN_FAILURE' });
         history.push('/');
     }
@@ -31,8 +32,8 @@ export const ErrorPage = () => {
                         <Typography variant="h3" paragraph>
                             Perdón, hubo un problema!
                         </Typography>
-                        <Typography sx={{ color: 'text.secondary' }}>
-                            No pudimos encontrar la página que buscas, pero no te preocupes, puedes volver al inicio.
+                        <Typography sx={{ color: 'text.secondary' }} align="center">
+                            {error}
                         </Typography>
                     </Box>
                     <Box

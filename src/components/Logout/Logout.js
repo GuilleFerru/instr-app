@@ -1,4 +1,4 @@
-import React, {useContext } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import { ListItem, ListItemIcon, ListItemText, ListItemAvatar, Avatar } from "@material-ui/core/";
 import { AuthContext } from '../../context/AuthContext';
@@ -12,8 +12,8 @@ export const Logout = () => {
     const { user, dispatch, socket } = useContext(AuthContext);
 
     const handleLogout = () => {
-        socket.disconnect();
-        window.localStorage.removeItem('user');
+        socket && socket.disconnect();
+        // window.localStorage.removeItem('user');
         dispatch({ type: 'LOGOUT_SUCCESS' });
         history.push('/');
     }

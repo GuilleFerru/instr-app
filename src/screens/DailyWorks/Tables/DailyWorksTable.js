@@ -21,7 +21,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export const DailyWorksTable = _props => {
     const classes = useStyles();
     const history = useHistory();
-    const {socket} = useContext(AuthContext);
+    const { socket } = useContext(AuthContext);
     const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
     const [roomId, setRoomId] = useState(0);
@@ -59,67 +59,69 @@ export const DailyWorksTable = _props => {
 
     useEffect(() => {
         let cancel = false;
-        socket.emit('get_daily_works', date);
-        socket.on('get_daily_works', (data) => {
-            cancel = false;
-            if (!cancel) {
-                getData(data);
-                setRoomId(date);
-                socket.emit('daily_works_join_room', date);
-            } else {
-                return;
+        if (socket) {
+            socket.emit('get_daily_works', date);
+            socket.on('get_daily_works', (data) => {
+                cancel = false;
+                if (!cancel) {
+                    getData(data);
+                    setRoomId(date);
+                    socket.emit('daily_works_join_room', date);
+                } else {
+                    return;
+                }
+            });
+            // console.log('useEffect')
+            // axiosGet(`${baseUrl}/dailyWork/get/${date}`).then(data => {
+            //     const { dayWorks, columns } = data;
+            //     if (!cancel) {
+            //         if (data) {
+            //             dayWorks === undefined ? setData([]) : setData(dayWorks);
+            //             columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
+            //         }
+            //     } else {
+            //         console.log('useEffect error')
+            //         return;
+            //     }
+            // }).catch(_err => {
+            //     console.log('useEffect error')
+            //     history.push('/error');
+            // });
+            socket.emit('daily_works_leave_room', roomId);
+            socket.on('daily_works_leave_room', () => socket.off('daily_works_leave_room'));
+
+            return () => {
+                socket.off('get_daily_works');
+                cancel = true
             }
-
-        });
-        // console.log('useEffect')
-        // axiosGet(`${baseUrl}/dailyWork/get/${date}`).then(data => {
-        //     const { dayWorks, columns } = data;
-        //     if (!cancel) {
-        //         if (data) {
-        //             dayWorks === undefined ? setData([]) : setData(dayWorks);
-        //             columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
-        //         }
-        //     } else {
-        //         console.log('useEffect error')
-        //         return;
-        //     }
-        // }).catch(_err => {
-        //     console.log('useEffect error')
-        //     history.push('/error');
-        // });
-        socket.emit('daily_works_leave_room', roomId);
-        socket.on('daily_works_leave_room', () => socket.off('daily_works_leave_room'));
-
-        return () => {
-            socket.off('get_daily_works');
-            cancel = true
+        } else {
+            history.push('/error');
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date]);
 
 
 
     const rowAdd = (newRow, resolve) => {
-        
+
         const updatedRows = [...data, newRow];
         setData(updatedRows);
         // setDayWork(dayWorksUpdate(updatedRows));
         const newDayWork = newRow;
         // le agrego la fecha de inicio y lo envio al servidor
         newDayWork.beginDate = date;
-        socket.emit('create_daily_work', newDayWork, roomId);
+        socket ? socket.emit('create_daily_work', newDayWork, roomId) : history.push('/error');
         // axiosPost(`${baseUrl}/dailyWork/create`, newDayWork);
         resolve();
     }
 
     const updateRow = (updatedRow, oldRow) => {
-        
+
         const index = oldRow.tableData.id;
         const updatedRows = [...data];
         updatedRows[index] = updatedRow;
         const updatedWork = updatedRow;
-        socket.emit('update_daily_work', date, updatedWork, roomId);
+        socket ? socket.emit('update_daily_work', date, updatedWork, roomId) : history.push('/error');
         // axiosPut(`${baseUrl}/dailyWork/update/${date}`, { updatedWork })
         return updatedRows;
     }
@@ -135,7 +137,7 @@ export const DailyWorksTable = _props => {
             return ''
         })
         const newDailyWorks = updatedRows;
-        socket.emit('bulk_update_daily_work', date, newDailyWorks, roomId);
+        socket ? socket.emit('bulk_update_daily_work', date, newDailyWorks, roomId) : history.push('/error');
         // axiosPut(`${baseUrl}/dailyWork/updateBulk/${date}`, { newDailyWorks })
         resolve();
     }
@@ -145,7 +147,7 @@ export const DailyWorksTable = _props => {
         // const updatedRows = [...data]
         // updatedRows.splice(index, 1)
         // setData(updatedRows)
-        socket.emit('delete_daily_work', date, selectedRow._id, roomId);
+        socket ? socket.emit('delete_daily_work', date, selectedRow._id, roomId) : history.push('/error');
         // axiosDelete(`${baseUrl}/dailyWork/delete`, date, { id: selectedRow._id });
         resolve();
     }

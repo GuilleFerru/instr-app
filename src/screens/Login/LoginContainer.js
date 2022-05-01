@@ -1,6 +1,6 @@
 import { useRef, useContext } from "react";
 import { loginCall } from "../../Services/Axios";
-import {Fade, Button, CssBaseline, Link, Grid, Box, makeStyles, Container, CircularProgress } from '@material-ui/core';
+import { Fade, Button, CssBaseline, Link, Grid, Box, makeStyles, Container, CircularProgress } from '@material-ui/core';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../styles/theme';
 import { Footer } from '../../components/Footer/Footer';
@@ -9,6 +9,7 @@ import { Input } from '../../components/commonComponents/Controls/Input';
 import { LogoNavbar } from "../../components/Navbar/LogoNavbar";
 import { Title } from '../../components/commonComponents/Title';
 import { AuthContext } from '../../context/AuthContext';
+
 
 
 
@@ -30,9 +31,9 @@ export const Login = () => {
         }, dispatch)
     };
 
-    return (
+    return <>
         <ThemeProvider theme={theme} >
-            <Fade in={true} timeout={800}>
+            <Fade in={true} timeout={800} >
                 <Container component="main" maxWidth="xs" className={classes.root}>
                     <CssBaseline />
                     <div className={classes.paper}>
@@ -44,7 +45,6 @@ export const Login = () => {
                             color={'inherit'}
                             value={'INSTRUMENTOS PR3'}
                         />
-
                         <form className={classes.form} onSubmit={handleClick}>
                             <Input
                                 variant={"outlined"}
@@ -98,7 +98,7 @@ export const Login = () => {
                         <Footer />
                     </Box>
                 </Container>
-            </Fade>
-        </ThemeProvider>
-    );
+            </Fade >
+        </ThemeProvider >
+    </>
 }
