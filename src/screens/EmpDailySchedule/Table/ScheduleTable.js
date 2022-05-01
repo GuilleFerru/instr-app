@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 export const ScheduleTable = _props => {
 
     const classes = useStyles();
-    const { socket, user } = useContext(AuthContext);
+    const { socket } = useContext(AuthContext);
     const { date, getNewDate } = useContext(DateContext);
     const history = useHistory();
     const [data, setData] = useState([]);
@@ -33,7 +33,6 @@ export const ScheduleTable = _props => {
     // const { handleLeaveRoom } = mainListActions(setRoomId);
 
     useEffect(() => {
-        console.log(user)
         let cancel = false;
         if (socket) {
             socket.emit('get_schedule', date);
