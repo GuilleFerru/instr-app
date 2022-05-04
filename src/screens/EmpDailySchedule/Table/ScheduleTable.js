@@ -185,6 +185,7 @@ export const ScheduleTable = _props => {
                     disableDefaultSearch={true}
                     disableCustomSearch={true}
                     disableReloadDataButton={true}
+                    disableDuplicateButton={true}
                 />
             </ThemeProvider>
         </div>

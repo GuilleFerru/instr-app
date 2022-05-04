@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { axiosGet } from '../../../Services/Axios.js';
-import { dailyWorksDefault } from '../../../Services/defaultTables.js';
+import { dailyWorksDefault, dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
@@ -50,6 +50,7 @@ export const DailyWorksTable = _props => {
 
     const getData = (data) => {
         setData([])
+        
         const { dayWorks, columns } = data;
         if (data) {
             dayWorks === undefined ? setData([]) : setData(dayWorks);
@@ -204,6 +205,9 @@ export const DailyWorksTable = _props => {
                 disableReloadDataButton={reloadButton}
                 resetData={searchData}
                 searchPlaceHolder={'Buscar por Tag, Descripción'}
+                disableDuplicateButton={false}
+                disableInitialFormData={false}
+                initialRowData={dailyWorksInitialRowData}
             />
         </ThemeProvider>
     </div>

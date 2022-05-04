@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import AddBox from '@material-ui/icons/AddBox';
+import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -20,6 +21,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 
 export const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Duplicate: forwardRef((props, ref) => <LibraryAddIcon {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
     Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
     Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),

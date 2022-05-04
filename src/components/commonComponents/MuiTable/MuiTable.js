@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createRef } from 'react'
 import MaterialTable from 'material-table';
 import { makeStyles } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
@@ -13,8 +13,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
-
 const useStyles = makeStyles((theme) => muiTableStyle(theme));
+
+
 
 export const MuiTable = (
     {
@@ -46,15 +47,21 @@ export const MuiTable = (
         disableCustomSearch,
         disableReloadDataButton,
         resetData,
-        searchPlaceHolder
+        searchPlaceHolder,
+        disableDuplicateButton,
+        disableInitialFormData,
+        initialRowData
 
     }) => {
 
     const positionRef = React.useRef();
+    const materialTableRef = createRef();
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
+    const [initialFormData, setInitialFormData] = useState(initialRowData);
+    // const [enableInitialFormData, setEnableInitialFormData] = useState(true);
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
     const [progress, setProgress] = useState(true);
@@ -71,7 +78,10 @@ export const MuiTable = (
             <MaterialTable
                 icons={tableIcons}
                 title={title}
+                initialFormData={disableInitialFormData ? null : initialFormData}
                 data={data}
+                tableRef={materialTableRef}
+
                 columns={columns}
                 localization={{
                     header: {
@@ -109,9 +119,17 @@ export const MuiTable = (
                     }
                 }}
                 editable={{
-                    onRowAdd: disableAddButton ? undefined : (newRow) => new Promise((resolve, _) => {
-                        rowAdd(newRow, resolve);
-                    }),
+                    // onRowAdd: disableAddButton ? undefined : (newRow) => new Promise((resolve, _) => {
+                    //     initialFormData && setInitialFormData(initialRowData);
+                    //     console.log('newRow', newRow);
+                    //     rowAdd(newRow, resolve);
+                    // }),
+                    onRowAdd: disableAddButton ? undefined : (newRow) => {
+                        initialFormData && setInitialFormData(initialRowData);
+                        return new Promise((resolve, _) => {
+                            rowAdd(newRow, resolve);
+                        });
+                    },
                     onRowDelete: disableDeleteButton ? undefined : selectedRow => new Promise((resolve, _) => {
                         deleteRow(selectedRow, resolve);
                     }),
@@ -166,6 +184,25 @@ export const MuiTable = (
                         disabled: disableRoutinesDetails ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
                         hidden: disableRoutinesDetails,
                     }),
+                    {
+                        tooltip: 'Duplicar fila',
+                        icon: tableIcons.Duplicate,
+                        onClick: (evt, rowData) => {
+                            const materialTable = materialTableRef.current;
+                            setInitialFormData({
+                                ...rowData,
+                                _id: '',
+                                tag: undefined,
+                                routineScheduleId: rowData.routineScheduleId ? rowData.routineScheduleId : '',
+                            });
+                            materialTable.dataManager.changeRowEditing();
+                            materialTable.setState({
+                                ...materialTable.dataManager.getRenderState(),
+                                showAddRow: true,
+                            });
+                        },
+                        hidden: disableDuplicateButton,
+                    }
                 ]}
                 components={{
                     Toolbar: props => (
@@ -196,8 +233,8 @@ export const MuiTable = (
                                 )}
                             </div>
                         </div>
-
                     ),
+
                     // EditField: props => (
                     //     <MTableEditField
                     //         {...props}

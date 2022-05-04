@@ -72,6 +72,8 @@ export const RoutineDetailTable = props => {
                 disableDefaultSearch={true}
                 disableCustomSearch={true}
                 disableReloadDataButton={true}
+                disableDuplicateButton={true}
+                disableInitialFormData={true}
             />
         </ThemeProvider>
     </div>

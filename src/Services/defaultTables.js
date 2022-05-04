@@ -82,6 +82,23 @@ export const dailyWorksDefault = [
   },
 ];
 
+export const dailyWorksInitialRowData = {
+  _id: '',
+  action: '1',
+  attelier: '',
+  beginDate: '',
+  complete: 'P',
+  description: '',
+  endDate: '',
+  manteinance: '1',
+  ot: '',
+  plant: '',
+  routineScheduleId: '',
+  sector: 'Instrumentos-Sistemas',
+  tag: '',
+  timeSchedule: '5'
+}
+
 export const otherRoutinesDefault = [
   {
     field: "_id",

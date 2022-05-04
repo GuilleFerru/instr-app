@@ -110,6 +110,8 @@ export const RoutineTable = props => {
                 disableDefaultSearch={false}
                 disableCustomSearch={true}
                 disableReloadDataButton={true}
+                disableDuplicateButton={true}
+                disableInitialFormData={true}
 
             />
         </ThemeProvider>
