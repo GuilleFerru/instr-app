@@ -87,7 +87,7 @@ export const dailyWorksInitialRowData = {
   action: '1',
   attelier: '',
   beginDate: '',
-  complete: 'P',
+  complete: 'C',
   description: '',
   endDate: '',
   manteinance: '1',

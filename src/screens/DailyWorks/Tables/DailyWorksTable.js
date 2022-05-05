@@ -206,7 +206,6 @@ export const DailyWorksTable = _props => {
                 resetData={searchData}
                 searchPlaceHolder={'Buscar por Tag, Descripción'}
                 disableDuplicateButton={false}
-                disableInitialFormData={false}
                 initialRowData={dailyWorksInitialRowData}
             />
         </ThemeProvider>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createRef } from 'react'
-import MaterialTable from 'material-table';
+import MaterialTable, {MTableAction} from 'material-table';
 import { makeStyles } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
 import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
@@ -61,6 +61,7 @@ export const MuiTable = (
         return { ...column };
     });
     const [initialFormData, setInitialFormData] = useState(initialRowData);
+    // const [groupingOption, setGroupingOption] = useState(disableGroupingOption)
     // const [enableInitialFormData, setEnableInitialFormData] = useState(true);
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
@@ -78,7 +79,7 @@ export const MuiTable = (
             <MaterialTable
                 icons={tableIcons}
                 title={title}
-                initialFormData={disableInitialFormData ? null : initialFormData}
+                initialFormData={initialFormData}
                 data={data}
                 tableRef={materialTableRef}
 
@@ -125,10 +126,16 @@ export const MuiTable = (
                     //     rowAdd(newRow, resolve);
                     // }),
                     onRowAdd: disableAddButton ? undefined : (newRow) => {
+
                         initialFormData && setInitialFormData(initialRowData);
                         return new Promise((resolve, _) => {
+
                             rowAdd(newRow, resolve);
                         });
+                    },
+                    onRowAddCancelled: disableAddButton ? undefined : () => {
+                        initialFormData && setInitialFormData(initialRowData);
+
                     },
                     onRowDelete: disableDeleteButton ? undefined : selectedRow => new Promise((resolve, _) => {
                         deleteRow(selectedRow, resolve);
@@ -151,9 +158,14 @@ export const MuiTable = (
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton ? undefined : true,
                     grouping: disableGroupingOption ? undefined : true,
+                    exportButton: true,
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
                     }),
+                    // headerStyle: {
+                    //     backgroundColor: "#01579b",
+                    //     color: "#FFF",
+                    // },
                 }}
                 actions={[
                     rowData => ({
@@ -189,13 +201,14 @@ export const MuiTable = (
                         icon: tableIcons.Duplicate,
                         onClick: (evt, rowData) => {
                             const materialTable = materialTableRef.current;
+                            console.log(rowData)
                             setInitialFormData({
                                 ...rowData,
                                 _id: '',
                                 tag: undefined,
                                 routineScheduleId: rowData.routineScheduleId ? rowData.routineScheduleId : '',
                             });
-                            materialTable.dataManager.changeRowEditing();
+                            //materialTable.dataManager.changeRowEditing();
                             materialTable.setState({
                                 ...materialTable.dataManager.getRenderState(),
                                 showAddRow: true,
@@ -205,6 +218,17 @@ export const MuiTable = (
                     }
                 ]}
                 components={{
+                    Action: (props) => {
+                        //If isn't the add action
+                        if (
+                            typeof props.action === typeof Function ||
+                            props.action.tooltip !== "Add"
+                        ) {
+                            return <MTableAction {...props} />;
+                        } else {
+                            return <></>;
+                        }
+                    },
                     Toolbar: props => (
                         <div >
                             <div className={classes.toolbarHeader}>
