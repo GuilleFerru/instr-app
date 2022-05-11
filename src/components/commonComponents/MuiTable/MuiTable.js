@@ -1,16 +1,17 @@
 import React, { useState, useEffect, createRef } from 'react'
-import MaterialTable, {MTableAction} from 'material-table';
+import MaterialTable, { MTableAction } from '@material-table/core';
 import { makeStyles } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
 import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import Badges from '../../Badges/Badges';
-import { MTableToolbar } from 'material-table';
+import { MTableToolbar } from '@material-table/core';
 import { tableIcons } from './tableIcons';
 import { Link } from "react-router-dom";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
+// import { v4 as uuidv4 } from 'uuid';
 
 
 const useStyles = makeStyles((theme) => muiTableStyle(theme));
@@ -79,7 +80,7 @@ export const MuiTable = (
             <MaterialTable
                 icons={tableIcons}
                 title={title}
-                initialFormData={initialFormData}
+                initialFormData={disableInitialFormData ? null : initialFormData}
                 data={data}
                 tableRef={materialTableRef}
 
@@ -98,7 +99,7 @@ export const MuiTable = (
                         addTooltip: 'Agregar',
                         filterRow: 'Filtrar por',
                         editRow: {
-                            deleteText: 'Esta seguro de borrar esta fila?'
+                            deleteText: 'Esta seguro de borrar esta fila?',
                         }
                     },
                     grouping: {
@@ -126,23 +127,20 @@ export const MuiTable = (
                     //     rowAdd(newRow, resolve);
                     // }),
                     onRowAdd: disableAddButton ? undefined : (newRow) => {
-
                         initialFormData && setInitialFormData(initialRowData);
                         return new Promise((resolve, _) => {
-
                             rowAdd(newRow, resolve);
                         });
                     },
                     onRowAddCancelled: disableAddButton ? undefined : () => {
                         initialFormData && setInitialFormData(initialRowData);
-
                     },
                     onRowDelete: disableDeleteButton ? undefined : selectedRow => new Promise((resolve, _) => {
                         deleteRow(selectedRow, resolve);
                     }),
                     onRowUpdate: disableOnRowUpdate ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
-                        setData(updateRow(updatedRow, oldRow));
-                        resolve();
+                        setData(updateRow(updatedRow, oldRow, resolve));
+                        // resolve();
                     }),
                     onBulkUpdate: disableOnBulkUpdate ? undefined : selectedRows => new Promise((resolve, _) => {
                         bulkUpdate(selectedRows, resolve);
@@ -160,7 +158,8 @@ export const MuiTable = (
                     grouping: disableGroupingOption ? undefined : true,
                     exportButton: true,
                     rowStyle: rowData => ({
-                        backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
+                        backgroundColor: (selectedRow === rowData.tableData.id) ? '#00a400' : '#FFF',
+                        color: (selectedRow === rowData.tableData.id) ? '#FFF' : '#000',
                     }),
                     // headerStyle: {
                     //     backgroundColor: "#01579b",
@@ -187,7 +186,7 @@ export const MuiTable = (
                         icon: () => <Link to={{
                             pathname: `/rutinas/rutinasDetalles`,
                             state: {
-                                routineScheduleId: rowData._id,
+                                routineScheduleId: rowData.id,
                                 nickname: rowData.nickname,
                                 tag: rowData.tag,
                                 from: 'rutinas'
@@ -199,16 +198,15 @@ export const MuiTable = (
                     {
                         tooltip: 'Duplicar fila',
                         icon: tableIcons.Duplicate,
-                        onClick: (evt, rowData) => {
+                        onClick: (_evt, rowData) => {
                             const materialTable = materialTableRef.current;
-                            console.log(rowData)
+                            const { tableData, id, tag, ...dataRest } = rowData
                             setInitialFormData({
-                                ...rowData,
-                                _id: '',
-                                tag: undefined,
-                                routineScheduleId: rowData.routineScheduleId ? rowData.routineScheduleId : '',
+                                id: 0,
+                                tag: '',
+                                ...dataRest
                             });
-                            //materialTable.dataManager.changeRowEditing();
+                            materialTable.dataManager.changeRowEditing();
                             materialTable.setState({
                                 ...materialTable.dataManager.getRenderState(),
                                 showAddRow: true,
@@ -229,34 +227,34 @@ export const MuiTable = (
                             return <></>;
                         }
                     },
-                    Toolbar: props => (
-                        <div >
-                            <div className={classes.toolbarHeader}>
-                                <Breadcrumbs />
-                                <Badges />
-                            </div>
-                            <div className={classes.toolbarBody} >
-                                <MTableToolbar {...props} />
-                                {disableCustomSearch ? null : (
-                                    <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
-                                )}
-                                {disableDatePicker ? null : (
-                                    <div className={classes.datePickerContainer}>
-                                        {disableReloadDataButton ? null : (
-                                            <div className={classes.reloadDataButton}>
-                                                <IconButton color="primary" aria-label="reload-button" component="span"
-                                                    onClick={() => resetData()}>
-                                                    <CachedIcon />
-                                                </IconButton>
+                    Toolbar: props => (               
+                            <div >
+                                <div className={classes.toolbarHeader}>
+                                    <Breadcrumbs />
+                                    <Badges />
+                                </div>
+                                <div className={classes.toolbarBody} >
+                                    <MTableToolbar {...props} />
+                                    {disableCustomSearch ? null : (
+                                        <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
+                                    )}
+                                    {disableDatePicker ? null : (
+                                        <div className={classes.datePickerContainer}>
+                                            {disableReloadDataButton ? null : (
+                                                <div className={classes.reloadDataButton}>
+                                                    <IconButton color="primary" aria-label="reload-button" component="span"
+                                                        onClick={() => resetData()}>
+                                                        <CachedIcon />
+                                                    </IconButton>
+                                                </div>
+                                            )}
+                                            <div className={classes.datePicker}>
+                                                {datepicker}
                                             </div>
-                                        )}
-                                        <div className={classes.datePicker}>
-                                            {datepicker}
                                         </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                                    )}
+                                </div>
+                            </div>                     
                     ),
 
                     // EditField: props => (

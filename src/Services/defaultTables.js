@@ -83,16 +83,16 @@ export const dailyWorksDefault = [
 ];
 
 export const dailyWorksInitialRowData = {
-  _id: '',
+  _id: 0,
   action: '1',
-  attelier: '',
+  attelier: 0,
   beginDate: '',
   complete: 'C',
   description: '',
   endDate: '',
   manteinance: '1',
   ot: '',
-  plant: '',
+  plant: 0,
   routineScheduleId: '',
   sector: 'Instrumentos-Sistemas',
   tag: '',
@@ -163,6 +163,21 @@ export const otherRoutinesDefault = [
     type: "string",
   },
 ];
+
+export const otherRoutinesInitialRowData = {
+  _id: 0,
+  routineId: 0,
+  plant: 0,
+  attelier: 0,
+  tag: '',
+  ot: '',
+  frecuency: 0,
+  checkDay: '',
+  description: '',
+  complete: '',
+  filePath: '',
+  nickname: ''
+}
 
 export const defaultDailyWorksRoutineTable = [
   {

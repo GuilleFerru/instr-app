@@ -28,7 +28,7 @@ export const ScheduleTable = _props => {
     const [aditionals, setAditionals] = useState({});
     const [aditionalCount, setAditionalCount] = useState(1);
     const [roomId, setRoomId] = useState(0);
-    const { handleDatePicker } = muiTableCommonActions(getNewDate);
+    const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
     const [dataColumns, setDataColumns] = useState([]);
     // const { handleLeaveRoom } = mainListActions(setRoomId);
 
@@ -93,38 +93,57 @@ export const ScheduleTable = _props => {
     //     });
     // });
 
-    const bulkUpdate = (selectedRows, resolve) => {
-        const rows = Object.values(selectedRows);
-        const updatedRows = [...data];
-        rows.map(emp => {
-            const index = emp.oldData.tableData.id;
-            compareOldAndNewData(emp.oldData, emp.newData);
-            updatedRows[index] = emp.newData;
-            setData(updatedRows);
-            return ''
-        })
-        const newSchedule = updatedRows;
-        socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
+
+
+    const bulkUpdate = (changes, resolve) => {
+        const copyData = [...data];
+        const dataUpdate = getNewDataBulkEdit(changes, copyData);
+        socket ? socket.emit('update_schedule', date, dataUpdate, roomId) : history.push('/error');
+        setData(dataUpdate);
         resolve();
+        return dataUpdate;
+
+        // const rows = Object.values(selectedRows);
+        // const updatedRows = [...data];
+        // rows.map(emp => {
+        //     const index = emp.oldData.tableData.id;
+        //     compareOldAndNewData(emp.oldData, emp.newData);
+        //     updatedRows[index] = emp.newData;
+        //     setData(updatedRows);
+        //     return ''
+        // })
+        // const newSchedule = updatedRows;
+        // socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
+
     }
 
     // MEJORAR ESTO
-    const compareOldAndNewData = (oldData, newData) => {
+    // const compareOldAndNewData = (oldData, newData) => {
 
-        if (oldData.timeSchedule !== newData.timeSchedule) {
-            newData.timeSchedule >= 7 && newData.timeSchedule <= 14 ? newData.workedHours = 12 : newData.timeSchedule === 4 ? newData.workedHours = 0 : newData.workedHours = 8;
-        }
-        newData.legajo !== newData.fullName && (newData.legajo = newData.fullName);
-    }
+    //     if (oldData.timeSchedule !== newData.timeSchedule) {
+    //         newData.timeSchedule >= 7 && newData.timeSchedule <= 14 ? newData.workedHours = 12 : newData.timeSchedule === 4 ? newData.workedHours = 0 : newData.workedHours = 8;
+    //     }
+    //     newData.legajo !== newData.fullName && (newData.legajo = newData.fullName);
+    // }
 
-    const updateRow = (updatedRow, oldRow) => {
-        const index = oldRow.tableData.id;
-        const updatedRows = [...data];
-        compareOldAndNewData(oldRow, updatedRow);
-        updatedRows[index] = updatedRow;
-        const newSchedule = updatedRows;
-        socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
-        return updatedRows;
+    const updateRow = (newData, oldData, resolve) => {
+        const dataUpdate = [...data];
+        const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
+        const index = dataUpdate.indexOf(target);
+        dataUpdate[index] = newData;
+        socket ? socket.emit('update_schedule', date, dataUpdate, roomId) : history.push('/error');
+        setData([...dataUpdate]);
+        resolve();
+        return dataUpdate;
+
+        // const index = oldRow.tableData.id;
+        // const updatedRows = [...data];
+        // //compareOldAndNewData(oldRow, updatedRow);
+        // updatedRows[index] = updatedRow;
+        // const newSchedule = updatedRows;
+        // console.log(newSchedule);
+        // socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
+        // return updatedRows;
     }
 
     const handleAditional = () => {
@@ -152,6 +171,20 @@ export const ScheduleTable = _props => {
 
     }
 
+    const deleteRow = (oldData, resolve) => {
+        const dataDelete = [...data];
+        const target = dataDelete.find((el) => el.id === oldData.tableData.id);
+        const index = dataDelete.indexOf(target);
+        dataDelete.splice(index, 1);
+        const dataToDelete = {
+            date: date,
+            dataDelete: dataDelete,
+        }
+        socket ? socket.emit('delete_schedule', date, dataToDelete, roomId) : history.push('/error');
+        setData([...dataDelete]);
+        resolve();
+    }
+
 
     return <>
         <div className={classes.table}>
@@ -171,7 +204,7 @@ export const ScheduleTable = _props => {
                     rowAdd={false}
                     updateRow={updateRow}
                     bulkUpdate={bulkUpdate}
-                    deleteRow={false}
+                    deleteRow={deleteRow}
                     handleAditional={handleAditional}
                     pageSize={15}
                     disableGroupingOption={true}
@@ -186,7 +219,8 @@ export const ScheduleTable = _props => {
                     disableCustomSearch={true}
                     disableReloadDataButton={true}
                     disableDuplicateButton={true}
-                    initialRowData={{}}
+                    disableInitialFormData={true}
+                // initialRowData={{}}
                 />
             </ThemeProvider>
         </div>

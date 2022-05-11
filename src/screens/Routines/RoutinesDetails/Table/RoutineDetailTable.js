@@ -5,6 +5,7 @@ import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { defaultDailyWorksRoutineTable } from '../../../../Services/defaultTables';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
+import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { routineDetailTableStyle } from './RoutineDetailTableStyle';
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -16,6 +17,7 @@ export const RoutineDetailTable = props => {
     const [data, setData] = useState([]);
     const [nickname, setNickname] = useState('');
     const [dataColumns, setDataColumns] = useState([]);
+    const {getNewDataBulkEdit } = muiTableCommonActions();
 
     useEffect(() => {
         new Promise(resolve => {
@@ -26,19 +28,33 @@ export const RoutineDetailTable = props => {
         });
     }, [props]);
 
-    const bulkUpdate = (selectedRows, resolve) => {
-        const rows = Object.values(selectedRows);
-        const updatedRows = [...data];
-
-        rows.map(work => {
-            const index = work.oldData.tableData.id;
-            updatedRows[index] = work.newData;
-            setData(updatedRows);
-            const updatedWork = work.newData;
-                axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork })
-            return ''
+    const bulkUpdate = (changes, resolve) => {
+        const copyData = [...data];
+        const dataUpdate = getNewDataBulkEdit(changes, copyData);
+        dataUpdate.map((updatedWork) => {
+            axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork })
+            return ''   // return empty string to avoid warning
         })
+        console.log(dataUpdate)
+        setData(dataUpdate);
         resolve();
+        return dataUpdate;
+
+
+
+
+        // const rows = Object.values(selectedRows);
+        // const updatedRows = [...data];
+
+        // rows.map(work => {
+        //     const index = work.oldData.tableData.id;
+        //     updatedRows[index] = work.newData;
+        //     setData(updatedRows);
+        //     const updatedWork = work.newData;
+        //         axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork })
+        //     return ''
+        // })
+        // resolve();
     }
 
 

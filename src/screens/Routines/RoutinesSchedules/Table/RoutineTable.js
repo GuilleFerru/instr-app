@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { axiosGet, axiosPut } from '../../../../Services/Axios.js';
-import { otherRoutinesDefault } from '../../../../Services/defaultTables.js';
+import { otherRoutinesDefault,otherRoutinesInitialRowData } from '../../../../Services/defaultTables.js';
 import { monthPicker } from '../../../../Services/DatePickers'
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
@@ -26,14 +26,14 @@ export const RoutineTable = props => {
     useEffect(() => {
         setData([])
         let cancel = false;
-        axiosGet(`${baseUrl}/routine/getAllRoutines/${date}`).then(res => { 
-                const { otherRoutines, columns } = res;
-                if (!cancel) {
-                    otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
-                    columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
-                } else {
-                    return;
-                }
+        axiosGet(`${baseUrl}/routine/getAllRoutines/${date}`).then(res => {
+            const { otherRoutines, columns } = res;
+            if (!cancel) {
+                otherRoutines === undefined || otherRoutines.length === 0 ? setData([]) : setData(otherRoutines);
+                columns === undefined ? setDataColumns([otherRoutinesDefault]) : setDataColumns(columns);
+            } else {
+                return;
+            }
         }).catch(_err => {
             history.push('/error');
         });;
@@ -42,25 +42,39 @@ export const RoutineTable = props => {
         }
     }, [date, history]);
 
-    const updateRow = (updatedRow, oldRow) => {
-        const index = oldRow.tableData.id;
-        const updatedRows = [...data];
-        updatedRows[index] = updatedRow;
-        const updatedWork = updatedRow;
-        axiosPut(`${baseUrl}/routine/updateOt`, { data: updatedWork })
-        return updatedRows;
+    const updateRow = (newData, oldData, resolve) => {
+        const dataUpdate = [...data];
+        const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
+        const index = dataUpdate.indexOf(target);
+        dataUpdate[index] = newData;
+        axiosPut(`${baseUrl}/routine/updateOt`, { data: newData })
+        // const index = oldRow.tableData.id;
+        // const updatedRows = [...data];
+        // updatedRows[index] = updatedRow;
+        // console.log(updatedRows)
+        // const updatedWork = updatedRow;
+        // console.log(updatedWork);
+        // axiosPut(`${baseUrl}/routine/updateOt`, { data: updatedWork })
+        resolve();
+        return dataUpdate;
     }
 
     const handleRoutineSchedule = (selectedRows,) => {
-        // const rows = Object.values(selectedRows);
-        // const updatedRows = [...data];
-        // const dataToAxiosPut = [];
 
-        const index = selectedRows.tableData.id;
-        const updatedRows = [...data];
-        updatedRows[index] = { ...selectedRows, complete: 'C' };
-        setData(updatedRows);
-        axiosPut(`${baseUrl}/routine/update`, { data: updatedRows[index] });
+        const dataUpdate = [...data];
+        const target = dataUpdate.find((el) => el.id === selectedRows.tableData.id);
+        const index = dataUpdate.indexOf(target);
+        dataUpdate[index] = { ...selectedRows, complete: 'C' };
+
+
+        // console.log(selectedRows);
+        // const index = selectedRows.tableData.id;
+        // console.log(index);
+        // const updatedRows = [...data];
+        // updatedRows[index] = { ...selectedRows, complete: 'C' };
+        // console.log(updatedRows)
+        setData(dataUpdate);
+        axiosPut(`${baseUrl}/routine/update`, { data: dataUpdate[index] });
         // rows.map(routine => {
         //     const index = routine.tableData.id;
         //     updatedRows[index] = { ...routine, complete: 'C' };
@@ -111,7 +125,7 @@ export const RoutineTable = props => {
                 disableCustomSearch={true}
                 disableReloadDataButton={true}
                 disableDuplicateButton={true}
-                initialRowData={{}}
+                initialRowData={{otherRoutinesInitialRowData}}
 
             />
         </ThemeProvider>

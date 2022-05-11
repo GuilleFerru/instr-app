@@ -29,7 +29,7 @@ export const DailyWorksTable = _props => {
     const [reloadButton, setReloadButton] = useState(true);
 
     // const [dayWork, setDayWork] = useState(dayWorks)
-    const { handleDatePicker } = muiTableCommonActions(getNewDate);
+    const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
 
 
 
@@ -50,7 +50,6 @@ export const DailyWorksTable = _props => {
 
     const getData = (data) => {
         setData([])
-        
         const { dayWorks, columns } = data;
         if (data) {
             dayWorks === undefined ? setData([]) : setData(dayWorks);
@@ -104,43 +103,58 @@ export const DailyWorksTable = _props => {
 
 
     const rowAdd = (newRow, resolve) => {
-
-        const updatedRows = [...data, newRow];
-        setData(updatedRows);
-        // setDayWork(dayWorksUpdate(updatedRows));
+        //const updatedRows = [...data, newRow];
+        // setData(updatedRows);
         const newDayWork = newRow;
         // le agrego la fecha de inicio y lo envio al servidor
         newDayWork.beginDate = date;
         socket ? socket.emit('create_daily_work', newDayWork, roomId) : history.push('/error');
-        // axiosPost(`${baseUrl}/dailyWork/create`, newDayWork);
         resolve();
     }
 
-    const updateRow = (updatedRow, oldRow) => {
+    const updateRow = (newData, oldData, resolve) => {
+        const dataUpdate = [...data];
+        const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
+        const index = dataUpdate.indexOf(target);
+        dataUpdate[index] = newData;
+        socket ? socket.emit('update_daily_work', date, newData, roomId) : history.push('/error');
+        // setData([...dataUpdate]);
+        resolve();
+        return dataUpdate;
 
-        const index = oldRow.tableData.id;
-        const updatedRows = [...data];
-        updatedRows[index] = updatedRow;
-        const updatedWork = updatedRow;
-        socket ? socket.emit('update_daily_work', date, updatedWork, roomId) : history.push('/error');
-        // axiosPut(`${baseUrl}/dailyWork/update/${date}`, { updatedWork })
-        return updatedRows;
+
+        // const index = oldRow.tableData.id;
+        // const updatedRows = [...data];
+        // updatedRows[index] = updatedRow;
+        // const updatedWork = updatedRow;
+        // socket ? socket.emit('update_daily_work', date, updatedWork, roomId) : history.push('/error');
+        // // axiosPut(`${baseUrl}/dailyWork/update/${date}`, { updatedWork })
+        // return updatedRows;
     }
 
-    const bulkUpdate = (selectedRows, resolve) => {
-        const rows = Object.values(selectedRows);
-        const updatedRows = [...data];
 
-        rows.map(work => {
-            const index = work.oldData.tableData.id;
-            updatedRows[index] = work.newData;
-            setData(updatedRows);
-            return ''
-        })
-        const newDailyWorks = updatedRows;
-        socket ? socket.emit('bulk_update_daily_work', date, newDailyWorks, roomId) : history.push('/error');
+    const bulkUpdate = (changes, resolve) => {
+        const copyData = [...data];
+        const dataUpdate = getNewDataBulkEdit(changes, copyData);
+        socket ? socket.emit('bulk_update_daily_work', date, dataUpdate, roomId) : history.push('/error');
+        // setData(dataUpdate);
+        resolve();
+        return dataUpdate;
+        // const rows = Object.values(selectedRows);
+        // console.log('rows', rows)
+        // const updatedRows = [...data];
+
+        // rows.map(work => {
+        //     const index = work.oldData.tableData.id;
+        //     updatedRows[index] = work.newData;
+        //     setData(updatedRows);
+        //     return ''
+        // })
+        // const newDailyWorks = updatedRows;
+        // console.log('newDailyWorks', newDailyWorks)
+        // socket ? socket.emit('bulk_update_daily_work', date, newDailyWorks, roomId) : history.push('/error');
         // axiosPut(`${baseUrl}/dailyWork/updateBulk/${date}`, { newDailyWorks })
-        resolve();
+        // resolve();
     }
 
     const deleteRow = (selectedRow, resolve) => {
@@ -148,7 +162,7 @@ export const DailyWorksTable = _props => {
         // const updatedRows = [...data]
         // updatedRows.splice(index, 1)
         // setData(updatedRows)
-        socket ? socket.emit('delete_daily_work', date, selectedRow._id, roomId) : history.push('/error');
+        socket ? socket.emit('delete_daily_work', date, selectedRow.id, roomId) : history.push('/error');
         // axiosDelete(`${baseUrl}/dailyWork/delete`, date, { id: selectedRow._id });
         resolve();
     }
