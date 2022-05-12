@@ -17,7 +17,7 @@ export const RoutineDetailTable = props => {
     const [data, setData] = useState([]);
     const [nickname, setNickname] = useState('');
     const [dataColumns, setDataColumns] = useState([]);
-    const {getNewDataBulkEdit } = muiTableCommonActions();
+    const { getNewDataBulkEdit } = muiTableCommonActions();
 
     useEffect(() => {
         new Promise(resolve => {
@@ -26,23 +26,21 @@ export const RoutineDetailTable = props => {
             setNickname(props.nickname ? props.nickname : '');
             resolve();
         });
+        
     }, [props]);
 
     const bulkUpdate = (changes, resolve) => {
         const copyData = [...data];
         const dataUpdate = getNewDataBulkEdit(changes, copyData);
         dataUpdate.map((updatedWork) => {
-            axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork })
+            axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork }).then(res => {
+                setData(res.data.dayWorks);
+                
+            });
             return ''   // return empty string to avoid warning
         })
-        console.log(dataUpdate)
-        setData(dataUpdate);
         resolve();
         return dataUpdate;
-
-
-
-
         // const rows = Object.values(selectedRows);
         // const updatedRows = [...data];
 
@@ -83,13 +81,14 @@ export const RoutineDetailTable = props => {
                 handleRoutineSchedule={false}
                 disableRoutinesDetails={true}
                 disableCompleteTaskButton={true}
-                disableDatePicker={true}              
+                disableDatePicker={true}
                 searchData={false}
                 disableDefaultSearch={true}
                 disableCustomSearch={true}
                 disableReloadDataButton={true}
                 disableDuplicateButton={true}
                 initialRowData={{}}
+                disableGoToDateButton={false}
             />
         </ThemeProvider>
     </div>

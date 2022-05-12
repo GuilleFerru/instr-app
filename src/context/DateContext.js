@@ -3,7 +3,7 @@ export const DateContext = createContext();
 export const DateComponentContext = props => {
 
     const [date, setDate] = useState(new Date());
-
+    console.log(date);
     const getNewDate = (newDate) => {
         setDate(newDate);
     }

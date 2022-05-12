@@ -22,7 +22,7 @@ export const DailyWorksTable = _props => {
     const classes = useStyles();
     const history = useHistory();
     const { socket } = useContext(AuthContext);
-    const { date, getNewDate } = useContext(DateContext);
+    const { date, getNewDate } =  useContext(DateContext);
     const [data, setData] = useState([]);
     const [roomId, setRoomId] = useState(0);
     const [dataColumns, setDataColumns] = useState([]);
@@ -49,7 +49,7 @@ export const DailyWorksTable = _props => {
 
 
     const getData = (data) => {
-        setData([])
+        setData([]);
         const { dayWorks, columns } = data;
         if (data) {
             dayWorks === undefined ? setData([]) : setData(dayWorks);
@@ -221,6 +221,7 @@ export const DailyWorksTable = _props => {
                 searchPlaceHolder={'Buscar por Tag, Descripción'}
                 disableDuplicateButton={false}
                 initialRowData={dailyWorksInitialRowData}
+                disableGoToDateButton={true}
             />
         </ThemeProvider>
     </div>

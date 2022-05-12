@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect, createRef,useContext } from 'react'
 import MaterialTable, { MTableAction } from '@material-table/core';
 import { makeStyles } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
@@ -11,6 +11,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {DateContext} from '../../../context/DateContext';
 // import { v4 as uuidv4 } from 'uuid';
 
 
@@ -51,7 +52,8 @@ export const MuiTable = (
         searchPlaceHolder,
         disableDuplicateButton,
         disableInitialFormData,
-        initialRowData
+        initialRowData,
+        disableGoToDateButton,
 
     }) => {
 
@@ -62,8 +64,7 @@ export const MuiTable = (
         return { ...column };
     });
     const [initialFormData, setInitialFormData] = useState(initialRowData);
-    // const [groupingOption, setGroupingOption] = useState(disableGroupingOption)
-    // const [enableInitialFormData, setEnableInitialFormData] = useState(true);
+    const {  getNewDate } =  useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
     const [progress, setProgress] = useState(true);
@@ -83,7 +84,6 @@ export const MuiTable = (
                 initialFormData={disableInitialFormData ? null : initialFormData}
                 data={data}
                 tableRef={materialTableRef}
-
                 columns={columns}
                 localization={{
                     header: {
@@ -194,6 +194,18 @@ export const MuiTable = (
                         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
                         disabled: disableRoutinesDetails ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
                         hidden: disableRoutinesDetails,
+                    }),
+                    rowData => ({
+                        tooltip: 'Ir a fecha',
+                        icon: () => <Link to={{
+                            pathname: `/tareasDiarias`,
+                            state: {
+                                from: 'rutinas'
+                            },
+                        }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
+                        onClick: () => getNewDate(rowData.beginDate),
+                        //disabled: disableGoToDateButton ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
+                        hidden: disableGoToDateButton,
                     }),
                     {
                         tooltip: 'Duplicar fila',

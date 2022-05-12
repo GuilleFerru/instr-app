@@ -220,6 +220,7 @@ export const ScheduleTable = _props => {
                     disableReloadDataButton={true}
                     disableDuplicateButton={true}
                     disableInitialFormData={true}
+                    disableGoToDateButton={true}
                 // initialRowData={{}}
                 />
             </ThemeProvider>

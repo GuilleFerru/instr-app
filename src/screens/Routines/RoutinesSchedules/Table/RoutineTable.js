@@ -126,6 +126,7 @@ export const RoutineTable = props => {
                 disableReloadDataButton={true}
                 disableDuplicateButton={true}
                 initialRowData={{otherRoutinesInitialRowData}}
+                disableGoToDateButton={true}
 
             />
         </ThemeProvider>
