@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { axiosGet } from '../../../Services/Axios.js';
 import { TableCard } from '../../Card/TableCard';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { RoutineDetailTable } from './Table/RoutineDetailTable';
-import { useHistory } from 'react-router-dom';
+
 
 const baseUrl = process.env.REACT_APP_API_URL;
 

@@ -11,7 +11,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
@@ -19,18 +19,27 @@ const baseUrl = process.env.REACT_APP_API_URL;
 
 
 export const DailyWorksTable = _props => {
+    const location = useLocation();
     const classes = useStyles();
     const history = useHistory();
     const { socket } = useContext(AuthContext);
-    const { date, getNewDate } =  useContext(DateContext);
+    const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
     const [roomId, setRoomId] = useState(0);
     const [dataColumns, setDataColumns] = useState([]);
     const [reloadButton, setReloadButton] = useState(true);
+    const [rowIdHighlight, setRowIdHighlight] = useState(undefined)
 
     // const [dayWork, setDayWork] = useState(dayWorks)
     const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
 
+
+    useEffect(() => {
+        try {
+            const { id } = location.state;
+            id && setRowIdHighlight(id);
+        } catch (error) { }
+    }, [location])
 
 
 
@@ -222,6 +231,8 @@ export const DailyWorksTable = _props => {
                 disableDuplicateButton={false}
                 initialRowData={dailyWorksInitialRowData}
                 disableGoToDateButton={true}
+                rowIdHighlight={rowIdHighlight}
+                setRowColor={true}
             />
         </ThemeProvider>
     </div>

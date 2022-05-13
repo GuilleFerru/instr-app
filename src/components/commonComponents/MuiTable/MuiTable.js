@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef,useContext } from 'react'
+import React, { useState, useEffect, createRef, useContext } from 'react'
 import MaterialTable, { MTableAction } from '@material-table/core';
 import { makeStyles } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
@@ -11,7 +11,9 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {DateContext} from '../../../context/DateContext';
+import { DateContext } from '../../../context/DateContext';
+import { parseStringToDate } from '../../../Services/DateUtils';
+
 // import { v4 as uuidv4 } from 'uuid';
 
 
@@ -54,7 +56,8 @@ export const MuiTable = (
         disableInitialFormData,
         initialRowData,
         disableGoToDateButton,
-
+        setRowColor,
+        rowIdHighlight
     }) => {
 
     const positionRef = React.useRef();
@@ -64,10 +67,15 @@ export const MuiTable = (
         return { ...column };
     });
     const [initialFormData, setInitialFormData] = useState(initialRowData);
-    const {  getNewDate } =  useContext(DateContext);
+    const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
     const [progress, setProgress] = useState(true);
+
+    useEffect(() => {
+        setRowColor && setSelectedRow(rowIdHighlight);
+    }, [rowIdHighlight, setRowColor]);
+
 
     useEffect(() => {
         setProgress(true);
@@ -121,11 +129,6 @@ export const MuiTable = (
                     }
                 }}
                 editable={{
-                    // onRowAdd: disableAddButton ? undefined : (newRow) => new Promise((resolve, _) => {
-                    //     initialFormData && setInitialFormData(initialRowData);
-                    //     console.log('newRow', newRow);
-                    //     rowAdd(newRow, resolve);
-                    // }),
                     onRowAdd: disableAddButton ? undefined : (newRow) => {
                         initialFormData && setInitialFormData(initialRowData);
                         return new Promise((resolve, _) => {
@@ -140,7 +143,6 @@ export const MuiTable = (
                     }),
                     onRowUpdate: disableOnRowUpdate ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
                         setData(updateRow(updatedRow, oldRow, resolve));
-                        // resolve();
                     }),
                     onBulkUpdate: disableOnBulkUpdate ? undefined : selectedRows => new Promise((resolve, _) => {
                         bulkUpdate(selectedRows, resolve);
@@ -158,13 +160,15 @@ export const MuiTable = (
                     grouping: disableGroupingOption ? undefined : true,
                     exportButton: true,
                     rowStyle: rowData => ({
-                        backgroundColor: (selectedRow === rowData.tableData.id) ? '#00a400' : '#FFF',
+                        backgroundColor: (selectedRow === rowData.tableData.id) ? '#8a8a8a' : '#FFF',
                         color: (selectedRow === rowData.tableData.id) ? '#FFF' : '#000',
+                        fontStyle: (selectedRow === rowData.tableData.id) ? 'italic' : 'normal',
                     }),
-                    // headerStyle: {
-                    //     backgroundColor: "#01579b",
-                    //     color: "#FFF",
-                    // },
+                    headerStyle: {
+                        backgroundColor: "#128726",
+                        color: "#FFF",
+                        fontWeight: 'bold',
+                    },
                 }}
                 actions={[
                     rowData => ({
@@ -200,10 +204,11 @@ export const MuiTable = (
                         icon: () => <Link to={{
                             pathname: `/tareasDiarias`,
                             state: {
+                                id: rowData.id,
                                 from: 'rutinas'
                             },
                         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
-                        onClick: () => getNewDate(rowData.beginDate),
+                        onClick: () => getNewDate(parseStringToDate(rowData.beginDate)),
                         //disabled: disableGoToDateButton ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
                         hidden: disableGoToDateButton,
                     }),
@@ -239,34 +244,34 @@ export const MuiTable = (
                             return <></>;
                         }
                     },
-                    Toolbar: props => (               
-                            <div >
-                                <div className={classes.toolbarHeader}>
-                                    <Breadcrumbs />
-                                    <Badges />
-                                </div>
-                                <div className={classes.toolbarBody} >
-                                    <MTableToolbar {...props} />
-                                    {disableCustomSearch ? null : (
-                                        <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
-                                    )}
-                                    {disableDatePicker ? null : (
-                                        <div className={classes.datePickerContainer}>
-                                            {disableReloadDataButton ? null : (
-                                                <div className={classes.reloadDataButton}>
-                                                    <IconButton color="primary" aria-label="reload-button" component="span"
-                                                        onClick={() => resetData()}>
-                                                        <CachedIcon />
-                                                    </IconButton>
-                                                </div>
-                                            )}
-                                            <div className={classes.datePicker}>
-                                                {datepicker}
+                    Toolbar: props => (
+                        <div >
+                            <div className={classes.toolbarHeader}>
+                                <Breadcrumbs />
+                                <Badges />
+                            </div>
+                            <div className={classes.toolbarBody} >
+                                <MTableToolbar {...props} />
+                                {disableCustomSearch ? null : (
+                                    <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
+                                )}
+                                {disableDatePicker ? null : (
+                                    <div className={classes.datePickerContainer}>
+                                        {disableReloadDataButton ? null : (
+                                            <div className={classes.reloadDataButton}>
+                                                <IconButton color="primary" aria-label="reload-button" component="span"
+                                                    onClick={() => resetData()}>
+                                                    <CachedIcon />
+                                                </IconButton>
                                             </div>
+                                        )}
+                                        <div className={classes.datePicker}>
+                                            {datepicker}
                                         </div>
-                                    )}
-                                </div>
-                            </div>                     
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     ),
 
                     // EditField: props => (
