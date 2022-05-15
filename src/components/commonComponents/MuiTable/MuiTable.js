@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
+import { ExportPdf } from '@material-table/exporters';
 
 // import { v4 as uuidv4 } from 'uuid';
 
@@ -158,7 +159,10 @@ export const MuiTable = (
                     pageSizeOptions: [15, 30, 50, 100],
                     selection: disableCheckButton ? undefined : true,
                     grouping: disableGroupingOption ? undefined : true,
-                    exportButton: true,
+                    exportMenu: [{
+                        label: 'Exportar a PDF',
+                        exportFunc: (cols, datas) => ExportPdf(cols, datas, 'myPdfFileName')
+                    }],
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#8a8a8a' : '#FFF',
                         color: (selectedRow === rowData.tableData.id) ? '#FFF' : '#000',
