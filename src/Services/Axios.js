@@ -51,22 +51,26 @@ export const loginCall = async (userCredential, dispatch) => {
     dispatch({ type: "LOGIN_REQUEST" });
     try {
         const res = await axios.post(`${baseUrl}/login`, userCredential);
-        const token = res.data.token;;
-        const socket = io(baseUrl.replace('/api', ""), {
-            extraHeaders: {
-                'x-auth-token': `${token}`
-            },
-            // transports: ['websocket'],
-            transportOptions: {
-                polling: {
-                    extraHeaders: {
-                        'x-auth-token': `${token}`
+        
+        if (res.status === 200) {
+            const token = res.data.token;;
+            const socket = io(baseUrl.replace('/api', ""), {
+                extraHeaders: {
+                    'x-auth-token': `${token}`
+                },
+                // transports: ['websocket'],
+                transportOptions: {
+                    polling: {
+                        extraHeaders: {
+                            'x-auth-token': `${token}`
+                        }
                     }
                 }
-            }
-        });
-        
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data, socket: socket });
+            });
+
+            const overDueRoutines = await axios.get(`${baseUrl}/routine/qtyOverdueRoutines`, options());
+            dispatch({ type: "LOGIN_SUCCESS", payload: res.data, socket: socket, overDueRoutines: overDueRoutines.data });
+        }
     } catch (err) {
         dispatch({ type: "LOGIN_FAILURE", payload: err, socket: err });
     }

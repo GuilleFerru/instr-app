@@ -8,6 +8,7 @@ import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTa
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { routineDetailTableStyle } from './RoutineDetailTableStyle';
 
+
 const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => routineDetailTableStyle(theme));
 
@@ -89,6 +90,7 @@ export const RoutineDetailTable = props => {
                 disableDuplicateButton={true}
                 initialRowData={{}}
                 disableGoToDateButton={false}
+                pdfTitle={`${nickname}`}
             />
         </ThemeProvider>
     </div>

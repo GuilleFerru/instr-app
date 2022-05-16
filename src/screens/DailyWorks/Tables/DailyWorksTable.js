@@ -3,6 +3,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { axiosGet } from '../../../Services/Axios.js';
 import { dailyWorksDefault, dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
+import {formatDate} from '../../../Services/DateUtils.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
@@ -99,7 +100,7 @@ export const DailyWorksTable = _props => {
         const dataUpdate = getNewDataBulkEdit(changes, copyData);
         setData(dataUpdate);
         socket ? socket.emit('bulk_update_daily_work', date, dataUpdate, roomId) : history.push('/error');
-        
+
         resolve();
     }
 
@@ -165,6 +166,7 @@ export const DailyWorksTable = _props => {
                 disableGoToDateButton={true}
                 rowIdHighlight={rowIdHighlight}
                 setRowColor={true}
+                pdfTitle={`Tareas diarias ${formatDate(date)}`}
             />
         </ThemeProvider>
     </div>

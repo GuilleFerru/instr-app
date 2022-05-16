@@ -10,7 +10,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export const RoutineDetailsContainer = () => {
     const location = useLocation();
     const history = useHistory();
-    const { routineScheduleId, nickname, tag } = location.state;
+    const { routineScheduleId, nickname, tag, monthAndYear } = location.state;
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -33,6 +33,6 @@ export const RoutineDetailsContainer = () => {
 
 
     return <TableCard>
-        <RoutineDetailTable data={data} nickname={`Rutina: ${nickname} - TAG: ${tag}`} />
+        <RoutineDetailTable data={data} nickname={`Rutina: ${nickname} - TAG: ${tag} - Fecha: ${monthAndYear}`} />
     </TableCard>
 };

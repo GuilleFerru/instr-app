@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
+import { AuthContext } from '../../../context/AuthContext';
 import { ExportPdf } from '@material-table/exporters';
 
 // import { v4 as uuidv4 } from 'uuid';
@@ -58,7 +59,9 @@ export const MuiTable = (
         initialRowData,
         disableGoToDateButton,
         setRowColor,
-        rowIdHighlight
+        rowIdHighlight,
+        pdfTitle,
+        monthAndYear,
     }) => {
 
     const positionRef = React.useRef();
@@ -67,6 +70,8 @@ export const MuiTable = (
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
+
+    const { overDueRoutines } = useContext(AuthContext);
     const [initialFormData, setInitialFormData] = useState(initialRowData);
     const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -161,7 +166,7 @@ export const MuiTable = (
                     grouping: disableGroupingOption ? undefined : true,
                     exportMenu: [{
                         label: 'Exportar a PDF',
-                        exportFunc: (cols, datas) => ExportPdf(cols, datas, 'myPdfFileName')
+                        exportFunc: (cols, datas) => ExportPdf(cols, datas, pdfTitle)
                     }],
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#8a8a8a' : '#FFF',
@@ -197,6 +202,7 @@ export const MuiTable = (
                                 routineScheduleId: rowData.id,
                                 nickname: rowData.nickname,
                                 tag: rowData.tag,
+                                monthAndYear: monthAndYear,
                                 from: 'rutinas'
                             },
                         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
@@ -252,7 +258,11 @@ export const MuiTable = (
                         <div >
                             <div className={classes.toolbarHeader}>
                                 <Breadcrumbs />
-                                <Badges />
+                                <Badges
+                                    tooltip="Rutinas atrasadas"
+                                    qty={overDueRoutines}
+                                    color={overDueRoutines === 0 ? "secondary" : "error"}
+                                />
                             </div>
                             <div className={classes.toolbarBody} >
                                 <MTableToolbar {...props} />

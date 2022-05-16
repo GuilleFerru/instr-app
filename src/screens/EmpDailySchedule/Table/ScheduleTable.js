@@ -3,7 +3,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 // import { axiosPut } from '../../../Services/Axios.js';
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
-// import { formatDate } from '../../../Services/DateUtils.js';
+import { formatDate } from '../../../Services/DateUtils.js';
 import { DateContext } from '../../../context/DateContext';
 import { AuthContext } from '../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
@@ -221,6 +221,7 @@ export const ScheduleTable = _props => {
                     disableDuplicateButton={true}
                     disableInitialFormData={true}
                     disableGoToDateButton={true}
+                    pdfTitle={`Personal ${formatDate(date)}`}
                 // initialRowData={{}}
                 />
             </ThemeProvider>

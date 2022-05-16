@@ -4,6 +4,7 @@ const AuthReducer = (state, action) => {
             return {
                 user: null,
                 socket: null,
+                overDueRoutines: null,
                 isFetching: true,
                 error: false
             };
@@ -11,6 +12,7 @@ const AuthReducer = (state, action) => {
             return {
                 user: action.payload,
                 socket: action.socket,
+                overDueRoutines: action.overDueRoutines,
                 isFetching: false,
                 error: false,
 
@@ -19,6 +21,7 @@ const AuthReducer = (state, action) => {
             return {
                 user: null,
                 socket: null,
+                overDueRoutines: null,
                 isFetching: false,
                 error: true
             };
@@ -26,6 +29,7 @@ const AuthReducer = (state, action) => {
             return {
                 user: null,
                 socket: null,
+                overDueRoutines: null,
                 isFetching: false,
                 error: false
             };

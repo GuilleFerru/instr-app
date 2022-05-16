@@ -19,12 +19,14 @@ export const RoutineTable = ({ allData, setDate, date }) => {
 
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
+    const [monthAndYear, setMonthAndYear] = useState('');
     const { handleDatePicker } = muiTableCommonActions(setDate);
 
     useEffect(() => {
         new Promise(resolve => {
             setData(allData.otherRoutines ? allData.otherRoutines : []);
             setDataColumns(allData.columns ? allData.columns : [otherRoutinesDefault]);
+            setMonthAndYear(allData.date ? allData.date : '');
             resolve();
         });
     }, [allData]);
@@ -63,7 +65,7 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         // console.log(updatedRows)
         // setData(dataUpdate);
         axiosPut(`${baseUrl}/routine/update`, { data: dataUpdate[index] })
-        
+
         // rows.map(routine => {
         //     const index = routine.tableData.id;
         //     updatedRows[index] = { ...routine, complete: 'C' };
@@ -116,6 +118,7 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 disableDuplicateButton={true}
                 initialRowData={{ otherRoutinesInitialRowData }}
                 disableGoToDateButton={true}
+                monthAndYear={monthAndYear}
 
             />
         </ThemeProvider>
