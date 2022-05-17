@@ -92,6 +92,7 @@ export const DailyWorksTable = _props => {
         dataUpdate[index] = newData;
         socket ? socket.emit('update_daily_work', date, newData, roomId) : history.push('/error');
         resolve();
+        return dataUpdate;
     }
 
 
