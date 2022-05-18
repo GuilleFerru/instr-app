@@ -137,7 +137,7 @@ export const DailyWorksTable = _props => {
                 title={'TAREAS DIARIAS'}
                 datepicker={datePicker(date, handleDatePicker)}
                 disableCheckButton={true}
-                disableAditionalButton={true}
+                enableAditionalButton={false}
                 disableAddButton={false}
                 disableDeleteButton={false}
                 disableOnRowUpdate={false}
@@ -152,8 +152,8 @@ export const DailyWorksTable = _props => {
                 disableGroupingOption={false}
                 date={date}
                 handleRoutineSchedule={false}
-                disableRoutinesDetails={true}
-                disableCompleteTaskButton={true}
+                enableRoutinesDetails={false}
+                enableCompleteTaskButton={false}
                 disableDatePicker={false}
                 CustomSearchBar={MySearchBar}
                 searchData={searchData}
@@ -162,9 +162,9 @@ export const DailyWorksTable = _props => {
                 disableReloadDataButton={reloadButton}
                 resetData={searchData}
                 searchPlaceHolder={'Buscar por Tag, Descripción'}
-                disableDuplicateButton={false}
+                enableDuplicateButton={true}
                 initialRowData={dailyWorksInitialRowData}
-                disableGoToDateButton={true}
+                enableGoToDateButton={false}
                 rowIdHighlight={rowIdHighlight}
                 setRowColor={true}
                 pdfTitle={`Tareas diarias ${formatDate(date)}`}

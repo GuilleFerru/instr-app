@@ -18,6 +18,69 @@ export const muiTableCommonActions = (getNewDate) => {
         return copyData;
     }
 
+
+    const addAditional = (tableIcons, handleAditional) => ({
+        tooltip: 'Agregar Adicional',
+        icon: tableIcons.Aditional,
+        isFreeAction: true,
+        onClick: () => handleAditional() ? handleAditional() : null,
+
+    })
+
+    const completeTask = (tableIcons, handleRoutineSchedule, rowData) => ({
+        tooltip: 'Completar Tarea',
+        icon: tableIcons.Complete,
+        onClick: (evt, data) => handleRoutineSchedule(data) ? handleRoutineSchedule(data) : null,
+        hidden: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C')
+    })
+
+    const watchTask = (rowData, Link, monthAndYear, ListAltIcon) => ({
+        tooltip: rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? 'Debe completar la tarea' : 'Ver mas',
+        icon: () => <Link to={{
+            pathname: `/rutinas/rutinasDetalles`,
+            state: {
+                routineScheduleId: rowData.id,
+                nickname: rowData.nickname,
+                tag: rowData.tag,
+                monthAndYear: monthAndYear,
+                from: 'rutinas'
+            },
+        }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
+        disabled: rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
+    })
+
+    const goToDate = (Link, rowData, ListAltIcon, parseStringToDate) => ({
+        tooltip: 'Ir a fecha',
+        icon: () => <Link to={{
+            pathname: `/tareasDiarias`,
+            state: {
+                id: rowData.id,
+                from: 'rutinas'
+            },
+        }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
+        onClick: () => getNewDate(parseStringToDate(rowData.beginDate)),
+    })
+
+    const duplicateRow = (tableIcons, materialTableRef, setInitialFormData) => ({
+        tooltip: 'Duplicar fila',
+        icon: tableIcons.Duplicate,
+        onClick: (_evt, rowData) => {
+            const materialTable = materialTableRef.current;
+            const { tableData, id, tag, ...dataRest } = rowData
+            setInitialFormData({
+                id: 0,
+                tag: '',
+                ...dataRest
+            });
+            materialTable.dataManager.changeRowEditing();
+            materialTable.setState({
+                ...materialTable.dataManager.getRenderState(),
+                showAddRow: true,
+            });
+        },
+
+    })
+
     // const rowAdd = (newRow, resolve) => {
     //     const updatedRows = [...data, newRow];
     //     setData(updatedRows);
@@ -60,6 +123,11 @@ export const muiTableCommonActions = (getNewDate) => {
     return {
         handleDatePicker,
         getNewDataBulkEdit,
+        addAditional,
+        completeTask,
+        watchTask,
+        goToDate,
+        duplicateRow
         // bulkUpdate,
         // updateRow,
         // rowAdd,

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
-// import { axiosPut } from '../../../Services/Axios.js';
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 import { formatDate } from '../../../Services/DateUtils.js';
 import { DateContext } from '../../../context/DateContext';
@@ -10,12 +9,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { scheduleTableStyle } from './ScheduleTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-// import { mainListActions } from '../../../components/Navbar/Drawer/MainListItems/MainListActions'
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
 import { useHistory } from 'react-router-dom';
 
-// const baseUrl = process.env.REACT_APP_API_URL;
+
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
 export const ScheduleTable = _props => {
@@ -63,38 +61,6 @@ export const ScheduleTable = _props => {
     }, [date]);
 
 
-
-    // useEffect(() => {
-    //     socket.on('updateSchedule', (data) => {
-    //         let cancel = false;
-    //         if (!cancel) {
-    //             setData(data);
-    //         } else {
-    //             return;
-    //         }
-    //         return () => {
-    //             cancel = true;
-    //             socket.off('updateSchedule');
-    //         }
-    //     });
-
-    //     socket.on('updateScheduleColumns', (data, aditionalCount) => {
-    //         let cancel = false;
-    //         if (!cancel) {
-    //             setAditionalCount(aditionalCount);
-    //             setDataColumns(data);
-    //         } else {
-    //             return;
-    //         }
-    //         return () => {
-    //             cancel = true;
-    //             socket.off('updateScheduleColumns');
-    //         }
-    //     });
-    // });
-
-
-
     const bulkUpdate = (changes, resolve) => {
         const copyData = [...data];
         const dataUpdate = getNewDataBulkEdit(changes, copyData);
@@ -135,15 +101,6 @@ export const ScheduleTable = _props => {
         setData([...dataUpdate]);
         resolve();
         return dataUpdate;
-
-        // const index = oldRow.tableData.id;
-        // const updatedRows = [...data];
-        // //compareOldAndNewData(oldRow, updatedRow);
-        // updatedRows[index] = updatedRow;
-        // const newSchedule = updatedRows;
-        // console.log(newSchedule);
-        // socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
-        // return updatedRows;
     }
 
     const handleAditional = () => {
@@ -186,6 +143,9 @@ export const ScheduleTable = _props => {
     }
 
 
+
+
+
     return <>
         <div className={classes.table}>
             <ThemeProvider theme={theme}>
@@ -195,7 +155,7 @@ export const ScheduleTable = _props => {
                     title={'PERSONAL'}
                     datepicker={datePicker(date, handleDatePicker)}
                     disableCheckButton={true}
-                    disableAditionalButton={false}
+                    enableAditionalButton={true}
                     disableAddButton={true}
                     disableDeleteButton={false}
                     disableOnRowUpdate={false}
@@ -210,17 +170,17 @@ export const ScheduleTable = _props => {
                     disableGroupingOption={true}
                     date={date}
                     handleRoutineSchedule={false}
-                    disableRoutinesDetails={true}
-                    disableCompleteTaskButton={true}
+                    enableRoutinesDetails={false}
+                    enableCompleteTaskButton={false}
                     disableDatePicker={false}
                     CustomSearchBar={MySearchBar}
                     searchData={false}
                     disableDefaultSearch={true}
                     disableCustomSearch={true}
                     disableReloadDataButton={true}
-                    disableDuplicateButton={true}
+                    enableDuplicateButton={false}
                     disableInitialFormData={true}
-                    disableGoToDateButton={true}
+                    enableGoToDateButton={false}
                     pdfTitle={`Personal ${formatDate(date)}`}
                 // initialRowData={{}}
                 />

@@ -2,8 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Badge as MUIBadges, Tooltip } from '@material-ui/core';
 
-import ScheduleIcon from '@material-ui/icons/Schedule';
-
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -12,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Badges = ({ qty, tooltip, color }) => {
+const Badges = ({ qty, tooltip, color, children }) => {
     const classes = useStyles();
 
     return (
@@ -22,7 +20,7 @@ const Badges = ({ qty, tooltip, color }) => {
                     <span>{qty}</span>
                 </Tooltip>
             }>
-                <ScheduleIcon />
+                {children}
             </MUIBadges>
         </div>
     );

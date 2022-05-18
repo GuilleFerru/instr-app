@@ -26,7 +26,7 @@ export const AuthComponentContext = ({ children }) => {
         <AuthContext.Provider value={{
             user: state.user,
             socket: state.socket,
-            overDueRoutines: state.overDueRoutines,
+            //overDueRoutines: state.overDueRoutines,
             isFetching: state.isFetching,
             error: state.error,
             dispatch,

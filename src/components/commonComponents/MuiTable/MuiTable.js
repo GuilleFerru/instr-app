@@ -3,25 +3,21 @@ import MaterialTable, { MTableAction } from '@material-table/core';
 import { makeStyles } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
 import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
-import Badges from '../../Badges/Badges';
 import { MTableToolbar } from '@material-table/core';
 import { tableIcons } from './tableIcons';
 import { Link } from "react-router-dom";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
-import { AuthContext } from '../../../context/AuthContext';
 import { ExportPdf } from '@material-table/exporters';
-
-// import { v4 as uuidv4 } from 'uuid';
-
+import { OverDueRoutine } from '../../OverDueRoutines/OverDueRoutine';
+import { LoadDataTable } from '../../LoadDataTable/LoadDataTable';
+import { muiTableCommonActions } from './MuiTableCommonActions';
+import { tableLocalization } from './tableLocalization';
 
 const useStyles = makeStyles((theme) => muiTableStyle(theme));
-
-
 
 export const MuiTable = (
     {
@@ -30,7 +26,7 @@ export const MuiTable = (
         title,
         datepicker,
         disableCheckButton,
-        disableAditionalButton,
+        enableAditionalButton,
         disableAddButton,
         disableDeleteButton,
         disableOnRowUpdate,
@@ -44,8 +40,8 @@ export const MuiTable = (
         pageSize,
         disableGroupingOption,
         handleRoutineSchedule,
-        disableRoutinesDetails,
-        disableCompleteTaskButton,
+        enableRoutinesDetails,
+        enableCompleteTaskButton,
         disableDatePicker,
         CustomSearchBar,
         searchData,
@@ -54,41 +50,34 @@ export const MuiTable = (
         disableReloadDataButton,
         resetData,
         searchPlaceHolder,
-        disableDuplicateButton,
+        enableDuplicateButton,
         disableInitialFormData,
         initialRowData,
-        disableGoToDateButton,
+        enableGoToDateButton,
         setRowColor,
         rowIdHighlight,
         pdfTitle,
         monthAndYear,
     }) => {
 
+    const classes = useStyles();
     const positionRef = React.useRef();
     const materialTableRef = createRef();
+
     //arregla el browser freezing
     const columns = dataColumns.map((column) => {
         return { ...column };
     });
 
-    const { overDueRoutines } = useContext(AuthContext);
-    const [initialFormData, setInitialFormData] = useState(initialRowData);
+
     const { getNewDate } = useContext(DateContext);
+    const [initialFormData, setInitialFormData] = useState(initialRowData);
     const [selectedRow, setSelectedRow] = useState(null);
-    const classes = useStyles();
-    const [progress, setProgress] = useState(true);
+    const { addAditional, completeTask, watchTask, goToDate, duplicateRow } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
     }, [rowIdHighlight, setRowColor]);
-
-
-    useEffect(() => {
-        setProgress(true);
-        data.length > 0 ? setProgress(false) : setProgress(true);
-        const timer = setTimeout(() => setProgress(false), 25000);
-        return () => clearTimeout(timer);
-    }, [data]);
 
     return (
         <div ref={positionRef}>
@@ -99,41 +88,7 @@ export const MuiTable = (
                 data={data}
                 tableRef={materialTableRef}
                 columns={columns}
-                localization={{
-                    header: {
-                        actions: 'Acciones'
-                    },
-                    body: {
-                        emptyDataSourceMessage: progress ? <CircularProgress size='5rem' color="inherit" /> : 'No existen filas para mostrar',
-                        deleteTooltip: 'Borrar Fila',
-                        editTooltip: 'Editar Fila',
-                        bulkEditTooltip: 'Editar todo',
-                        bulkEditApprove: 'Aprobar',
-                        bulkEditCancel: 'Cancelar',
-                        addTooltip: 'Agregar',
-                        filterRow: 'Filtrar por',
-                        editRow: {
-                            deleteText: 'Esta seguro de borrar esta fila?',
-                        }
-                    },
-                    grouping: {
-                        placeholder: 'Arrastre para agrupar',
-                        groupedBy: 'Agrupado por'
-                    },
-                    toolbar: {
-                        searchTooltip: 'Buscar',
-                        searchPlaceholder: 'Buscar',
-                        nRowsSelected: '{0} fila(s) seleccionada(s)',
-                    },
-                    pagination: {
-                        labelRowsSelect: 'filas',
-                        labelDisplayedRows: '{count} de {from}-{to}',
-                        firstTooltip: 'Primera página',
-                        previousTooltip: 'Página anterior',
-                        nextTooltip: 'Próxima página',
-                        lastTooltip: 'Última página'
-                    }
-                }}
+                localization={tableLocalization(LoadDataTable, data)}
                 editable={{
                     onRowAdd: disableAddButton ? undefined : (newRow) => {
                         initialFormData && setInitialFormData(initialRowData);
@@ -180,67 +135,11 @@ export const MuiTable = (
                     },
                 }}
                 actions={[
-                    rowData => ({
-                        tooltip: 'Completar Tarea',
-                        icon: tableIcons.Complete,
-                        onClick: (evt, data) => handleRoutineSchedule(data) ? handleRoutineSchedule(data) : null,
-                        hidden: disableCompleteTaskButton ? true : (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C')
-                    }),
-                    {
-                        tooltip: 'Agregar Adicional',
-                        icon: tableIcons.Aditional,
-                        isFreeAction: true,
-                        onClick: () => handleAditional() ? handleAditional() : null,
-                        disabled: disableAditionalButton,
-                        hidden: disableAditionalButton,
-                    },
-                    rowData => ({
-                        tooltip: rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? 'Debe completar la tarea' : 'Ver mas',
-                        icon: () => <Link to={{
-                            pathname: `/rutinas/rutinasDetalles`,
-                            state: {
-                                routineScheduleId: rowData.id,
-                                nickname: rowData.nickname,
-                                tag: rowData.tag,
-                                monthAndYear: monthAndYear,
-                                from: 'rutinas'
-                            },
-                        }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
-                        disabled: disableRoutinesDetails ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
-                        hidden: disableRoutinesDetails,
-                    }),
-                    rowData => ({
-                        tooltip: 'Ir a fecha',
-                        icon: () => <Link to={{
-                            pathname: `/tareasDiarias`,
-                            state: {
-                                id: rowData.id,
-                                from: 'rutinas'
-                            },
-                        }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
-                        onClick: () => getNewDate(parseStringToDate(rowData.beginDate)),
-                        //disabled: disableGoToDateButton ? disableRoutinesDetails : rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
-                        hidden: disableGoToDateButton,
-                    }),
-                    {
-                        tooltip: 'Duplicar fila',
-                        icon: tableIcons.Duplicate,
-                        onClick: (_evt, rowData) => {
-                            const materialTable = materialTableRef.current;
-                            const { tableData, id, tag, ...dataRest } = rowData
-                            setInitialFormData({
-                                id: 0,
-                                tag: '',
-                                ...dataRest
-                            });
-                            materialTable.dataManager.changeRowEditing();
-                            materialTable.setState({
-                                ...materialTable.dataManager.getRenderState(),
-                                showAddRow: true,
-                            });
-                        },
-                        hidden: disableDuplicateButton,
-                    }
+                    enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData))),
+                    enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon))),
+                    enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate))),
+                    enableAditionalButton && addAditional(tableIcons, handleAditional),
+                    enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData),
                 ]}
                 components={{
                     Action: (props) => {
@@ -258,11 +157,7 @@ export const MuiTable = (
                         <div >
                             <div className={classes.toolbarHeader}>
                                 <Breadcrumbs />
-                                <Badges
-                                    tooltip="Rutinas atrasadas"
-                                    qty={overDueRoutines}
-                                    color={overDueRoutines === 0 ? "secondary" : "error"}
-                                />
+                                <OverDueRoutine />
                             </div>
                             <div className={classes.toolbarBody} >
                                 <MTableToolbar {...props} />

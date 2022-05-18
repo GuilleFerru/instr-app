@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../../../../context/AuthContext';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { axiosPut } from '../../../../Services/Axios.js';
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => routineTableStyle(theme));
 export const RoutineTable = ({ allData, setDate, date }) => {
 
     const classes = useStyles();
-
+    const { socket } = useContext(AuthContext);
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
     const [monthAndYear, setMonthAndYear] = useState('');
@@ -64,7 +65,9 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         // updatedRows[index] = { ...selectedRows, complete: 'C' };
         // console.log(updatedRows)
         // setData(dataUpdate);
-        axiosPut(`${baseUrl}/routine/update`, { data: dataUpdate[index] })
+        axiosPut(`${baseUrl}/routine/update`, { data: dataUpdate[index] }).then(res => {
+            res.status === 200 && socket.emit('get_qtyOverDueRoutines');
+        });
 
         // rows.map(routine => {
         //     const index = routine.tableData.id;
@@ -85,6 +88,8 @@ export const RoutineTable = ({ allData, setDate, date }) => {
     // }
 
 
+
+
     return <div className={classes.table}>
         <ThemeProvider theme={theme}>
             <MuiTable
@@ -93,7 +98,7 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 title={'RUTINAS'}
                 datepicker={monthPicker(date, handleDatePicker)}
                 disableCheckButton={true}
-                disableAditionalButton={true}
+                enableAditionalButton={false}
                 disableAddButton={true}
                 disableDeleteButton={true}
                 disableOnRowUpdate={false}
@@ -108,16 +113,16 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 disableGroupingOption={true}
                 date={date}
                 handleRoutineSchedule={handleRoutineSchedule}
-                disableRoutinesDetails={false}
-                disableCompleteTaskButton={false}
+                enableRoutinesDetails={true}
+                enableCompleteTaskButton={true}
                 disableDatePicker={false}
                 searchData={false}
                 disableDefaultSearch={false}
                 disableCustomSearch={true}
                 disableReloadDataButton={true}
-                disableDuplicateButton={true}
+                enableDuplicateButton={false}
                 initialRowData={{ otherRoutinesInitialRowData }}
-                disableGoToDateButton={true}
+                enableGoToDateButton={false}
                 monthAndYear={monthAndYear}
 
             />

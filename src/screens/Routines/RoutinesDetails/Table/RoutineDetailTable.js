@@ -65,7 +65,7 @@ export const RoutineDetailTable = props => {
                 title={nickname}
                 datepicker={false}
                 disableCheckButton={true}
-                disableAditionalButton={true}
+                enableAditionalButton={false}
                 disableAddButton={true}
                 disableDeleteButton={true}
                 disableOnRowUpdate={true}
@@ -80,16 +80,16 @@ export const RoutineDetailTable = props => {
                 disableGroupingOption={true}
                 date={false}
                 handleRoutineSchedule={false}
-                disableRoutinesDetails={true}
-                disableCompleteTaskButton={true}
+                enableRoutinesDetails={false}
+                enableCompleteTaskButton={false}
                 disableDatePicker={true}
                 searchData={false}
                 disableDefaultSearch={true}
                 disableCustomSearch={true}
                 disableReloadDataButton={true}
-                disableDuplicateButton={true}
+                enableDuplicateButton={false}
                 initialRowData={{}}
-                disableGoToDateButton={false}
+                enableGoToDateButton={true}
                 pdfTitle={`${nickname}`}
             />
         </ThemeProvider>
