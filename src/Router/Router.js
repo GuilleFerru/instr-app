@@ -7,6 +7,7 @@ import { DailyWorksContainer } from '../screens/DailyWorks/DailyWorksContainer';
 import { RoutineContainer } from '../screens/Routines/RoutinesSchedules/RoutineContainer';
 import { ScheduleContainer } from '../screens/EmpDailySchedule/ScheduleContainer';
 import { RoutineDetailsContainer } from '../screens/Routines/RoutinesDetails/RoutineDetailsContainer';
+import { PlantShutdownsContainer } from '../screens/PlantShutdowns/PlantShutdownsContainer';
 import { AuthContext } from '../context/AuthContext';
 import { ErrorPage } from '../components/commonComponents/ErrorPage/ErrorPage';
 // import { StoreListContainer } from '../screens/StoreList/StoreListContainer';
@@ -40,6 +41,9 @@ export const Router = () => {
                 </Route>
                 <Route exact path="/novedadesPersonal">
                     <ScheduleContainer />
+                </Route>
+                <Route exact path="/parosDePlanta">
+                    <PlantShutdownsContainer />
                 </Route>
             </LayOut>
             : <Login />}

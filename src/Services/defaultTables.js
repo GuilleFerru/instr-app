@@ -215,3 +215,46 @@ export const defaultDailyWorksRoutineTable = [
     lookup: {},
   },
 ];
+
+export const defaultPlantShutdownsTable = [
+  {
+    field: "_id",
+    title: "Numero",
+    hidden: true,
+  },
+  {
+    field: "name",
+    title: "Nombre",
+    type: "string",
+  },
+  {
+    field: "beginDate",
+    title: "Fecha de inicio",
+    type: "date",
+  },
+  {
+    field: "endDate",
+    title: "Fecha de finalización",
+    type: "date",
+  },
+  {
+    field: "description",
+    title: "Descripción",
+    multiline: true,
+    width: "40%",
+  },
+  {
+    field: "complete",
+    title: "Estado",
+    lookup: {},
+  },
+];
+
+export const plantShutDownsInitialRowData = {
+  _id: 0,
+  name: '',
+  beginDate: 1 / 1 / 2022,
+  endDate: 2 / 1 / 2022,
+  description: '',
+  complete: '',
+}

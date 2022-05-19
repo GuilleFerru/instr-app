@@ -3,9 +3,10 @@ export const tableCardStyle = theme => {
         paper: {
             margin: theme.spacing(1),
             padding: theme.spacing(1),
-            // border: '1px solid red',
-            // display: "flex",
-            // width: 'auto',
+            
+            width : 'auto'
+            
+            
             // flexDirection: "column",
 
             // display: "flex",
@@ -20,7 +21,7 @@ export const tableCardStyle = theme => {
             paddingTop: theme.spacing(1),
             paddingBottom: theme.spacing(5),
             display: 'flex',
-            flexFlow:'column noWrap',
+            flexFlow: 'column noWrap',
             height: 'auto',
             
         }

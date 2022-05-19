@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Badges from '../Badges/Badges';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import { AuthContext } from '../../context/AuthContext';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 export const OverDueRoutine = (props) => {
 
@@ -32,13 +32,15 @@ export const OverDueRoutine = (props) => {
     }, [history, socket]);
 
     return (
-        <Badges
-            tooltip="Rutinas atrasadas"
-            qty={qtyOverdueRoutines}
-            color={qtyOverdueRoutines === 0 ? "secondary" : "error"}
-        >
-            <ScheduleIcon />
-        </Badges>
+        <Link to="/rutinas">
+            <Badges
+                tooltip="Rutinas atrasadas"
+                qty={qtyOverdueRoutines}
+                color={qtyOverdueRoutines === 0 ? "secondary" : "error"}
+            >
+                <ScheduleIcon />
+            </Badges>
+        </Link>
     )
 }
 

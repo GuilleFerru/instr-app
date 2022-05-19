@@ -1,5 +1,12 @@
 export const muiTableStyle = theme => {
     return ({
+        table: {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            
+            
+        },
         toolbarHeader: {
             display: 'flex',
             flexDirection: 'row',

@@ -3,7 +3,6 @@ export const tableLocalization = (LoadDataTable, data) => ({
         actions: 'Acciones'
     },
     body: {
-        // emptyDataSourceMessage: progress ? <CircularProgress size='5rem' color="inherit" /> : 'No existen filas para mostrar',
         emptyDataSourceMessage: <LoadDataTable data={data} />,
         deleteTooltip: 'Borrar Fila',
         editTooltip: 'Editar Fila',

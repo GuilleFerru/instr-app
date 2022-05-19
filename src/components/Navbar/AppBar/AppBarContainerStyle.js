@@ -4,11 +4,11 @@ const drawerWidth = 240;
 export const appBarContainerStyle = theme => {
     return ({
         toolbar: {
-           // border: '1px solid red',
+            //border: '1px solid red',
             display: 'flex',
             background: 'green',
             paddingRight: "24", // keep right padding when drawer closed
-            witdh: '100vw',
+            // witdh: 'auto',
         },
         appBar: {
             zIndex: theme.zIndex.drawer + 1,
@@ -37,7 +37,7 @@ export const appBarContainerStyle = theme => {
             '& h1:nth-child(2)': {
                 flexGrow: '1',
             }
-            
+
         },
         menuButton: {
             marginRight: "36",

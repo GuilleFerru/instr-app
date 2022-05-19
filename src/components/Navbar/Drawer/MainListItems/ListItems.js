@@ -9,6 +9,7 @@ import TodayIcon from '@material-ui/icons/Today';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 // ]import { mainListActions } from "./MainListActions";
 
 
@@ -38,6 +39,12 @@ export const ListItems = ({ openList, handleClick, classes }) => {
               <ScheduleIcon />
             </ListItemIcon>
             <ListItemText primary="Rutinas" />
+          </ListItem>
+          <ListItem button component={Link} to="/parosDePlanta" className={classes.nested}>
+            <ListItemIcon>
+              <AssignmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Paros de Planta" />
           </ListItem>
         </List>
       </Collapse>

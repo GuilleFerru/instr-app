@@ -60,7 +60,6 @@ export const MuiTable = (
         monthAndYear,
     }) => {
 
-    const classes = useStyles();
     const positionRef = React.useRef();
     const materialTableRef = createRef();
 
@@ -70,9 +69,11 @@ export const MuiTable = (
     });
 
 
-    const { getNewDate } = useContext(DateContext);
     const [initialFormData, setInitialFormData] = useState(initialRowData);
+    const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
+    const classes = useStyles();
+
     const { addAditional, completeTask, watchTask, goToDate, duplicateRow } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
@@ -80,7 +81,7 @@ export const MuiTable = (
     }, [rowIdHighlight, setRowColor]);
 
     return (
-        <div ref={positionRef}>
+        <div ref={positionRef} className={classes.table}>
             <MaterialTable
                 icons={tableIcons}
                 title={title}
@@ -133,13 +134,16 @@ export const MuiTable = (
                         color: "#FFF",
                         fontWeight: 'bold',
                     },
+ 
                 }}
                 actions={[
+                    enableAditionalButton && addAditional(tableIcons, handleAditional),
+                    enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData),
                     enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData))),
                     enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon))),
                     enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate))),
-                    enableAditionalButton && addAditional(tableIcons, handleAditional),
-                    enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData),
+
+
                 ]}
                 components={{
                     Action: (props) => {

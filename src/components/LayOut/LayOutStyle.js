@@ -18,7 +18,7 @@ export const layOutStyle = theme => {
             flexFlow: 'column noWrap',
             width: '100%',
             height: 'auto',
-            // border: '1px solid blue',
+            //  border: '1px solid blue',
         },
         content: {
             // border: '1px solid black',

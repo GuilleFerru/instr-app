@@ -12,7 +12,7 @@ export const TableCard = props => {
     const { children } = props
     return <div className={classes.container}>
         <div className={classes.appBarSpacer} />
-        <Grid container>
+        <Grid container >
             <Grid item md={12} lg={12}>
                 <Fade in={true} timeout={600}>
                     <Paper className={classes.paper}>
