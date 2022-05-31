@@ -18,6 +18,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import ListAltIcon from '@material-ui/icons/ListAlt';
+import UpdateIcon from '@material-ui/icons/Update';
 
 export const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -40,5 +41,6 @@ export const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
     Complete: forwardRef((props, ref) => <AssignmentTurnedInIcon {...props} ref={ref} />),
     Aditional: forwardRef((props, ref) => <DynamicFeedIcon {...props} ref={ref} />),
-    ListAll: forwardRef((props, ref) => <ListAltIcon {...props} ref={ref} />)
+    ListAll: forwardRef((props, ref) => <ListAltIcon {...props} ref={ref} />),
+    Update: forwardRef((props, ref) => <UpdateIcon {...props} ref={ref} />)
 };

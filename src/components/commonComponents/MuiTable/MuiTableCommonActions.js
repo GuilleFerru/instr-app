@@ -78,47 +78,49 @@ export const muiTableCommonActions = (getNewDate) => {
                 showAddRow: true,
             });
         },
-
     })
 
-    // const rowAdd = (newRow, resolve) => {
-    //     const updatedRows = [...data, newRow];
-    //     setData(updatedRows);
-    //     resolve();
-    //     return ''
-    // }
+    const goToPlantShutdown = (Link, rowData, ListAltIcon) => ({
+        tooltip: 'Ir a tareas de paro',
+        icon: () => <Link to={{
+            pathname: `/parosDePlanta/tareasParoDePlanta`,
+            state: {
+                id: rowData._id,
+                name: rowData.name,
+                beginDate: rowData.beginDate,
+                from: 'parosDePlanta'
+            },
+        }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
+    })
 
-    // const bulkUpdate = (selectedRows, resolve) => {
-    //     const rows = Object.values(selectedRows);
-    //     const updatedRows = [...data];
-    //     rows.map(row => {
-    //         const index = row.oldData.tableData.id;
-    //         updatedRows[index] = row.newData;
-    //         setData(updatedRows);
-    //         resolve();
-    //         return '';
-    //     })
-    // }
+    const goToPlantShutdownWorksToDo = (Link, WorkOffIcon) => ({
+        tooltip: 'Tareas para paro sin asignar',
+        isFreeAction: true,
+        icon: () => <Link to={{
+            pathname: `/parosDePlanta/tareasParoDePlantaSinAsignar`,
+        }} style={{ textDecoration: 'none', color: 'inherit' }}> <WorkOffIcon /></Link>,
+    })
 
-    // const updateRow = (updatedRow, oldRow) => {
-    //     const index = oldRow.tableData.id;
-    //     const updatedRows = [...data];
-    //     updatedRows[index] = updatedRow;
-    //     return updatedRows;
-    // }
+    // const updateShutdownWork = (tableIcons, materialTableRef, setInitialFormData) => ({
+    //     tooltip: 'Actualizar tarea',
+    //     icon: tableIcons.Update,
+    //     onClick: (_evt, rowData) => {
+    //         const materialTable = materialTableRef.current;
+    //         const { tableData, id, tag, ...dataRest } = rowData
+    //         console.log(rowData)
+    //         // setInitialFormData({
+    //         //     id: 0,
+    //         //     tag: '',
+    //         //     ...dataRest
+    //         // });
+    //         materialTable.dataManager.changeRowEditing();
+    //         materialTable.setState({
+    //             ...materialTable.dataManager.getRenderState(),
+    //             showAddRow: true,
+    //         });
+    //     },
 
-    // const deleteRow = (selectedRow, resolve) => {
-
-    //     const index = selectedRow.tableData.id
-    //     console.log(index)
-    //     console.log(data)
-    //     const updatedRows = [...data]
-
-    //     updatedRows.splice(index, 1)
-    //     setData(updatedRows)
-    //     resolve();
-
-    // }
+    // })
 
     return {
         handleDatePicker,
@@ -127,11 +129,9 @@ export const muiTableCommonActions = (getNewDate) => {
         completeTask,
         watchTask,
         goToDate,
-        duplicateRow
-        // bulkUpdate,
-        // updateRow,
-        // rowAdd,
-
-
+        duplicateRow,
+        goToPlantShutdown,
+        goToPlantShutdownWorksToDo,
+        // updateShutdownWork
     }
 }

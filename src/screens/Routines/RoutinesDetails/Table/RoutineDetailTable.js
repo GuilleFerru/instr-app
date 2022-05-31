@@ -27,7 +27,7 @@ export const RoutineDetailTable = props => {
             setNickname(props.nickname ? props.nickname : '');
             resolve();
         });
-        
+
     }, [props]);
 
     const bulkUpdate = (changes, resolve) => {
@@ -36,24 +36,12 @@ export const RoutineDetailTable = props => {
         dataUpdate.map((updatedWork) => {
             axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork }).then(res => {
                 setData(res.data.dayWorks);
-                
+
             });
             return ''   // return empty string to avoid warning
         })
         resolve();
         return dataUpdate;
-        // const rows = Object.values(selectedRows);
-        // const updatedRows = [...data];
-
-        // rows.map(work => {
-        //     const index = work.oldData.tableData.id;
-        //     updatedRows[index] = work.newData;
-        //     setData(updatedRows);
-        //     const updatedWork = work.newData;
-        //         axiosPut(`${baseUrl}/dailyWork/updateFromRoutineDetail`, { updatedWork })
-        //     return ''
-        // })
-        // resolve();
     }
 
 
@@ -63,32 +51,9 @@ export const RoutineDetailTable = props => {
                 data={data}
                 setData={setData}
                 title={nickname}
-                datepicker={false}
-                disableCheckButton={true}
-                enableAditionalButton={false}
-                disableAddButton={true}
-                disableDeleteButton={true}
-                disableOnRowUpdate={true}
-                disableOnBulkUpdate={false}
                 dataColumns={dataColumns}
-                rowAdd={false}
-                updateRow={false}
                 bulkUpdate={bulkUpdate}
-                deleteRow={false}
-                handleAditional={false}
                 pageSize={15}
-                disableGroupingOption={true}
-                date={false}
-                handleRoutineSchedule={false}
-                enableRoutinesDetails={false}
-                enableCompleteTaskButton={false}
-                disableDatePicker={true}
-                searchData={false}
-                disableDefaultSearch={true}
-                disableCustomSearch={true}
-                disableReloadDataButton={true}
-                enableDuplicateButton={false}
-                initialRowData={{}}
                 enableGoToDateButton={true}
                 pdfTitle={`${nickname}`}
             />

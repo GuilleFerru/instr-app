@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
+import WorkOffIcon from '@material-ui/icons/WorkOff';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
 import { ExportPdf } from '@material-table/exporters';
@@ -25,12 +26,12 @@ export const MuiTable = (
         setData,
         title,
         datepicker,
-        disableCheckButton,
-        enableAditionalButton,
-        disableAddButton,
-        disableDeleteButton,
-        disableOnRowUpdate,
-        disableOnBulkUpdate,
+        disableCheckButton = true,
+        enableAditionalButton = false,
+        disableAddButton = true,
+        disableDeleteButton = true,
+        disableOnRowUpdate = true,
+        disableOnBulkUpdate = true,
         dataColumns,
         rowAdd,
         updateRow,
@@ -38,26 +39,30 @@ export const MuiTable = (
         deleteRow,
         handleAditional,
         pageSize,
-        disableGroupingOption,
+        disableGroupingOption = true,
         handleRoutineSchedule,
-        enableRoutinesDetails,
-        enableCompleteTaskButton,
-        disableDatePicker,
+        enableRoutinesDetails = false,
+        enableCompleteTaskButton = false,
+        disableDatePicker = true,
         CustomSearchBar,
         searchData,
-        disableDefaultSearch,
-        disableCustomSearch,
-        disableReloadDataButton,
+        disableDefaultSearch = true,
+        disableCustomSearch = true,
+        disableReloadDataButton = true,
         resetData,
         searchPlaceHolder,
-        enableDuplicateButton,
-        disableInitialFormData,
+        enableDuplicateButton = false,
+        disableInitialFormData = true,
         initialRowData,
-        enableGoToDateButton,
-        setRowColor,
+        enableGoToDateButton = false,
+        setRowColor = false,
         rowIdHighlight,
         pdfTitle,
         monthAndYear,
+        enableGoToPlantShutdown = false,
+        enableGoToPlantShutdownWorksToDoButton = false,
+        enableUpdateShutdownWorkButton = false,
+
     }) => {
 
     const positionRef = React.useRef();
@@ -74,7 +79,7 @@ export const MuiTable = (
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
 
-    const { addAditional, completeTask, watchTask, goToDate, duplicateRow } = muiTableCommonActions(getNewDate);
+    const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -134,7 +139,6 @@ export const MuiTable = (
                         color: "#FFF",
                         fontWeight: 'bold',
                     },
- 
                 }}
                 actions={[
                     enableAditionalButton && addAditional(tableIcons, handleAditional),
@@ -142,8 +146,9 @@ export const MuiTable = (
                     enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData))),
                     enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon))),
                     enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate))),
-
-
+                    enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon))),
+                    enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon),
+                    //enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, materialTableRef, setInitialFormData),
                 ]}
                 components={{
                     Action: (props) => {

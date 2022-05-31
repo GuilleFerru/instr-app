@@ -7,7 +7,9 @@ import { DailyWorksContainer } from '../screens/DailyWorks/DailyWorksContainer';
 import { RoutineContainer } from '../screens/Routines/RoutinesSchedules/RoutineContainer';
 import { ScheduleContainer } from '../screens/EmpDailySchedule/ScheduleContainer';
 import { RoutineDetailsContainer } from '../screens/Routines/RoutinesDetails/RoutineDetailsContainer';
-import { PlantShutdownsContainer } from '../screens/PlantShutdowns/PlantShutdownsContainer';
+import { PlantShutdownListContainer } from '../screens/PlantShutdowns/PlantShutdownList/PlantShutdownListContainer';
+import { PlantShutdownWorksContainer } from '../screens/PlantShutdowns/PlantShutdownWorks/PlantShutdownWorksContainer';
+import { PlantShutdownWorksToDoContainer } from '../screens/PlantShutdowns/PlantShutdownWorksToDo/PlantShutdownWorksToDoContainer';
 import { AuthContext } from '../context/AuthContext';
 import { ErrorPage } from '../components/commonComponents/ErrorPage/ErrorPage';
 // import { StoreListContainer } from '../screens/StoreList/StoreListContainer';
@@ -43,7 +45,13 @@ export const Router = () => {
                     <ScheduleContainer />
                 </Route>
                 <Route exact path="/parosDePlanta">
-                    <PlantShutdownsContainer />
+                    <PlantShutdownListContainer />
+                </Route>
+                <Route exact path="/parosDePlanta/tareasParoDePlantaSinAsignar">
+                    <PlantShutdownWorksToDoContainer />
+                </Route>
+                <Route exact path="/parosDePlanta/tareasParoDePlanta">
+                    <PlantShutdownWorksContainer />
                 </Route>
             </LayOut>
             : <Login />}

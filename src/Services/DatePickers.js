@@ -1,5 +1,6 @@
 import DatePicker from '../components/commonComponents/Controls/DatePicker';
 import MonthPicker from '../components/commonComponents/Controls/MonthPicker';
+import YearPicker from '../components/commonComponents/Controls/YearPicker';
 
 export const datePicker = (date, handleDatePicker) => {
     return (
@@ -17,6 +18,17 @@ export const monthPicker = (date, handleDatePicker) => {
         <MonthPicker
             name='date'
             label="Mes - Año"
+            value={date}
+            onChange={handleDatePicker}
+        />
+    )
+}
+
+export const yearPicker = (date, handleDatePicker) => {
+    return (
+        <YearPicker
+            name='date'
+            label="Año"
             value={date}
             onChange={handleDatePicker}
         />

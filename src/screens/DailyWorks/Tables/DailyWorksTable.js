@@ -101,7 +101,6 @@ export const DailyWorksTable = _props => {
         const dataUpdate = getNewDataBulkEdit(changes, copyData);
         setData(dataUpdate);
         socket ? socket.emit('bulk_update_daily_work', date, dataUpdate, roomId) : history.push('/error');
-
         resolve();
     }
 
@@ -136,8 +135,6 @@ export const DailyWorksTable = _props => {
                 setData={setData}
                 title={'TAREAS DIARIAS'}
                 datepicker={datePicker(date, handleDatePicker)}
-                disableCheckButton={true}
-                enableAditionalButton={false}
                 disableAddButton={false}
                 disableDeleteButton={false}
                 disableOnRowUpdate={false}
@@ -147,24 +144,19 @@ export const DailyWorksTable = _props => {
                 updateRow={updateRow}
                 bulkUpdate={bulkUpdate}
                 deleteRow={deleteRow}
-                handleAditional={false}
                 pageSize={15}
                 disableGroupingOption={false}
                 date={date}
-                handleRoutineSchedule={false}
-                enableRoutinesDetails={false}
-                enableCompleteTaskButton={false}
                 disableDatePicker={false}
                 CustomSearchBar={MySearchBar}
                 searchData={searchData}
-                disableDefaultSearch={true}
                 disableCustomSearch={false}
                 disableReloadDataButton={reloadButton}
                 resetData={searchData}
                 searchPlaceHolder={'Buscar por Tag, Descripción'}
                 enableDuplicateButton={true}
+                disableInitialFormData={false}
                 initialRowData={dailyWorksInitialRowData}
-                enableGoToDateButton={false}
                 rowIdHighlight={rowIdHighlight}
                 setRowColor={true}
                 pdfTitle={`Tareas diarias ${formatDate(date)}`}

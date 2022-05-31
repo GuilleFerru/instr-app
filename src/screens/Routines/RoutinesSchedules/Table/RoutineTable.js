@@ -97,32 +97,18 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 setData={setData}
                 title={'RUTINAS'}
                 datepicker={monthPicker(date, handleDatePicker)}
-                disableCheckButton={true}
-                enableAditionalButton={false}
-                disableAddButton={true}
-                disableDeleteButton={true}
                 disableOnRowUpdate={false}
-                disableOnBulkUpdate={true}
                 dataColumns={dataColumns}
-                rowAdd={false}
                 updateRow={updateRow}
-                bulkUpdate={false}
-                deleteRow={false}
-                handleAditional={false}
                 pageSize={15}
-                disableGroupingOption={true}
                 date={date}
                 handleRoutineSchedule={handleRoutineSchedule}
                 enableRoutinesDetails={true}
                 enableCompleteTaskButton={true}
                 disableDatePicker={false}
-                searchData={false}
                 disableDefaultSearch={false}
-                disableCustomSearch={true}
-                disableReloadDataButton={true}
-                enableDuplicateButton={false}
+                disableInitialFormData={false}
                 initialRowData={{ otherRoutinesInitialRowData }}
-                enableGoToDateButton={false}
                 monthAndYear={monthAndYear}
 
             />

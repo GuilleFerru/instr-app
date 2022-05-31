@@ -37,6 +37,9 @@ const Breadcrumbs = props => {
         '/rutinas': 'Listado de Rutinas',
         '/tareasDiarias': 'Tareas Diarias',
         '/rutinas/rutinasDetalles': 'Detalle de Rutina',
+        '/parosDePlanta': 'Paros de Planta',
+        '/parosDePlanta/tareasParoDePlanta': 'Tareas Paro de Planta',
+        '/parosDePlanta/tareasParoDePlantaSinAsignar': 'Tareas Paro de Planta sin asignar',
     };
 
     return (

@@ -10,9 +10,8 @@ import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable
 import { scheduleTableStyle } from './ScheduleTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { datePicker } from '../../../Services/DatePickers';
-import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
+//import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
 import { useHistory } from 'react-router-dom';
-
 
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
@@ -154,35 +153,20 @@ export const ScheduleTable = _props => {
                     setData={setData}
                     title={'PERSONAL'}
                     datepicker={datePicker(date, handleDatePicker)}
-                    disableCheckButton={true}
                     enableAditionalButton={true}
-                    disableAddButton={true}
                     disableDeleteButton={false}
                     disableOnRowUpdate={false}
                     disableOnBulkUpdate={false}
                     dataColumns={dataColumns}
-                    rowAdd={false}
                     updateRow={updateRow}
                     bulkUpdate={bulkUpdate}
                     deleteRow={deleteRow}
                     handleAditional={handleAditional}
                     pageSize={15}
-                    disableGroupingOption={true}
                     date={date}
-                    handleRoutineSchedule={false}
-                    enableRoutinesDetails={false}
-                    enableCompleteTaskButton={false}
                     disableDatePicker={false}
-                    CustomSearchBar={MySearchBar}
-                    searchData={false}
-                    disableDefaultSearch={true}
-                    disableCustomSearch={true}
-                    disableReloadDataButton={true}
-                    enableDuplicateButton={false}
-                    disableInitialFormData={true}
-                    enableGoToDateButton={false}
                     pdfTitle={`Personal ${formatDate(date)}`}
-                // initialRowData={{}}
+                
                 />
             </ThemeProvider>
         </div>
