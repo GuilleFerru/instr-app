@@ -221,14 +221,14 @@ export const defaultPlantShutdownsTable = [
     field: '_id',
     title: 'Numero',
     hidden: true,
-},
-{
+  },
+  {
     field: "name",
     title: "Nombre",
     type: "string",
     width: "15%"
-},
-{
+  },
+  {
     field: 'beginDate',
     title: 'Fecha de inicio',
     type: 'date',
@@ -236,39 +236,39 @@ export const defaultPlantShutdownsTable = [
     defaultSort: 'asc',
     width: "15%"
 
-},
-{
+  },
+  {
     field: 'endDate',
     title: 'Fecha de finalización',
     type: 'date',
     dateSetting: { locale: 'es-AR', format: 'dd-MMM-yyyy' },
     width: "15%"
-},
-{
+  },
+  {
     field: 'timeSchedule',
     title: 'Horario de trabajo',
     lookup: {},
     initialEditValue: '5',
     width: "15%"
-},
-{
+  },
+  {
     field: 'description',
     title: 'Descripción',
     multiline: true,
     width: '30%'
-},
-{
+  },
+  {
     field: 'complete',
     title: 'Estado',
     lookup: {
-        'E': 'En ejecución',
-        'P': 'Pendiente',
-        'C': 'Completado',
-        'RE': 'Reprogramado',
+      'E': 'En ejecución',
+      'P': 'Pendiente',
+      'C': 'Completado',
+      'RE': 'Reprogramado',
     },
     initialEditValue: 'P',
     width: "10%"
-}
+  }
 ];
 
 export const plantShutDownsInitialRowData = {
@@ -280,87 +280,147 @@ export const plantShutDownsInitialRowData = {
   complete: 'P',
 }
 
+export const defaultPlantShutdownWorksToDoTable = [
+  {
+    field: 'id',
+    title: 'Numero',
+    hidden: true,
+  },
+  {
+    field: 'plant',
+    title: 'Planta',
+    lookup: {},
+    editable: 'never',
+    width: "10%",
+  },
+  {
+    field: 'attelier',
+    title: 'Attelier',
+    lookup: {},
+    editable: 'never',
+    width: "10%"
+  },
+  {
+    field: 'tag',
+    title: 'TAG',
+    type: 'string',
+    editable: 'never',
+    width: "10%"
+  },
+  {
+    field: 'ot',
+    title: 'OT',
+    type: 'string',
+    width: "10%"
+  },
+  {
+    field: 'description',
+    title: 'Trabajo a realizar',
+    multiline: true,
+    align: "justify",
+    width: '40%'
+  },
+  {
+    field: 'plantShutdownWorkId',
+    title: 'Asignar a Paro',
+    lookup: {},
+    width: "10%"
+  },
+  {
+    field: 'complete',
+    title: 'Estado',
+    lookup: {
+      'E': 'En ejecución',
+      'P': 'Pendiente',
+      'C': 'Completado',
+      'R': 'Demorado',
+      'PP': 'Paro de planta',
+    },
+    width: "10%"
+  }
+]
+
 
 export const defaultPlantShutdownWorksTable = [
   {
     field: 'id',
     title: 'Numero',
     hidden: true,
-},
-{
+  },
+  {
     field: 'plant',
     title: 'Planta',
     lookup: {},
     width: "10%",
-},
-{
+  },
+  {
     field: 'attelier',
     title: 'Attelier',
     lookup: {},
     width: "5%"
-},
-{
+  },
+  {
     field: 'tag',
     title: 'TAG',
     type: 'string',
     width: "5%"
-},
-{
+  },
+  {
     field: 'timeSchedule',
     title: 'Horario',
     lookup: {},
     initialEditValue: '5',
     width: "5%"
-},
-{
+  },
+  {
     field: 'ot',
     title: 'OT',
     type: 'string',
     width: "5%"
-},
-{
+  },
+  {
     field: 'action',
     title: 'Acción',
     lookup: {},
     initialEditValue: "1",
     width: "10%"
-},
-{
+  },
+  {
     field: 'workToDo',
     title: 'Trabajo a realizar',
     multiline: true,
     align: "justify",
     width: '25%'
-},
-{
+  },
+  {
     field: 'description',
     title: 'Trabajo realizado',
     multiline: true,
     align: "justify",
     width: '25%'
-},
-{
+  },
+  {
     field: 'complete',
     title: 'Estado',
     lookup: {
-        'E': 'En ejecución',
-        'P': 'Pendiente',
-        'C': 'Completado',
-        'R': 'Demorado',
+      'E': 'En ejecución',
+      'P': 'Pendiente',
+      'C': 'Completado',
+      'R': 'Demorado',
     },
     width: "10%"
-}
+  }
 ];
 
-export const plantShutDownWorksInitialRowData = {
+export const plantShutDownWorksInitialRowData = (timeSchedule) => ({
   plant: 0,
   attelier: 0,
   tag: '',
-  timeSchedule: 5,
+  timeSchedule: timeSchedule,
   ot: '',
-  action : 1,
+  action: 1,
   workToDo: '',
   description: '',
   complete: 'P'
-}
+})
 

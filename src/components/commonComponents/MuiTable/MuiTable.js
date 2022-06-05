@@ -62,6 +62,8 @@ export const MuiTable = (
         enableGoToPlantShutdown = false,
         enableGoToPlantShutdownWorksToDoButton = false,
         enableUpdateShutdownWorkButton = false,
+        setIsDialogOpen = false,
+        setRowData,
 
     }) => {
 
@@ -79,7 +81,7 @@ export const MuiTable = (
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
 
-    const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo } = muiTableCommonActions(getNewDate);
+    const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo, updateShutdownWork } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -148,7 +150,7 @@ export const MuiTable = (
                     enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate))),
                     enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon))),
                     enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon),
-                    //enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, materialTableRef, setInitialFormData),
+                    enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen,setRowData),
                 ]}
                 components={{
                     Action: (props) => {

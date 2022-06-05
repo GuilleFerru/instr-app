@@ -88,6 +88,7 @@ export const muiTableCommonActions = (getNewDate) => {
                 id: rowData._id,
                 name: rowData.name,
                 beginDate: rowData.beginDate,
+                timeSchedule: rowData.timeSchedule,
                 from: 'parosDePlanta'
             },
         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
@@ -101,26 +102,15 @@ export const muiTableCommonActions = (getNewDate) => {
         }} style={{ textDecoration: 'none', color: 'inherit' }}> <WorkOffIcon /></Link>,
     })
 
-    // const updateShutdownWork = (tableIcons, materialTableRef, setInitialFormData) => ({
-    //     tooltip: 'Actualizar tarea',
-    //     icon: tableIcons.Update,
-    //     onClick: (_evt, rowData) => {
-    //         const materialTable = materialTableRef.current;
-    //         const { tableData, id, tag, ...dataRest } = rowData
-    //         console.log(rowData)
-    //         // setInitialFormData({
-    //         //     id: 0,
-    //         //     tag: '',
-    //         //     ...dataRest
-    //         // });
-    //         materialTable.dataManager.changeRowEditing();
-    //         materialTable.setState({
-    //             ...materialTable.dataManager.getRenderState(),
-    //             showAddRow: true,
-    //         });
-    //     },
+    const updateShutdownWork = (tableIcons, setIsDialogOpen,setRowData) => ({
+        tooltip: 'Actualizar tarea',
+        icon: tableIcons.Update,
+        onClick: (_evt, rowData) => {
+            setIsDialogOpen(true)
+            setRowData(rowData)
+        },
 
-    // })
+    })
 
     return {
         handleDatePicker,
@@ -132,6 +122,6 @@ export const muiTableCommonActions = (getNewDate) => {
         duplicateRow,
         goToPlantShutdown,
         goToPlantShutdownWorksToDo,
-        // updateShutdownWork
+        updateShutdownWork
     }
 }

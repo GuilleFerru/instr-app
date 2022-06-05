@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 // import { axiosPut } from '../../../../Services/Axios';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
-import { defaultDailyWorksRoutineTable } from '../../../../Services/defaultTables';
+import { defaultPlantShutdownWorksToDoTable } from '../../../../Services/defaultTables';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable';
 import { AuthContext } from '../../../../context/AuthContext';
@@ -25,10 +25,11 @@ export const PlantShutdownWorksToDoTable = props => {
     const { getNewDataBulkEdit } = muiTableCommonActions();
 
     useEffect(() => {
-
+        console.log(props)
         new Promise(resolve => {
+
             setData(props.data.dayWorks ? props.data.dayWorks : []);
-            setDataColumns(props.data.columns ? props.data.columns : [defaultDailyWorksRoutineTable]);
+            setDataColumns(props.data.columns ? props.data.columns : [defaultPlantShutdownWorksToDoTable]);
             setNickname(props.nickname ? props.nickname : '');
             resolve();
         });

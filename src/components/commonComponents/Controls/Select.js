@@ -10,27 +10,37 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Select = (props) => {
-    const { name, label, value, onChange, options, disabled, variant  } = props;
-    
-    const classes = useStyles(props);
+    const { disabled, label, options, variant, name, margin, setValue, value, autoWidth } = props;
 
-    return <FormControl className={classes.textField} disabled={disabled} variant={variant}>
+    const classes = useStyles(props);
+    // useEffect(() => {
+    //     console.log(value)
+    // }, [value])
+
+    const handleSelect = (event) => {
+        setValue(event.target.value);
+    };
+
+
+    return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin}>
         <InputLabel>{label}</InputLabel>
         <MuiSelect
             label={label}
             name={name}
             value={value}
-            onChange={onChange}
-            >
+            onChange={handleSelect}
+            autoWidth={autoWidth}
+        >
             {
                 options.map((option) => (
-                    <MenuItem key={option.legajo} value={option.legajo}>
-                        {option.fullName}
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.name}
                     </MenuItem>
                 ))
             }
         </MuiSelect>
         {/* {error && <FormHelperText>{error}</FormHelperText>} */}
     </FormControl>
+
 
 }

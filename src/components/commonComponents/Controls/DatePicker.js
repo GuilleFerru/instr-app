@@ -13,9 +13,27 @@ const defaultMaterialTheme = createTheme({
     },
 });
 
+// const getLastDayOfNextYear = () => {
+//     const currentYear = new Date().getFullYear() + 1;
+//     console.log(currentYear);
+//     const date = new Date(`${currentYear}-12-31`);
+//     console.log(date)
+//     return date.getDate();
+// }
+
 export default function DatePicker(props) {
 
-    const { name, label, value, onChange } = props
+    const {
+        name,
+        label,
+        value,
+        onChange,
+        variant = 'inline',
+        inputVariant = "standard",
+        margin = 'normal',
+        maxDate = new Date('2100-01-01'),
+        maxDateMessage = 'Fecha incorrecta'
+    } = props
 
     const convertToDefEventPara = (name, value) => ({
         target: {
@@ -29,9 +47,12 @@ export default function DatePicker(props) {
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale} >
                 <MuiDatePicker
                     disableToolbar
-                    variant='inline'
-                    inputVariant="standard"
-                    autoOk            
+                    variant={variant}
+                    inputVariant={inputVariant}
+                    margin={margin}
+                    maxDate={maxDate}
+                    maxDateMessage={maxDateMessage}
+                    autoOk
                     label={label}
                     format="dd/MM/yyyy"
                     name={name}
