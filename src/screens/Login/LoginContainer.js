@@ -58,7 +58,7 @@ export const Login = () => {
                                 autoFocus={true}
                                 type={"email"}
                                 inputRef={username}
-                                value = {'gferrucci@pr3.com.ar'}
+                                
                                 
                             />
                             <Input
@@ -72,7 +72,7 @@ export const Login = () => {
                                 autoComplete={"current-password"}
                                 type={"password"}
                                 inputRef={password}
-                                value = {'6969'}
+                               
                                 
                             />
                             <Button
