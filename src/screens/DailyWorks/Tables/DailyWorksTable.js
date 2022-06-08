@@ -144,6 +144,7 @@ export const DailyWorksTable = _props => {
                 updateRow={updateRow}
                 bulkUpdate={bulkUpdate}
                 deleteRow={deleteRow}
+                enablePaging={true}
                 pageSize={15}
                 disableGroupingOption={false}
                 date={date}

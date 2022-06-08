@@ -12,7 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import WorkOffIcon from '@material-ui/icons/WorkOff';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
-import { ExportPdf } from '@material-table/exporters';
+
+import { ExportPdfButton } from './exportPdf';
 import { OverDueRoutine } from '../../OverDueRoutines/OverDueRoutine';
 import { LoadDataTable } from '../../LoadDataTable/LoadDataTable';
 import { muiTableCommonActions } from './MuiTableCommonActions';
@@ -64,6 +65,14 @@ export const MuiTable = (
         enableUpdateShutdownWorkButton = false,
         setIsDialogOpen = false,
         setRowData,
+        enablePaging = false,
+        enableDetailPanel = false,
+        detailPanel,
+        disableBreadcrumbs = false,
+        disableToolbar = false,
+        headerStyleBackgroundColor = "#128726"
+
+
 
     }) => {
 
@@ -97,6 +106,7 @@ export const MuiTable = (
                 tableRef={materialTableRef}
                 columns={columns}
                 localization={tableLocalization(LoadDataTable, data)}
+                detailPanel={enableDetailPanel ? [detailPanel] : null}
                 editable={{
                     onRowAdd: disableAddButton ? undefined : (newRow) => {
                         initialFormData && setInitialFormData(initialRowData);
@@ -117,6 +127,7 @@ export const MuiTable = (
                         bulkUpdate(selectedRows, resolve);
                     }),
                 }}
+
                 options={{
                     search: disableDefaultSearch ? false : true,
                     padding: 'dense',
@@ -124,20 +135,18 @@ export const MuiTable = (
                     actionsCellStyle: { justifyContent: 'flex-end' },
                     addRowPosition: 'first',
                     pageSize: pageSize,
-                    pageSizeOptions: [15, 30, 50, 100],
+                    pageSizeOptions: [5, 15, 30, 50, 100],
                     selection: disableCheckButton ? undefined : true,
                     grouping: disableGroupingOption ? undefined : true,
-                    exportMenu: [{
-                        label: 'Exportar a PDF',
-                        exportFunc: (cols, datas) => ExportPdf(cols, datas, pdfTitle)
-                    }],
+                    exportMenu: [ExportPdfButton(pdfTitle)],
+                    paging: enablePaging,
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#8a8a8a' : '#FFF',
                         color: (selectedRow === rowData.tableData.id) ? '#FFF' : '#000',
                         fontStyle: (selectedRow === rowData.tableData.id) ? 'italic' : 'normal',
                     }),
                     headerStyle: {
-                        backgroundColor: "#128726",
+                        backgroundColor: headerStyleBackgroundColor,
                         color: "#FFF",
                         fontWeight: 'bold',
                     },
@@ -150,7 +159,7 @@ export const MuiTable = (
                     enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate))),
                     enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon))),
                     enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon),
-                    enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen,setRowData),
+                    enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData),
                 ]}
                 components={{
                     Action: (props) => {
@@ -166,12 +175,16 @@ export const MuiTable = (
                     },
                     Toolbar: props => (
                         <div >
-                            <div className={classes.toolbarHeader}>
-                                <Breadcrumbs />
-                                <OverDueRoutine />
-                            </div>
+                            {disableBreadcrumbs ? null : (
+                                <div className={classes.toolbarHeader}>
+                                    <Breadcrumbs />
+                                    <OverDueRoutine />
+                                </div>
+                            )}
                             <div className={classes.toolbarBody} >
-                                <MTableToolbar {...props} />
+                                {disableToolbar ? null : (
+                                    <MTableToolbar {...props} />
+                                )}
                                 {disableCustomSearch ? null : (
                                     <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
                                 )}
@@ -192,7 +205,7 @@ export const MuiTable = (
                                 )}
                             </div>
                         </div>
-                    ),
+                    )
 
                     // EditField: props => (
                     //     <MTableEditField
@@ -204,7 +217,7 @@ export const MuiTable = (
                 onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
 
             />
-        </div>
+        </div >
     );
 }
 

@@ -116,7 +116,7 @@ export const UpdateShutdowWorksForm = (
         isOpen={isDialogOpen}
         fullWidth={true}
     >
-        <Container component="main" maxWidth="xs" className={classes.root}>
+        <Container component="main" maxWidth="lg" className={classes.root}>
             <CssBaseline />
             <div className={classes.paper}>
                 <form className={classes.form} onSubmit={handleSubmit} >
@@ -176,6 +176,7 @@ export const UpdateShutdowWorksForm = (
                         name={"workToDo"}
                         autoFocus={true}
                         type={"input"}
+                        multiline={3}
                         value={workToDo}
                         onChange={handleWorkToDoInput}
                     />
@@ -189,6 +190,7 @@ export const UpdateShutdowWorksForm = (
                         name={"description"}
                         autoFocus={true}
                         type={"input"}
+                        multiline={3}
                         value={description}
                         onChange={handleDescriptionInput}
                     />

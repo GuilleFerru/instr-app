@@ -85,6 +85,7 @@ export const PlantShutdownWorksToDoTable = props => {
                 updateRow={updateRow}
                 disableOnBulkUpdate={true}
                 bulkUpdate={bulkUpdate}
+                enablePaging={true}
                 pageSize={15}
                 pdfTitle={`${nickname}`}
             />

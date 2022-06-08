@@ -25,14 +25,18 @@ export const PlantShutdownWorkTable = props => {
     const [dataColumns, setDataColumns] = useState([]);
     const [rowData, setRowData] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [dayWorksColumns, setDayWorksColumns] = useState([]);
     //const { getNewDataBulkEdit } = muiTableCommonActions();
 
 
     useEffect(() => {
+
         new Promise(resolve => {
             setData(props.data.plantShutdowns ? props.data.plantShutdowns : []);
             setDataColumns(props.data.columns ? props.data.columns : [defaultPlantShutdownWorksTable]);
             setNickname(props.nickname ? props.nickname : '');
+            
+            setDayWorksColumns(props.data.dayWorksColumns ? props.data.dayWorksColumns : []);
             resolve();
         });
     }, [props]);
@@ -47,7 +51,7 @@ export const PlantShutdownWorkTable = props => {
         resolve();
     }
 
-    
+
     // const bulkUpdate = (changes, resolve) => {
     //     const copyData = [...data];
     //     const dataUpdate = getNewDataBulkEdit(changes, copyData);
@@ -60,6 +64,28 @@ export const PlantShutdownWorkTable = props => {
         socket ? socket.emit('delete_plant_shutdown_work', selectedRow) : history.push('/error');
         resolve();
     }
+
+
+
+    const detailPanel = {
+        tooltip: 'Ver avance de tarea',
+        render: rowData => {
+            return (
+                <MuiTable
+                    data={rowData.rowData.dailyWorks}
+                    title={'avance'}
+                    dataColumns={dayWorksColumns}
+                    enablePaging={true}
+                    pageSize={5}
+                    disableBreadcrumbs={true}
+                    disableExportMenu={true}
+                    disableToolbar={true}
+                    headerStyleBackgroundColor={'black'}
+                />
+            )
+        }
+    }
+
 
 
     return <div className={classes.table}>
@@ -77,10 +103,14 @@ export const PlantShutdownWorkTable = props => {
                 disableDeleteButton={false}
                 rowAdd={rowAdd}
                 deleteRow={deleteRow}
+                enablePaging={true}
                 pageSize={15}
                 pdfTitle={`${nickname} - Avance al ${new Date().toLocaleDateString()}`}
                 setIsDialogOpen={setIsDialogOpen}
                 setRowData={setRowData}
+                enableDetailPanel={true}
+                disableCheckButton={true}
+                detailPanel={detailPanel}
             />
             <UpdateShutdowWorksForm tableData={props.data} rowData={rowData} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
         </ThemeProvider>
