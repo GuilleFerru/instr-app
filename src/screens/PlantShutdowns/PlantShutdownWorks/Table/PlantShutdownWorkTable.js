@@ -73,14 +73,14 @@ export const PlantShutdownWorkTable = props => {
             return (
                 <MuiTable
                     data={rowData.rowData.dailyWorks}
-                    title={'avance'}
                     dataColumns={dayWorksColumns}
                     enablePaging={true}
                     pageSize={5}
+                    pageSizeOptions={[5, 10, 15]}
                     disableBreadcrumbs={true}
                     disableExportMenu={true}
                     disableToolbar={true}
-                    headerStyleBackgroundColor={'black'}
+                    headerStyleBackgroundColor={'#3cc954'}
                 />
             )
         }
@@ -104,7 +104,7 @@ export const PlantShutdownWorkTable = props => {
                 rowAdd={rowAdd}
                 deleteRow={deleteRow}
                 enablePaging={true}
-                pageSize={15}
+                pageSize={10}
                 pdfTitle={`${nickname} - Avance al ${new Date().toLocaleDateString()}`}
                 setIsDialogOpen={setIsDialogOpen}
                 setRowData={setRowData}

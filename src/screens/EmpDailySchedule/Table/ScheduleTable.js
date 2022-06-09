@@ -162,7 +162,9 @@ export const ScheduleTable = _props => {
                     bulkUpdate={bulkUpdate}
                     deleteRow={deleteRow}
                     handleAditional={handleAditional}
+                    enablePaging={true}
                     pageSize={15}
+                    pageSizeOptions={[15, 20]}
                     date={date}
                     disableDatePicker={false}
                     pdfTitle={`Personal ${formatDate(date)}`}

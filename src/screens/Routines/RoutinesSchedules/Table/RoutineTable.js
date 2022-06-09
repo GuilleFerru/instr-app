@@ -94,13 +94,14 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         <ThemeProvider theme={theme}>
             <MuiTable
                 data={data}
-                setData={setData}
                 title={'RUTINAS'}
                 datepicker={monthPicker(date, handleDatePicker)}
                 disableOnRowUpdate={false}
                 dataColumns={dataColumns}
                 updateRow={updateRow}
-                pageSize={15}
+                enablePaging={true}
+                pageSize={10}
+                pageSizeOptions={[10, 20, 30]}
                 date={date}
                 handleRoutineSchedule={handleRoutineSchedule}
                 enableRoutinesDetails={true}

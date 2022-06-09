@@ -291,6 +291,7 @@ export const defaultPlantShutdownWorksToDoTable = [
     title: 'Planta',
     lookup: {},
     editable: 'never',
+    defaultGroupOrder: 0,
     width: "10%",
   },
   {

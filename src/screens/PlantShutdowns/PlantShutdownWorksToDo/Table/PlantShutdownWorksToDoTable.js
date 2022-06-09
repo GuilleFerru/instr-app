@@ -25,9 +25,7 @@ export const PlantShutdownWorksToDoTable = props => {
     const { getNewDataBulkEdit } = muiTableCommonActions();
 
     useEffect(() => {
-        console.log(props)
         new Promise(resolve => {
-
             setData(props.data.dayWorks ? props.data.dayWorks : []);
             setDataColumns(props.data.columns ? props.data.columns : [defaultPlantShutdownWorksToDoTable]);
             setNickname(props.nickname ? props.nickname : '');
@@ -80,7 +78,7 @@ export const PlantShutdownWorksToDoTable = props => {
                 data={data}
                 setData={setData}
                 dataColumns={dataColumns}
-                title={'Tareas sin asignar'}
+                title={'TAREAS DE PARO DE PLANTA SIN ASIGNAR'}
                 disableOnRowUpdate={false}
                 updateRow={updateRow}
                 disableOnBulkUpdate={true}

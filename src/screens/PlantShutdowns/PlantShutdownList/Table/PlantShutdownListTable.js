@@ -67,7 +67,8 @@ export const PlantShutdownListTable = ({ allData, setDate, date }) => {
                 updateRow={updateRow}
                 deleteRow={deleteRow}
                 enablePaging={true}
-                pageSize={15}
+                pageSize={10}
+                pageSizeOptions={[10, 20, 30]}
                 date={date}
                 disableDatePicker={false}
                 disableDefaultSearch={false}

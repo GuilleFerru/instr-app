@@ -3,7 +3,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { axiosGet } from '../../../Services/Axios.js';
 import { dailyWorksDefault, dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
-import {formatDate} from '../../../Services/DateUtils.js';
+import { formatDate } from '../../../Services/DateUtils.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
@@ -90,6 +90,7 @@ export const DailyWorksTable = _props => {
         const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
         const index = dataUpdate.indexOf(target);
         dataUpdate[index] = newData;
+        console.log(newData)
         socket ? socket.emit('update_daily_work', date, newData, roomId) : history.push('/error');
         resolve();
         return dataUpdate;
@@ -145,7 +146,8 @@ export const DailyWorksTable = _props => {
                 bulkUpdate={bulkUpdate}
                 deleteRow={deleteRow}
                 enablePaging={true}
-                pageSize={15}
+                pageSize={20}
+                pageSizeOptions={[20, 30, 50]}
                 disableGroupingOption={false}
                 date={date}
                 disableDatePicker={false}

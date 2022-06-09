@@ -70,7 +70,8 @@ export const MuiTable = (
         detailPanel,
         disableBreadcrumbs = false,
         disableToolbar = false,
-        headerStyleBackgroundColor = "#128726"
+        headerStyleBackgroundColor = "#128726",
+        pageSizeOptions = [10, 15, 20, 25, 50],
 
 
 
@@ -135,7 +136,7 @@ export const MuiTable = (
                     actionsCellStyle: { justifyContent: 'flex-end' },
                     addRowPosition: 'first',
                     pageSize: pageSize,
-                    pageSizeOptions: [5, 15, 30, 50, 100],
+                    pageSizeOptions: pageSizeOptions,
                     selection: disableCheckButton ? undefined : true,
                     grouping: disableGroupingOption ? undefined : true,
                     exportMenu: [ExportPdfButton(pdfTitle)],
@@ -152,14 +153,14 @@ export const MuiTable = (
                     },
                 }}
                 actions={[
-                    enableAditionalButton && addAditional(tableIcons, handleAditional),
-                    enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData),
-                    enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData))),
-                    enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon))),
-                    enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate))),
-                    enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon))),
-                    enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon),
-                    enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData),
+                    (enableAditionalButton && addAditional(tableIcons, handleAditional)),
+                    (enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData)),
+                    (enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData)))),
+                    (enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon)))),
+                    (enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate)))),
+                    (enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon)))),
+                    (enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon)),
+                    (enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData)),
                 ]}
                 components={{
                     Action: (props) => {
