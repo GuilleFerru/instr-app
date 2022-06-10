@@ -1,11 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Badges from '../Badges/Badges';
+import { makeStyles } from '@material-ui/core/styles';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import { AuthContext } from '../../context/AuthContext';
 import { useHistory, Link } from 'react-router-dom';
 
+
+
+const useStyles = makeStyles((theme) => ({
+    link: {
+        display: 'flex',
+        textDecoration: 'none',
+        cursor: 'pointer'
+    },
+}));
+
+
 export const OverDueRoutine = (props) => {
 
+    const classes = useStyles();
     const { socket } = useContext(AuthContext);
     const history = useHistory();
     const [qtyOverdueRoutines, setQtyOverdueRoutines] = useState(0);
@@ -32,13 +45,13 @@ export const OverDueRoutine = (props) => {
     }, [history, socket]);
 
     return (
-        <Link to="/rutinas">
+        <Link to="/rutinas" className={classes.link}>
             <Badges
                 tooltip="Rutinas atrasadas"
                 qty={qtyOverdueRoutines}
                 color={qtyOverdueRoutines === 0 ? "secondary" : "error"}
             >
-                <ScheduleIcon />
+                <ScheduleIcon color={qtyOverdueRoutines === 0 ? "disabled" : "error"} />
             </Badges>
         </Link>
     )

@@ -73,8 +73,6 @@ export const MuiTable = (
         headerStyleBackgroundColor = "#128726",
         pageSizeOptions = [10, 15, 20, 25, 50],
 
-
-
     }) => {
 
     const positionRef = React.useRef();
@@ -90,7 +88,6 @@ export const MuiTable = (
     const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
-
     const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo, updateShutdownWork } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {

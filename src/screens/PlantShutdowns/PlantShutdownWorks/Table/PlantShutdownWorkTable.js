@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { makeStyles } from "@material-ui/core/styles";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../../../context/AuthContext';
 import theme from '../../../../components/commonComponents/MuiTable/theme';
-import { defaultPlantShutdownWorksTable, plantShutDownWorksInitialRowData } from '../../../../Services/defaultTables';
-import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
-//import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { plantShutdownWorkTableStyle } from './PlantShutdownWorkTableStyle';
-import { useHistory } from 'react-router-dom';
 import { UpdateShutdowWorksForm } from '../Forms/UpdateShutdowWorksForm';
+import { defaultPlantShutdownWorksTable, plantShutDownWorksInitialRowData } from '../../../../Services/defaultTables';
+
 
 
 
@@ -35,7 +35,7 @@ export const PlantShutdownWorkTable = props => {
             setData(props.data.plantShutdowns ? props.data.plantShutdowns : []);
             setDataColumns(props.data.columns ? props.data.columns : [defaultPlantShutdownWorksTable]);
             setNickname(props.nickname ? props.nickname : '');
-            
+
             setDayWorksColumns(props.data.dayWorksColumns ? props.data.dayWorksColumns : []);
             resolve();
         });
@@ -65,23 +65,31 @@ export const PlantShutdownWorkTable = props => {
         resolve();
     }
 
-
+    const [highlightSelectedRow, setHighlightSelectedRow] = useState(false);
 
     const detailPanel = {
         tooltip: 'Ver avance de tarea',
+
+
+
         render: rowData => {
+            setHighlightSelectedRow(rowData.rowData.id);
             return (
-                <MuiTable
-                    data={rowData.rowData.dailyWorks}
-                    dataColumns={dayWorksColumns}
-                    enablePaging={true}
-                    pageSize={5}
-                    pageSizeOptions={[5, 10, 15]}
-                    disableBreadcrumbs={true}
-                    disableExportMenu={true}
-                    disableToolbar={true}
-                    headerStyleBackgroundColor={'#3cc954'}
-                />
+                <div className={classes.detailPanel}>
+                    <div className={classes.detailPanelTable}>
+                        <MuiTable
+                            data={rowData.rowData.dailyWorks}
+                            dataColumns={dayWorksColumns}
+                            enablePaging={true}
+                            pageSize={5}
+                            pageSizeOptions={[5, 10, 15]}
+                            disableBreadcrumbs={true}
+                            disableExportMenu={true}
+                            disableToolbar={true}
+                            headerStyleBackgroundColor={'#3cc954'}
+                        />
+                    </div>
+                </div>
             )
         }
     }
@@ -111,6 +119,8 @@ export const PlantShutdownWorkTable = props => {
                 enableDetailPanel={true}
                 disableCheckButton={true}
                 detailPanel={detailPanel}
+                setRowColor={true}
+                rowIdHighlight={highlightSelectedRow}
             />
             <UpdateShutdowWorksForm tableData={props.data} rowData={rowData} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
         </ThemeProvider>
