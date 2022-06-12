@@ -89,6 +89,7 @@ export const muiTableCommonActions = (getNewDate) => {
                 name: rowData.name,
                 beginDate: rowData.beginDate,
                 timeSchedule: rowData.timeSchedule,
+                complete: rowData.complete,
                 from: 'parosDePlanta'
             },
         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,

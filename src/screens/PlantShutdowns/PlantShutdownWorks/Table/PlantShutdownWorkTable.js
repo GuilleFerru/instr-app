@@ -26,11 +26,12 @@ export const PlantShutdownWorkTable = props => {
     const [rowData, setRowData] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dayWorksColumns, setDayWorksColumns] = useState([]);
+    
     //const { getNewDataBulkEdit } = muiTableCommonActions();
 
 
     useEffect(() => {
-
+console.log(props)
         new Promise(resolve => {
             setData(props.data.plantShutdowns ? props.data.plantShutdowns : []);
             setDataColumns(props.data.columns ? props.data.columns : [defaultPlantShutdownWorksTable]);
@@ -107,7 +108,7 @@ export const PlantShutdownWorkTable = props => {
                 initialRowData={plantShutDownWorksInitialRowData(props.timeSchedule)}
                 enableUpdateShutdownWorkButton={true}
                 disableInitialFormData={false}
-                disableAddButton={false}
+                disableAddButton={props.plantShutdownState}
                 disableDeleteButton={false}
                 rowAdd={rowAdd}
                 deleteRow={deleteRow}

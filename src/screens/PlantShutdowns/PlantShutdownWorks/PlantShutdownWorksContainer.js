@@ -13,15 +13,15 @@ export const PlantShutdownWorksContainer = () => {
     const { socket } = useContext(AuthContext);
     const location = useLocation();
     const history = useHistory();
-    const { id, name, beginDate,timeSchedule } = location.state;
+    const { id, name, beginDate, timeSchedule, complete } = location.state;
     const [data, setData] = useState([]);
+    const [plantShutdownState, setPlantShutdownState] = useState(false);
 
     useEffect(() => {
         let cancel = false;
         if (socket) {
             socket.emit('get_plant_shutdown_works', id);
             socket.on('get_plant_shutdown_works', (data) => {
-                
                 cancel = false;
                 if (!cancel) {
                     setData(data);
@@ -38,9 +38,15 @@ export const PlantShutdownWorksContainer = () => {
         }
     }, [history, id, socket]);
 
+    useEffect(() => {
+        if (complete === 'C') {
+            setPlantShutdownState(true);
+        }
+    }, [complete])
+
 
 
     return <TableCard>
-        <PlantShutdownWorkTable data={data} nickname={`${name} - Inicio: ${formatDate(beginDate)}`} plantShutdownId={id} timeSchedule={timeSchedule} />
+        <PlantShutdownWorkTable data={data} nickname={`${name} - Inicio: ${formatDate(beginDate)}`} plantShutdownId={id} timeSchedule={timeSchedule} plantShutdownState={plantShutdownState} />
     </TableCard>
 };
