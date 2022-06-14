@@ -1,14 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { axiosGet } from '../../../Services/Axios.js';
-import { dailyWorksDefault, dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
+import {  dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
 import { formatDate } from '../../../Services/DateUtils.js';
 import { makeStyles } from "@material-ui/core/styles";
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
-import { DateContext } from '../../../context/DateContext';
-import { AuthContext } from '../../../context/AuthContext';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
@@ -19,15 +17,11 @@ const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
 const baseUrl = process.env.REACT_APP_API_URL;
 
 
-export const DailyWorksTable = _props => {
+export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDate, roomId, socket }) => {
     const location = useLocation();
     const classes = useStyles();
     const history = useHistory();
-    const { socket } = useContext(AuthContext);
-    const { date, getNewDate } = useContext(DateContext);
     const [data, setData] = useState([]);
-    const [roomId, setRoomId] = useState(0);
-    const [dataColumns, setDataColumns] = useState([]);
     const [reloadButton, setReloadButton] = useState(true);
     const [rowIdHighlight, setRowIdHighlight] = useState(undefined)
     const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
@@ -40,42 +34,14 @@ export const DailyWorksTable = _props => {
         } catch (error) { }
     }, [location])
 
-    const getData = (data) => {
-        setData([]);
-        const { dayWorks, columns } = data;
-        if (data) {
-            dayWorks === undefined ? setData([]) : setData(dayWorks);
-            columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
-        }
-    };
-
     useEffect(() => {
-        let cancel = false;
-        if (socket) {
-            socket.emit('get_daily_works', date);
-            socket.on('get_daily_works', (data) => {
-                cancel = false;
-                if (!cancel) {
-                    getData(data);
-                    setRoomId(date);
-                    socket.emit('daily_works_join_room', date);
-                } else {
-                    return;
-                }
-            });
-            socket.emit('daily_works_leave_room', roomId);
-            socket.on('daily_works_leave_room', () => socket.off('daily_works_leave_room'));
-            return () => {
-                socket.off('get_daily_works');
-                cancel = true
-            }
-        } else {
-            history.push('/error');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [date]);
-
-
+        setData([]);
+        new Promise((resolve) => {
+            setTimeout(resolve, 200);
+        }).then(() => {
+            setData(allData);
+        });
+    },[allData])
 
     const rowAdd = (newRow, resolve) => {
         const newDayWork = newRow;

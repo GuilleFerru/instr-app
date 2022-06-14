@@ -1,63 +1,41 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 import { formatDate } from '../../../Services/DateUtils.js';
-import { DateContext } from '../../../context/DateContext';
-import { AuthContext } from '../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { scheduleTableStyle } from './ScheduleTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { datePicker } from '../../../Services/DatePickers';
-//import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
-export const ScheduleTable = _props => {
+export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => {
 
     const classes = useStyles();
-    const { socket } = useContext(AuthContext);
-    const { date, getNewDate } = useContext(DateContext);
     const history = useHistory();
     const [data, setData] = useState([]);
     const [aditionals, setAditionals] = useState({});
     const [aditionalCount, setAditionalCount] = useState(1);
-    const [roomId, setRoomId] = useState(0);
     const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
     const [dataColumns, setDataColumns] = useState([]);
-    // const { handleLeaveRoom } = mainListActions(setRoomId);
+
 
     useEffect(() => {
-        let cancel = false;
-        if (socket) {
-            socket.emit('get_schedule', date);
-            socket.on('get_schedule', (data) => {
-                cancel = false;
-                if (!cancel) {
-                    const { schedule, aditionals, columns, id } = data;
-                    schedule === undefined ? setData([]) : setData(schedule);
-                    columns === undefined ? setDataColumns(scheduleEmpDefault) : setDataColumns(columns)
-                    aditionals === undefined ? setAditionals({}) : setAditionals(aditionals);
-                    columns !== undefined && columns.length > 5 ? setAditionalCount(parseInt((columns[columns.length - 2].field).match(/\d+/)[0]) + 1) : setAditionalCount(1);
-                    id !== undefined ? setRoomId(id) : setRoomId(0);
-                    socket.emit('schedule_join_room', id);
-                } else {
-                    return;
-                }
-            })
-            socket.emit('schedule_leave_room', roomId);
-            socket.on('schedule_leave_room', () => socket.off('schedule_leave_room'));
-            return () => {
-                socket.off('get_schedule');
-                cancel = true;
-            }
-        } else {
-            history.push('/error');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [date]);
+        setData([])
+        new Promise(resolve => {
+            setTimeout(resolve, 300);
+        }).then(() => {
+            setData(allData.schedule ? allData.schedule : []);
+            setDataColumns(allData.columns ? allData.columns : [scheduleEmpDefault]);
+            setAditionals(allData.aditionals ? allData.aditionals : {});
+            allData.columns !== undefined && allData.columns.length > 5 ?
+                setAditionalCount(parseInt((allData.columns[allData.columns.length - 2].field).match(/\d+/)[0]) + 1) :
+                setAditionalCount(1);
+        });
+    }, [allData])
 
 
     const bulkUpdate = (changes, resolve) => {
@@ -168,7 +146,7 @@ export const ScheduleTable = _props => {
                     date={date}
                     disableDatePicker={false}
                     pdfTitle={`Personal ${formatDate(date)}`}
-                
+
                 />
             </ThemeProvider>
         </div>
