@@ -31,12 +31,10 @@ export const PlantShutdownWorkTable = props => {
 
 
     useEffect(() => {
-console.log(props)
         new Promise(resolve => {
             setData(props.data.plantShutdowns ? props.data.plantShutdowns : []);
             setDataColumns(props.data.columns ? props.data.columns : [defaultPlantShutdownWorksTable]);
             setNickname(props.nickname ? props.nickname : '');
-
             setDayWorksColumns(props.data.dayWorksColumns ? props.data.dayWorksColumns : []);
             resolve();
         });
@@ -70,9 +68,6 @@ console.log(props)
 
     const detailPanel = {
         tooltip: 'Ver avance de tarea',
-
-
-
         render: rowData => {
             setHighlightSelectedRow(rowData.rowData.id);
             return (

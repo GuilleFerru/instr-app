@@ -12,7 +12,6 @@ import IconButton from '@material-ui/core/IconButton';
 import WorkOffIcon from '@material-ui/icons/WorkOff';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
-
 import { ExportPdfButton } from './exportPdf';
 import { OverDueRoutine } from '../../OverDueRoutines/OverDueRoutine';
 import { LoadDataTable } from '../../LoadDataTable/LoadDataTable';
@@ -72,6 +71,8 @@ export const MuiTable = (
         disableToolbar = false,
         headerStyleBackgroundColor = "#128726",
         pageSizeOptions = [10, 15, 20, 25, 50],
+        enableDailyWorkSearchButton = false,
+        
 
     }) => {
 
@@ -88,7 +89,7 @@ export const MuiTable = (
     const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
-    const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo, updateShutdownWork } = muiTableCommonActions(getNewDate);
+    const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo, updateShutdownWork ,searchDailyWork } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -158,6 +159,7 @@ export const MuiTable = (
                     (enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon)))),
                     (enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon)),
                     (enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData)),
+                    (enableDailyWorkSearchButton && searchDailyWork(tableIcons, setIsDialogOpen, setRowData))
                 ]}
                 components={{
                     Action: (props) => {

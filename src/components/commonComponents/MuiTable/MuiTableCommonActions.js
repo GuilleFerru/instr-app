@@ -110,8 +110,19 @@ export const muiTableCommonActions = (getNewDate) => {
             setIsDialogOpen(true)
             setRowData(rowData)
         },
-
     })
+
+    const searchDailyWork = (tableIcons, setIsDialogOpen, setRowData) => ({
+        tooltip: 'Buscar tarea',
+        isFreeAction: true,
+        icon: tableIcons.Search,
+        onClick: (_evt, rowData) => {
+            setIsDialogOpen(true)
+            //setRowData(rowData)
+        }
+    }
+    )
+
 
     return {
         handleDatePicker,
@@ -123,6 +134,7 @@ export const muiTableCommonActions = (getNewDate) => {
         duplicateRow,
         goToPlantShutdown,
         goToPlantShutdownWorksToDo,
-        updateShutdownWork
+        updateShutdownWork,
+        searchDailyWork
     }
 }

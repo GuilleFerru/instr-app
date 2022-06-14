@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import theme from '../../../components/commonComponents/MuiTable/theme';
-import { axiosGet } from '../../../Services/Axios.js';
-import {  dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
-import { formatDate } from '../../../Services/DateUtils.js';
 import { makeStyles } from "@material-ui/core/styles";
-import { dailyWorksTableStyle } from './DailyWorksTableStyle';
+import { useHistory, useLocation } from 'react-router-dom';
+import theme from '../../../components/commonComponents/MuiTable/theme';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { datePicker } from '../../../Services/DatePickers';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
-import { useHistory, useLocation } from 'react-router-dom';
+import { axiosGet } from '../../../Services/Axios.js';
+import { dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
+import { formatDate } from '../../../Services/DateUtils.js';
+import { datePicker } from '../../../Services/DatePickers';
+import { dailyWorksTableStyle } from './DailyWorksTableStyle';
+import { SearchDailyWorkForm } from '../Forms/SearchDailyWorkForm';
 
 
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
@@ -25,6 +26,7 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
     const [reloadButton, setReloadButton] = useState(true);
     const [rowIdHighlight, setRowIdHighlight] = useState(undefined)
     const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 
     useEffect(() => {
@@ -41,7 +43,7 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
         }).then(() => {
             setData(allData);
         });
-    },[allData])
+    }, [allData])
 
     const rowAdd = (newRow, resolve) => {
         const newDayWork = newRow;
@@ -128,7 +130,10 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
                 rowIdHighlight={rowIdHighlight}
                 setRowColor={true}
                 pdfTitle={`Tareas diarias ${formatDate(date)}`}
+                enableDailyWorkSearchButton={true}
+                setIsDialogOpen={setIsDialogOpen}
             />
+            <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
         </ThemeProvider>
     </div>
 }
