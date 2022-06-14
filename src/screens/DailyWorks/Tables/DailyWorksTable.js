@@ -56,7 +56,6 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
         const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
         const index = dataUpdate.indexOf(target);
         dataUpdate[index] = newData;
-        console.log(newData)
         socket ? socket.emit('update_daily_work', date, newData, roomId) : history.push('/error');
         resolve();
         return dataUpdate;
