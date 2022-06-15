@@ -68,6 +68,15 @@ export const SearchDailyWorkForm = (
 
     }
 
+    const swicthData = [
+        { id: 'plant', label: 'Buscar tareas por planta', name: 'plant' },
+        { id: 'attelier', label: 'Buscar tareas por atelier', name: 'attelier' },
+        { id: 'manteinance', label: 'Buscar tareas por mantenimiento', name: 'manteinance' },
+        { id: 'action', label: 'Buscar tareas por acción', name: 'action' },
+        { id: 'complete', label: 'Buscar tareas por completado', name: 'complete' },
+    ];
+
+
     return <MyDialog
         title={<Title value="Buscador de trabajos diarios" variant="button" color="primary" gutterBottom={true} />}
         isOpen={isDialogOpen}
@@ -97,46 +106,15 @@ export const SearchDailyWorkForm = (
                     </div>
                     <Title value="Filtros" variant="subtitle2" color="primary" gutterBottom={true} />
                     <FormGroup >
-                        <Switch
-                            label="Buscar tareas por planta"
-                            checked={false}
-                            onChange={handleSearchFor}
-                            inputVariant="outlined"
-                            margin={"dense"}
-                            name="plant"
-                        />
-                        <Switch
-                            label="Buscar tareas por attelier"
-                            checked={false}
-                            onChange={handleSearchFor}
-                            inputVariant="outlined"
-                            margin={"dense"}
-                            name="attelier"
-                        />
-                        <Switch
-                            label="Buscar tareas por tipo de mantenimiento"
-                            checked={false}
-                            onChange={handleSearchFor}
-                            inputVariant="outlined"
-                            margin={"dense"}
-                            name="manteinance"
-                        />
-                        <Switch
-                            label="Buscar tareas por acción"
-                            checked={false}
-                            onChange={handleSearchFor}
-                            inputVariant="outlined"
-                            margin={"dense"}
-                            name="action"
-                        />
-                        <Switch
-                            label="Buscar tareas por estado"
-                            checked={false}
-                            onChange={handleSearchFor}
-                            inputVariant="outlined"
-                            margin={"dense"}
-                            name="complete"
-                        />
+                        {swicthData.map(item => (
+                            <Switch
+                                key={item.id}
+                                label={item.label}
+                                name={item.name}
+                                checked={false}
+                                onChange={handleSearchFor}
+                            />
+                        ))}
                     </FormGroup>
                     {/* 
                     {workStatus && <FormGroup >
