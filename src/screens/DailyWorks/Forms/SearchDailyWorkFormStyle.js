@@ -7,6 +7,20 @@ export const searchDailyWorkFormStyle = theme => {
             flexDirection: 'column',
             alignItems: 'begin',
         },
+        dateGroup: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: theme.spacing(1),
+        },
+        switchGroup: {
+            display: 'flex',
+            flexFlow: 'column noWrap',
+            alignItems: ' flex-start ',
+            justifyContent: 'center',
+            marginBottom: theme.spacing(1),
+        },
 
 
     })

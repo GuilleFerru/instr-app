@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
-import { CssBaseline, Container, Button } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { CssBaseline, Container, Button, FormGroup } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 //import { AuthContext } from '../../../context/AuthContext';
 import { searchDailyWorkFormStyle } from './SearchDailyWorkFormStyle';
 import { MyDialog, MyDialogActions } from '../../../components/commonComponents/Dialog/MyDialog';
-//import { useHistory } from 'react-router-dom';
-
+import { Title } from '../../../components/commonComponents/Title';
+import DatePicker from '../../../components/commonComponents/Controls/DatePicker';
+import { Switch } from '../../../components/commonComponents/Controls/Switch';
 
 const useStyles = makeStyles((theme) => searchDailyWorkFormStyle(theme));
 
@@ -21,30 +22,54 @@ export const SearchDailyWorkForm = (
     // const history = useHistory();
     // const { socket } = useContext(AuthContext);
 
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    //const [isComplete, setIsComplete] = useState(false);
+    const [searchFor, setSearchFor] = useState({
+        plant: false,
+        attelier: false,
+        manteinance: false,
+        action: false,
+        complete: false,
+    });
+
 
     useEffect(() => {
+        //console.log(searchFor)
+    }, [searchFor]);
 
-    }, [rowData]);
+    const handleStartDateInput = event => {
+        setStartDate(event.target.value);
+    }
+
+    const handleEndDateInput = event => {
+        setEndDate(event.target.value);
+    }
+
+
+    const handleSearchFor = (event) => {
+        setSearchFor({ ...searchFor, [event.target.name]: event.target.checked });
+    };
 
 
     const handleDialogClose = _e => {
         setIsDialogOpen(false);
+        setSearchFor({
+            plant: false,
+            attelier: false,
+            manteinance: false,
+            action: false,
+            complete: false,
+        });
     };
-
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        // const oldData = rowData
-        // const newData = {
-
-        //     //,
-        // }
         setIsDialogOpen(false);
-       
+
     }
 
     return <MyDialog
-        title="Buscar Tareas por"
+        title={<Title value="Buscador de trabajos diarios" variant="button" color="primary" gutterBottom={true} />}
         isOpen={isDialogOpen}
         fullWidth={true}
     >
@@ -52,7 +77,72 @@ export const SearchDailyWorkForm = (
             <CssBaseline />
             <div className={classes.paper}>
                 <form className={classes.form} onSubmit={handleSubmit} >
-
+                    <div className={classes.dateGroup}>
+                        <DatePicker
+                            name='date'
+                            label="Buscar desde"
+                            value={startDate}
+                            onChange={handleStartDateInput}
+                            inputVariant="outlined"
+                            margin={"dense"}
+                        />
+                        <DatePicker
+                            name='date'
+                            label="Buscar hasta"
+                            value={endDate}
+                            onChange={handleEndDateInput}
+                            inputVariant="outlined"
+                            margin={"dense"}
+                        />
+                    </div>
+                    <Title value="Filtros" variant="subtitle2" color="primary" gutterBottom={true} />
+                    <FormGroup >
+                        <Switch
+                            label="Buscar tareas por planta"
+                            checked={false}
+                            onChange={handleSearchFor}
+                            inputVariant="outlined"
+                            margin={"dense"}
+                            name="plant"
+                        />
+                        <Switch
+                            label="Buscar tareas por attelier"
+                            checked={false}
+                            onChange={handleSearchFor}
+                            inputVariant="outlined"
+                            margin={"dense"}
+                            name="attelier"
+                        />
+                        <Switch
+                            label="Buscar tareas por tipo de mantenimiento"
+                            checked={false}
+                            onChange={handleSearchFor}
+                            inputVariant="outlined"
+                            margin={"dense"}
+                            name="manteinance"
+                        />
+                        <Switch
+                            label="Buscar tareas por acción"
+                            checked={false}
+                            onChange={handleSearchFor}
+                            inputVariant="outlined"
+                            margin={"dense"}
+                            name="action"
+                        />
+                        <Switch
+                            label="Buscar tareas por estado"
+                            checked={false}
+                            onChange={handleSearchFor}
+                            inputVariant="outlined"
+                            margin={"dense"}
+                            name="complete"
+                        />
+                    </FormGroup>
+                    {/* 
+                    {workStatus && <FormGroup >
+                        <span>En construccion</span>
+                    </FormGroup>
+                    } */}
                     <MyDialogActions>
                         <Button onClick={handleSubmit} color="primary">
                             Buscar
@@ -64,7 +154,7 @@ export const SearchDailyWorkForm = (
                 </form>
             </div>
         </Container>
-    </MyDialog>
+    </MyDialog >
 
 
 }

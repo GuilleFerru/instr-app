@@ -113,7 +113,7 @@ export const muiTableCommonActions = (getNewDate) => {
     })
 
     const searchDailyWork = (tableIcons, setIsDialogOpen, setRowData) => ({
-        tooltip: 'Buscar tarea',
+        tooltip: 'Buscador avanzado',
         isFreeAction: true,
         icon: tableIcons.Search,
         onClick: (_evt, rowData) => {
