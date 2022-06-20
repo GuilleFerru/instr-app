@@ -176,7 +176,7 @@ export const UpdateShutdowWorksForm = (
                         name={"workToDo"}
                         autoFocus={true}
                         type={"input"}
-                        multiline={3}
+                        multiline={true}
                         value={workToDo}
                         onChange={handleWorkToDoInput}
                     />
@@ -190,7 +190,7 @@ export const UpdateShutdowWorksForm = (
                         name={"description"}
                         autoFocus={true}
                         type={"input"}
-                        multiline={3}
+                        multiline={true}
                         value={description}
                         onChange={handleDescriptionInput}
                     />

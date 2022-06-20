@@ -1,14 +1,14 @@
 import React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import {Switch as MuiSwitch}  from '@material-ui/core/';
+import { Switch as MuiSwitch } from '@material-ui/core/';
 
 
 export const Switch = (props) => {
 
-    const { label, name, value, onChange, disabled } = props;
+    const { label, name, value, onChange, disabled, id } = props;
     return <FormControlLabel
         control={
-            <MuiSwitch checked={value} onChange={onChange} name={name} disabled={disabled} />
+            <MuiSwitch id={id} checked={value} onChange={onChange} name={name} disabled={disabled} />
         }
         label={label}
     />

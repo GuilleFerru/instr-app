@@ -6,7 +6,7 @@ import theme from '../../../components/commonComponents/MuiTable/theme';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable';
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { MySearchBar } from '../../../components/commonComponents/Controls/SearchBar';
-import { axiosGet } from '../../../Services/Axios.js';
+import { axiosGet, axiosGetBody } from '../../../Services/Axios.js';
 import { dailyWorksInitialRowData } from '../../../Services/defaultTables.js';
 import { formatDate } from '../../../Services/DateUtils.js';
 import { datePicker } from '../../../Services/DatePickers';
@@ -27,6 +27,7 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
     const [rowIdHighlight, setRowIdHighlight] = useState(undefined)
     const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [dailyWorkDataForSearch, setDailyWorkDataForSearch] = useState([]);
 
 
     useEffect(() => {
@@ -93,8 +94,27 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
                 history.push('/error');
             });
         }
-
     }
+
+    const getDailyWorkDataForSearch = () => {
+        axiosGet(`${baseUrl}/dailyWork/dataForSearch`).then(data => {
+            setDailyWorkDataForSearch(data);
+        }).catch(_err => {
+            history.push('/error');
+        });
+    }
+
+    const getDataFromAdvanceSearch = (dataForSearch) => {
+        axiosGetBody(`${baseUrl}/dailyWork/searchAdvance/dataForSearch`, { params: { dataForSearch } }).then(data => {
+            getData(data);
+            setReloadButton(false);
+        }
+        ).catch(_err => {
+            history.push('/error');
+        }
+        );
+    }
+
 
     return <div className={classes.table}>
         <ThemeProvider theme={theme}>
@@ -123,7 +143,7 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
                 disableCustomSearch={false}
                 disableReloadDataButton={reloadButton}
                 resetData={searchData}
-                searchPlaceHolder={'Buscar por Tag, Descripción'}
+                searchPlaceHolder={'Buscar por TAG, OT ó Descripción'}
                 enableDuplicateButton={true}
                 disableInitialFormData={false}
                 initialRowData={dailyWorksInitialRowData}
@@ -132,8 +152,9 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
                 pdfTitle={`Tareas diarias ${formatDate(date)}`}
                 enableDailyWorkSearchButton={true}
                 setIsDialogOpen={setIsDialogOpen}
+                getDailyWorkDataForSearch={getDailyWorkDataForSearch}
             />
-            <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
+            <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} dailyWorkDataForSearch={dailyWorkDataForSearch} getDataFromAdvanceSearch={getDataFromAdvanceSearch} />
         </ThemeProvider>
     </div>
 }

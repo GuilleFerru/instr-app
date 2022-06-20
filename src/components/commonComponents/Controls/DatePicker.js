@@ -32,7 +32,8 @@ export default function DatePicker(props) {
         inputVariant = "standard",
         margin = 'normal',
         maxDate = new Date('2100-01-01'),
-        maxDateMessage = 'Fecha incorrecta'
+        maxDateMessage = 'Fecha incorrecta',
+        disabled = false,
     } = props
 
     const convertToDefEventPara = (name, value) => ({
@@ -47,6 +48,7 @@ export default function DatePicker(props) {
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale} >
                 <MuiDatePicker
                     disableToolbar
+                    disabled={disabled}
                     variant={variant}
                     inputVariant={inputVariant}
                     margin={margin}

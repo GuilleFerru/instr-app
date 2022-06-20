@@ -30,6 +30,21 @@ export const axiosGet = async (url) => {
     }
 }
 
+export const axiosGetBody = async (url, params) => {
+    try {
+        const _res = await axios.get(url, { params, ...options() });
+        if (_res.status === 200) {
+            return _res.data;
+        }
+        else {
+            return {};
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 export const axiosPut = (url, body) => {
     try {
         return axios.put(url, body, options());

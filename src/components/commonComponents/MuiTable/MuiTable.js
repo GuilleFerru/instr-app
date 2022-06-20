@@ -72,7 +72,8 @@ export const MuiTable = (
         headerStyleBackgroundColor = "#128726",
         pageSizeOptions = [10, 15, 20, 25, 50],
         enableDailyWorkSearchButton = false,
-        
+        getDailyWorkDataForSearch,
+
 
     }) => {
 
@@ -89,7 +90,7 @@ export const MuiTable = (
     const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
     const classes = useStyles();
-    const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo, updateShutdownWork ,searchDailyWork } = muiTableCommonActions(getNewDate);
+    const { addAditional, completeTask, watchTask, goToDate, duplicateRow, goToPlantShutdown, goToPlantShutdownWorksToDo, updateShutdownWork, searchDailyWork } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -159,7 +160,7 @@ export const MuiTable = (
                     (enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon)))),
                     (enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon)),
                     (enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData)),
-                    (enableDailyWorkSearchButton && searchDailyWork(tableIcons, setIsDialogOpen, setRowData))
+                    (enableDailyWorkSearchButton && searchDailyWork(tableIcons, setIsDialogOpen, getDailyWorkDataForSearch))
                 ]}
                 components={{
                     Action: (props) => {

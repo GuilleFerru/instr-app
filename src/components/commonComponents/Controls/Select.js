@@ -10,21 +10,18 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Select = (props) => {
-    const { disabled, label, options, variant, name, margin, setValue, value, autoWidth } = props;
 
     const classes = useStyles(props);
-    // useEffect(() => {
-    //     console.log(value)
-    // }, [value])
+    const { id, disabled, label, options, variant, name, margin, setValue, value, autoWidth } = props;
 
     const handleSelect = (event) => {
         setValue(event.target.value);
     };
 
-
     return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin}>
         <InputLabel>{label}</InputLabel>
         <MuiSelect
+            id={id}
             label={label}
             name={name}
             value={value}

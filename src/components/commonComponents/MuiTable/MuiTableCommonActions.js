@@ -103,7 +103,7 @@ export const muiTableCommonActions = (getNewDate) => {
         }} style={{ textDecoration: 'none', color: 'inherit' }}> <WorkOffIcon /></Link>,
     })
 
-    const updateShutdownWork = (tableIcons, setIsDialogOpen,setRowData) => ({
+    const updateShutdownWork = (tableIcons, setIsDialogOpen, setRowData) => ({
         tooltip: 'Actualizar tarea',
         icon: tableIcons.Update,
         onClick: (_evt, rowData) => {
@@ -112,13 +112,13 @@ export const muiTableCommonActions = (getNewDate) => {
         },
     })
 
-    const searchDailyWork = (tableIcons, setIsDialogOpen, setRowData) => ({
+    const searchDailyWork = (tableIcons, setIsDialogOpen, getDailyWorkDataForSearch) => ({
         tooltip: 'Buscador avanzado',
         isFreeAction: true,
         icon: tableIcons.Search,
-        onClick: (_evt, rowData) => {
+        onClick: (_evt) => {
             setIsDialogOpen(true)
-            //setRowData(rowData)
+            getDailyWorkDataForSearch()
         }
     }
     )
