@@ -74,7 +74,6 @@ export const MuiTable = (
         enableDailyWorkSearchButton = false,
         getDailyWorkDataForSearch,
 
-
     }) => {
 
     const positionRef = React.useRef();
@@ -86,6 +85,10 @@ export const MuiTable = (
     });
 
 
+
+
+
+
     const [initialFormData, setInitialFormData] = useState(initialRowData);
     const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -95,6 +98,8 @@ export const MuiTable = (
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
     }, [rowIdHighlight, setRowColor]);
+
+  
 
     return (
         <div ref={positionRef} className={classes.table}>
@@ -149,7 +154,7 @@ export const MuiTable = (
                         backgroundColor: headerStyleBackgroundColor,
                         color: "#FFF",
                         fontWeight: 'bold',
-                    },
+                    }
                 }}
                 actions={[
                     (enableAditionalButton && addAditional(tableIcons, handleAditional)),

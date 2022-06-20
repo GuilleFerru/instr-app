@@ -4,8 +4,6 @@ export const muiTableStyle = theme => {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            
-            
         },
         toolbarHeader: {
             display: 'flex',
@@ -35,9 +33,15 @@ export const muiTableStyle = theme => {
         reloadDataButton: {
             margin: '0 0 0.1rem 0.1rem',
         },
-        datePicker: {
-            margin: '0 0 1rem 1rem',
-        },
+        // datePicker: {
+        //     margin: '0 0 1rem 1rem',
+        // },
+        // complete: {
+        //     backgroundColor: '#6aec6a',
+        //     width: 'fitContent',
+        //     padding: '0 5px',
+        //     borderRadius: '2px'
+        // }
 
     })
 }

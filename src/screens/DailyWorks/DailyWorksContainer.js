@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 
 export const DailyWorksContainer = () => {
 
+    
     const history = useHistory();
     const { socket } = useContext(AuthContext);
     const { date, getNewDate } = useContext(DateContext);
@@ -19,6 +20,7 @@ export const DailyWorksContainer = () => {
     const getData = (data) => {
         setData([]);
         const { dayWorks, columns } = data;
+
         if (data) {
             dayWorks === undefined ? setData([]) : setData(dayWorks);
             columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
