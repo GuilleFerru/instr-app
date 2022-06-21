@@ -27,3 +27,27 @@ export const getYesterday = () => {
     const d = date.getDate() - 1;
     return new Date(y, m, d);
 }
+
+
+export const initOfDailyShift = () => {
+    const date = new Date();
+    if (date.getMonth() === 0) {
+        const y = date.getFullYear() - 1;
+        const m = 11;
+        const d = 16;
+        return new Date(y, m, d);
+    }
+    const y = date.getFullYear();
+    const m = date.getMonth() - 1;
+    const d = 16;
+    return new Date(y, m, d);
+}
+
+export const endOfDailyShift = () => {
+    const date = new Date();
+    const y = date.getFullYear();
+    const m = date.getMonth();
+    const d = 15;
+    return new Date(y, m, d);
+}
+

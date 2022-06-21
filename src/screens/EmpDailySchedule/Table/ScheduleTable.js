@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import theme from '../../../components/commonComponents/MuiTable/theme';
-import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
-import { formatDate } from '../../../Services/DateUtils.js';
 import { makeStyles } from "@material-ui/core/styles";
+import theme from '../../../components/commonComponents/MuiTable/theme';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
-import { scheduleTableStyle } from './ScheduleTableStyle'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
+import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 import { datePicker } from '../../../Services/DatePickers';
+import { formatDate } from '../../../Services/DateUtils.js';
+import { scheduleTableStyle } from './ScheduleTableStyle';
+import { GenerateDailyShiftForm } from '../Forms/GenerateDailyShiftForm';
+
+
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
@@ -21,6 +24,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
     const [aditionalCount, setAditionalCount] = useState(1);
     const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
     const [dataColumns, setDataColumns] = useState([]);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 
     useEffect(() => {
@@ -119,8 +123,9 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
         resolve();
     }
 
-
-
+    const generateDailyShift = (startDate, endDate) => {
+        socket ? socket.emit('generate_daily_shift', { startDate, endDate }, roomId) : history.push('/error');
+    }
 
 
     return <>
@@ -146,8 +151,10 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                     date={date}
                     disableDatePicker={false}
                     pdfTitle={`Personal ${formatDate(date)}`}
-
+                    enableGenerateDailyShiftButton={true}
+                    setIsDialogOpen={setIsDialogOpen}
                 />
+                <GenerateDailyShiftForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} generateDailyShift={generateDailyShift} />
             </ThemeProvider>
         </div>
     </>

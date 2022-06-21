@@ -123,6 +123,16 @@ export const muiTableCommonActions = (getNewDate) => {
     }
     )
 
+    const generateDailyShift = (tableIcons, setIsDialogOpen) => ({
+        tooltip: 'Generar Parte Diario',
+        isFreeAction: true,
+        icon: tableIcons.DailyShift,
+        onClick: (_evt) => {
+            setIsDialogOpen(true)
+        }
+    })
+
+
 
     return {
         handleDatePicker,
@@ -135,6 +145,7 @@ export const muiTableCommonActions = (getNewDate) => {
         goToPlantShutdown,
         goToPlantShutdownWorksToDo,
         updateShutdownWork,
-        searchDailyWork
+        searchDailyWork,
+        generateDailyShift
     }
 }
