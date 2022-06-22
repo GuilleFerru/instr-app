@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
+import { axiosGetExcel } from '../../../Services/Axios.js';
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
@@ -9,10 +10,10 @@ import { datePicker } from '../../../Services/DatePickers';
 import { formatDate } from '../../../Services/DateUtils.js';
 import { scheduleTableStyle } from './ScheduleTableStyle';
 import { GenerateDailyShiftForm } from '../Forms/GenerateDailyShiftForm';
-
-
 import { useHistory } from 'react-router-dom';
+import fileDownload from 'js-file-download'
 
+const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
 export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => {
@@ -124,7 +125,16 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
     }
 
     const generateDailyShift = (startDate, endDate) => {
-        socket ? socket.emit('generate_daily_shift', { startDate, endDate }, roomId) : history.push('/error');
+
+        const searchData = { startDate, endDate }
+        axiosGetExcel(`${baseUrl}/schedule/getDailyShiftExcel/dataForSearch`, { params: searchData }).then(data => {
+            fileDownload(data, 'ArchivoTest.xlsx');
+            return data
+        }).catch(_err => {
+            console.log(_err)
+            history.push('/error');
+        });
+        // socket ? socket.emit('generate_daily_shift', { startDate, endDate }, roomId) : history.push('/error');
     }
 
 

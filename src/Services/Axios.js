@@ -11,7 +11,8 @@ const options = () => {
     return {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': token,
+            
         }
     }
 }
@@ -42,7 +43,20 @@ export const axiosGetBody = async (url, params) => {
     } catch (err) {
         console.log(err);
     }
+}
 
+export const axiosGetExcel = async (url, params) => {
+    try {
+        const _res = await axios.get(url, { params, ...options(), responseType: 'blob' });
+        if (_res.status === 200) {
+            return _res.data;
+        }
+        else {
+            return {};
+        }
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export const axiosPut = (url, body) => {

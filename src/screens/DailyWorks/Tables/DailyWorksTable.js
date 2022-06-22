@@ -108,11 +108,9 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
         axiosGetBody(`${baseUrl}/dailyWork/searchAdvance/dataForSearch`, { params: { dataForSearch } }).then(data => {
             getData(data);
             setReloadButton(false);
-        }
-        ).catch(_err => {
+        }).catch(_err => {
             history.push('/error');
-        }
-        );
+        });
     }
 
 

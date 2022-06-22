@@ -17,6 +17,7 @@
     "axios": "^0.25.0",
     "date-fns": "^2.23.0",
     "install": "^0.13.0",
+    "js-file-download": "^0.4.12",
     "material-table": "^1.69.3",
     "material-ui-search-bar": "^1.0.0",
     "moment": "^2.29.1",
