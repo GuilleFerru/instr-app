@@ -125,11 +125,9 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
     }
 
     const generateDailyShift = (startDate, endDate) => {
-
         const searchData = { startDate, endDate }
         axiosGetExcel(`${baseUrl}/schedule/getDailyShiftExcel/dataForSearch`, { params: searchData }).then(data => {
-            fileDownload(data, 'ArchivoTest.xlsx');
-            return data
+            fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
         }).catch(_err => {
             console.log(_err)
             history.push('/error');

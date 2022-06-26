@@ -31,6 +31,7 @@ export default function DatePicker(props) {
         variant = 'inline',
         inputVariant = "standard",
         margin = 'normal',
+        minDate,
         maxDate = new Date('2100-01-01'),
         maxDateMessage = 'Fecha incorrecta',
         disabled = false,
@@ -52,6 +53,7 @@ export default function DatePicker(props) {
                     variant={variant}
                     inputVariant={inputVariant}
                     margin={margin}
+                    minDate={minDate}
                     maxDate={maxDate}
                     maxDateMessage={maxDateMessage}
                     autoOk
