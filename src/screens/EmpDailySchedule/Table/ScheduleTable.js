@@ -7,7 +7,7 @@ import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 import { datePicker } from '../../../Services/DatePickers';
-import { formatDate } from '../../../Services/DateUtils.js';
+import { formatDate, getDayName } from '../../../Services/DateUtils.js';
 import { scheduleTableStyle } from './ScheduleTableStyle';
 import { GenerateDailyShiftForm } from '../Forms/GenerateDailyShiftForm';
 import { useHistory } from 'react-router-dom';
@@ -17,23 +17,42 @@ import fileDownload from 'js-file-download'
 
 //import template from '../../../excel/dailyShiftTemplate.xlsx';
 
-// const generateDailyShiftExcel = async (data, startDate, endDate) => {
-//     const searchData = { startDate, endDate }
-//     axiosGetBody(`${baseUrl}/schedule/getDataForDailyShiftExcel/dataForSearch`, { params: searchData }).then(schedules => {
-//         const workbook = new excel.Workbook(data);
-//         // me fijo cuantos dias tengo en el rango de fechas y muestro las sheets que me hagan falta
-//         const dateQty = schedules.length;
-//         //const qtyOfSheets = Math.ceil(dateQty / 7);
-//         console.log(dateQty);
-//         for (let i = 1; i < dateQty; i++) {
-//             const showSheet = workbook.getWorksheet(`SEMANA ${i + 1}`)
-//             showSheet.state = 'visible';
-//         }
+const generateData = (schedules, emp) => {
+    const dataForSheet = [];
+    let employees = [];
+    for (const element of schedules) {
+        const { schedule, dateTime } = element;
+        const dayNumber = new Date(dateTime).getDay();
+        const dateNumber = new Date(dateTime).getDate();
+        const dataObject = {
+            dateNumber: dateNumber,
+            dayName: getDayName(dayNumber),
+        }
+        for (let i = 0; i < schedule.length; i++) {
+            const { id, legajo, fullName, timeSchedule, workedHours, ...rest } = schedule[i];
+            //const employee = await getEmployees('byLegajo', legajo);
+            const { nombre, apellido } = emp[i];
+            employees.push({
+                legajo: legajo,
+                fullName: `${nombre} ${apellido}`,
+                aditionals: Object.keys(rest).length === 0 ? [{}] : [rest],
+            })
+            dataObject.employees = employees;
+        }
+        employees = [];
+        dataForSheet.push(dataObject);
+    }
 
-//         fileDownload(workbook, `fileName.xlsx`);
-//     });
-//     //return workbook;
-// }
+    const weekData = []
+    do {
+        weekData.push(dataForSheet.splice(0, 7));
+    } while (dataForSheet.length > 7)
+    weekData.push(dataForSheet.splice(0));
+
+    return weekData;
+
+
+}
 
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -152,17 +171,17 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
 
         setLoadingExcel(true);
         const searchData = { startDate, endDate }
-        axiosGetBody(`${baseUrl}/schedule/getDataForDailyShiftExcel/dataForSearch`, { params: searchData }).then(weekData => {
-            const data = weekData;
-            console.log(data);
-            // axiosPostExcel(`${baseUrl}/schedule/postDailyShiftExcel`, data).then(data => {
-            //     fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
-            //     //fileDownload(data, `fileName.xlsx`);
-            //     setLoadingExcel(false);
-            // }).catch(_err => {
-            //     console.log(_err)
-            //     history.push('/error');
-            // });
+        axiosGetBody(`${baseUrl}/schedule/getDataForDailyShiftExcel/dataForSearch`, { params: searchData }).then(data => {
+            const { schedules, employees } = data;
+            const dataForExcel = generateData(schedules, employees);
+            axiosPostExcel(`${baseUrl}/schedule/postDailyShiftExcel`, dataForExcel).then(data => {
+                fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
+                //fileDownload(data, `fileName.xlsx`);
+                setLoadingExcel(false);
+            }).catch(_err => {
+                console.log(_err)
+                history.push('/error');
+            });
             setLoadingExcel(false);
         }).catch(_err => {
             console.log(_err)

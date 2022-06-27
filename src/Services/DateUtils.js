@@ -51,3 +51,7 @@ export const endOfDailyShift = () => {
     return new Date(y, m, d);
 }
 
+export const getDayName = (dayNumber) => {
+    const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+    return days[dayNumber];
+}
