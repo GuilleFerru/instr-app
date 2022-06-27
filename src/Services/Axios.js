@@ -12,7 +12,7 @@ const options = () => {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token,
-            
+
         }
     }
 }
@@ -45,9 +45,9 @@ export const axiosGetBody = async (url, params) => {
     }
 }
 
-export const axiosGetExcel = async (url, params) => {
+export const axiosPostExcel = async (url, body) => {
     try {
-        const _res = await axios.get(url, { params, ...options(), responseType: 'blob' });
+        const _res = await axios.post(url, body, { ...options(), responseType: 'blob' });
         if (_res.status === 200) {
             return _res.data;
         }
@@ -58,6 +58,20 @@ export const axiosGetExcel = async (url, params) => {
         console.log(err);
     }
 }
+
+// export const axiosGetExcel = async (url) => {
+//     try {
+//         const _res = await axios.get(url, {...options(), responseType: 'blob' });
+//         if (_res.status === 200) {
+//             return _res.data;
+//         }
+//         else {
+//             return {};
+//         }
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
 
 export const axiosPut = (url, body) => {
     try {

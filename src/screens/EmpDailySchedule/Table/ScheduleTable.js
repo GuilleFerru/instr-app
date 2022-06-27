@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
-import { axiosGetExcel } from '../../../Services/Axios.js';
+import { axiosPostExcel, axiosGetBody } from '../../../Services/Axios.js';
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
 import { muiTableCommonActions } from '../../../components/commonComponents/MuiTable/MuiTableCommonActions';
@@ -11,7 +11,30 @@ import { formatDate } from '../../../Services/DateUtils.js';
 import { scheduleTableStyle } from './ScheduleTableStyle';
 import { GenerateDailyShiftForm } from '../Forms/GenerateDailyShiftForm';
 import { useHistory } from 'react-router-dom';
+
 import fileDownload from 'js-file-download'
+
+
+//import template from '../../../excel/dailyShiftTemplate.xlsx';
+
+// const generateDailyShiftExcel = async (data, startDate, endDate) => {
+//     const searchData = { startDate, endDate }
+//     axiosGetBody(`${baseUrl}/schedule/getDataForDailyShiftExcel/dataForSearch`, { params: searchData }).then(schedules => {
+//         const workbook = new excel.Workbook(data);
+//         // me fijo cuantos dias tengo en el rango de fechas y muestro las sheets que me hagan falta
+//         const dateQty = schedules.length;
+//         //const qtyOfSheets = Math.ceil(dateQty / 7);
+//         console.log(dateQty);
+//         for (let i = 1; i < dateQty; i++) {
+//             const showSheet = workbook.getWorksheet(`SEMANA ${i + 1}`)
+//             showSheet.state = 'visible';
+//         }
+
+//         fileDownload(workbook, `fileName.xlsx`);
+//     });
+//     //return workbook;
+// }
+
 
 const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
@@ -126,21 +149,37 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
     }
 
     const generateDailyShift = (startDate, endDate) => {
-        const searchData = { startDate, endDate }
+
         setLoadingExcel(true);
-        axiosGetExcel(`${baseUrl}/schedule/getDailyShiftExcel/dataForSearch`, { params: searchData }).then(data => {
-            // fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
-            fileDownload(data, `fileName.xlsx`);
-            
-            setLoadingExcel(false);
-            setTimeout(() => {
-            
-            }, 5000);
-        }).catch(_err => {
-            console.log(_err)
-            history.push('/error');
+        const searchData = { startDate, endDate }
+        axiosGetBody(`${baseUrl}/schedule/getDataForDailyShiftExcel/dataForSearch`, { params: searchData }).then(weekData => {
+            axiosPostExcel(`${baseUrl}/schedule/postDailyShiftExcel`, weekData).then(data => {
+                fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
+                //fileDownload(data, `fileName.xlsx`);
+                setLoadingExcel(false);
+            }).catch(_err => {
+                console.log(_err)
+                history.push('/error');
+            });
+
+
+            //fileDownload(workbook, `fileName.xlsx`);
         });
-        // socket ? socket.emit('generate_daily_shift', { startDate, endDate }, roomId) : history.push('/error');
+
+
+
+
+        // axiosGetExcel(`${baseUrl}/schedule/getDailyShiftExcel`).then(data => {
+        //     // fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
+        //     generateDailyShiftExcel(data, startDate, endDate);
+
+        //     //fileDownload(data, `fileName.xlsx`);
+        //     setLoadingExcel(false);
+        // }).catch(_err => {
+        //     console.log(_err)
+        //     history.push('/error');
+        // });
+        // // socket ? socket.emit('generate_daily_shift', { startDate, endDate }, roomId) : history.push('/error');
     }
 
 
