@@ -153,7 +153,9 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
         setLoadingExcel(true);
         const searchData = { startDate, endDate }
         axiosGetBody(`${baseUrl}/schedule/getDataForDailyShiftExcel/dataForSearch`, { params: searchData }).then(weekData => {
-            axiosPostExcel(`${baseUrl}/schedule/postDailyShiftExcel`, weekData).then(data => {
+            const data = weekData;
+            console.log(data);
+            axiosPostExcel(`${baseUrl}/schedule/postDailyShiftExcel`, data).then(data => {
                 fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
                 //fileDownload(data, `fileName.xlsx`);
                 setLoadingExcel(false);
@@ -161,10 +163,10 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                 console.log(_err)
                 history.push('/error');
             });
-
-
-            //fileDownload(workbook, `fileName.xlsx`);
-        });
+        }).catch(_err => {
+            console.log(_err)
+            history.push('/error');
+        })
 
 
 
