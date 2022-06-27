@@ -26,6 +26,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
     const { handleDatePicker, getNewDataBulkEdit } = muiTableCommonActions(getNewDate);
     const [dataColumns, setDataColumns] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [loadingExcel, setLoadingExcel] = useState(false);
 
 
     useEffect(() => {
@@ -126,9 +127,15 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
 
     const generateDailyShift = (startDate, endDate) => {
         const searchData = { startDate, endDate }
+        setLoadingExcel(true);
         axiosGetExcel(`${baseUrl}/schedule/getDailyShiftExcel/dataForSearch`, { params: searchData }).then(data => {
             // fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
-            fileDownload(data, `Partes Diarios.xlsx`);
+            fileDownload(data, `fileName.xlsx`);
+            
+            setLoadingExcel(false);
+            setTimeout(() => {
+            
+            }, 5000);
         }).catch(_err => {
             console.log(_err)
             history.push('/error');
@@ -163,7 +170,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                     enableGenerateDailyShiftButton={true}
                     setIsDialogOpen={setIsDialogOpen}
                 />
-                <GenerateDailyShiftForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} generateDailyShift={generateDailyShift} />
+                <GenerateDailyShiftForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} generateDailyShift={generateDailyShift} loadingExcel={loadingExcel} />
             </ThemeProvider>
         </div>
     </>
