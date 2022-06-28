@@ -10,6 +10,21 @@ import { Title } from '../../../components/commonComponents/Title';
 
 const useStyles = makeStyles((theme) => generateDailyShiftFormStyle(theme));
 
+const checkDatesDifference = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const compareDates = startDate.getTime() > endDate.getTime();
+    if (diffDays > 31 || compareDates) {
+        return false;
+    } else if (diffDays < 31 || compareDates) {
+        return true;
+    }
+}
+
+
+
 
 export const GenerateDailyShiftForm = (
     {
@@ -22,6 +37,8 @@ export const GenerateDailyShiftForm = (
     const classes = useStyles();
     const [startDate, setStartDate] = useState(initOfDailyShift());
     const [endDate, setEndDate] = useState(endOfDailyShift());
+    const [isValid, setIsValid] = useState(true);
+
 
 
     const handleDialogClose = _e => {
@@ -29,17 +46,18 @@ export const GenerateDailyShiftForm = (
     };
 
     const handleStartDateInput = event => {
+        setIsValid(checkDatesDifference(event.target.value, endDate))
         setStartDate(event.target.value);
     }
 
     const handleEndDateInput = event => {
+        setIsValid(checkDatesDifference(startDate, event.target.value))
         setEndDate(event.target.value);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         generateDailyShift(startDate, endDate);
-        //setIsDialogOpen(false);
     }
 
 
@@ -65,8 +83,6 @@ export const GenerateDailyShiftForm = (
                                     name='date'
                                     label="Desde"
                                     value={startDate}
-                                    //minDate={initOfDailyShift()}
-                                    maxDate={endOfDailyShift()}
                                     onChange={handleStartDateInput}
                                     inputVariant="outlined"
                                     margin={"dense"}
@@ -75,8 +91,6 @@ export const GenerateDailyShiftForm = (
                                     name='date'
                                     label="Hasta"
                                     value={endDate}
-                                    //minDate={initOfDailyShift()}
-                                    maxDate={endOfDailyShift()}
                                     onChange={handleEndDateInput}
                                     inputVariant="outlined"
                                     margin={"dense"}
@@ -84,8 +98,8 @@ export const GenerateDailyShiftForm = (
                             </div>
                             <MyDialogActions>
                                 <Tooltip title="Click para descargar" placement="top">
-                                    <Button onClick={handleSubmit} color="primary">
-                                        Generar Parte Diario
+                                    <Button onClick={handleSubmit} color="primary" disabled={!isValid}>
+                                        {isValid ? "Generar Parte Diario" : "Fechas no validas"}
                                     </Button>
                                 </Tooltip>
                                 <Button onClick={handleDialogClose} color="primary">
