@@ -12,6 +12,10 @@ const theme = createTheme ({
         secondary: {
             main: '#47BD77',
         },
+        black: {
+            main: '#000000',
+        }
+
     }
 })
 

@@ -14,46 +14,6 @@ import { useHistory } from 'react-router-dom';
 import fileDownload from 'js-file-download'
 
 
-//import template from '../../../excel/dailyShiftTemplate.xlsx';
-
-// const generateData = (schedules, emp) => {
-//     const dataForSheet = [];
-//     let employees = [];
-//     for (const element of schedules) {
-//         const { schedule, dateTime } = element;
-//         const dayNumber = new Date(dateTime).getDay();
-//         const dateNumber = new Date(dateTime).getDate();
-//         const dataObject = {
-//             dateNumber: dateNumber,
-//             dayName: getDayName(dayNumber),
-//         }
-//         for (let i = 0; i < schedule.length; i++) {
-//             const { id, legajo, fullName, timeSchedule, workedHours, ...rest } = schedule[i];
-//             //const employee = await getEmployees('byLegajo', legajo);
-//             const { nombre, apellido } = emp[i];
-//             employees.push({
-//                 legajo: legajo,
-//                 fullName: `${nombre} ${apellido}`,
-//                 aditionals: Object.keys(rest).length === 0 ? [{}] : [rest],
-//             })
-//             dataObject.employees = employees;
-//         }
-//         employees = [];
-//         dataForSheet.push(dataObject);
-//     }
-
-//     const weekData = []
-//     do {
-//         weekData.push(dataForSheet.splice(0, 7));
-//     } while (dataForSheet.length > 7)
-//     weekData.push(dataForSheet.splice(0));
-
-//     return weekData;
-
-
-// }
-
-
 const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
@@ -166,60 +126,17 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
         resolve();
     }
 
-    // const generateDailyShift = (startDate, endDate) => {
-
-    //     setLoadingExcel(true);
-    //     const searchData = { startDate, endDate }
-    //     axiosGetBody(`${baseUrl}/schedule/getDataForDailyShiftExcel/dataForSearch`, { params: searchData }).then(data => {
-    //         const { schedules, employees } = data;
-    //         fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
-    //         const dataForExcel = generateData(schedules, employees);
-    //         axiosPostExcel(`${baseUrl}/schedule/postDailyShiftExcel`, dataForExcel).then(data => {
-    //             fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
-    //             //fileDownload(data, `fileName.xlsx`);
-    //             setLoadingExcel(false);
-    //         }).catch(_err => {
-    //             console.log(_err)
-    //             history.push('/error');
-    //         });
-    //         setLoadingExcel(false);
-    //     }).catch(_err => {
-    //         console.log(_err)
-    //         history.push('/error');
-    //     })
-
-
-
-
-    //     // axiosGetExcel(`${baseUrl}/schedule/getDailyShiftExcel`).then(data => {
-    //     //     // fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
-    //     //     generateDailyShiftExcel(data, startDate, endDate);
-
-    //     //     //fileDownload(data, `fileName.xlsx`);
-    //     //     setLoadingExcel(false);
-    //     // }).catch(_err => {
-    //     //     console.log(_err)
-    //     //     history.push('/error');
-    //     // });
-    //     // // socket ? socket.emit('generate_daily_shift', { startDate, endDate }, roomId) : history.push('/error');
-    // }
-
     const generateDailyShift = (startDate, endDate) => {
         const searchData = { startDate, endDate }
         setLoadingExcel(true);
         axiosGetExcel(`${baseUrl}/schedule/getDailyShiftExcel/dataForSearch`, { params: searchData }).then(data => {
-            // fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
-            fileDownload(data, `fileName.xlsx`);
-
-            setLoadingExcel(false);
-            setTimeout(() => {
-
-            }, 5000);
+            fileDownload(data, `Partes Diarios desde ${formatDate(startDate)} hasta ${formatDate(endDate)} Instrumentos .xlsx`);
+            setLoadingExcel(false)
+            setIsDialogOpen(false)
         }).catch(_err => {
             console.log(_err)
             history.push('/error');
         });
-        // socket ? socket.emit('generate_daily_shift', { startDate, endDate }, roomId) : history.push('/error');
     }
 
 

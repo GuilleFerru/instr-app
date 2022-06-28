@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CssBaseline, Container, Button, Tooltip, CircularProgress, Card, Fade, CardContent } from '@material-ui/core';
+import { CssBaseline, Container, Button, Tooltip, CircularProgress, Fade, } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import { initOfDailyShift, endOfDailyShift } from '../../../Services/DateUtils';
 import { generateDailyShiftFormStyle } from './GenerateDailyShiftFormStyle';
@@ -45,17 +45,11 @@ export const GenerateDailyShiftForm = (
 
     return <>
         {loadingExcel ?
-
-            <Card className={classes.circularProgressContainer}>
-                <CardContent>
-                    <Fade in={true} timeout={2000}>
-                        <div className={classes.circularProgress}>
-                            <CircularProgress size={100}></CircularProgress>
-                        </div>
-                    </Fade>
-                </CardContent>
-            </Card>
-
+            <Fade in={true} timeout={2000}>
+                <div className={classes.circularProgressContainer}>
+                    <CircularProgress size={75} color='black'></CircularProgress>
+                </div>
+            </Fade>
             :
             <MyDialog
                 title={<Title value="Generar parte diario en Excel" variant="button" color="primary" gutterBottom={true} />}
@@ -89,7 +83,7 @@ export const GenerateDailyShiftForm = (
                                 />
                             </div>
                             <MyDialogActions>
-                                <Tooltip title="NO FUNCIONA TODAVIA" placement="top">
+                                <Tooltip title="Click para descargar" placement="top">
                                     <Button onClick={handleSubmit} color="primary">
                                         Generar Parte Diario
                                     </Button>

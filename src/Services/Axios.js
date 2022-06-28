@@ -73,20 +73,6 @@ export const axiosGetExcel = async (url, params) => {
     }
 }
 
-// export const axiosGetExcel = async (url) => {
-//     try {
-//         const _res = await axios.get(url, {...options(), responseType: 'blob' });
-//         if (_res.status === 200) {
-//             return _res.data;
-//         }
-//         else {
-//             return {};
-//         }
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
-
 export const axiosPut = (url, body) => {
     try {
         return axios.put(url, body, options());
