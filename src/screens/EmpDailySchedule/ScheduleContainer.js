@@ -19,6 +19,8 @@ export const ScheduleContainer = () => {
         if (socket) {
             socket.emit('get_schedule', date);
             socket.on('get_schedule', (data) => {
+                setData([])
+                setRoomId(0);
                 cancel = false;
                 if (!cancel) {
                     const { id, ...rest } = data;

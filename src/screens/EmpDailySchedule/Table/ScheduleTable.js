@@ -33,7 +33,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
     useEffect(() => {
         setData([])
         new Promise(resolve => {
-            setTimeout(resolve, 300);
+            setTimeout(resolve, 100);
         }).then(() => {
             setData(allData.schedule ? allData.schedule : []);
             setDataColumns(allData.columns ? allData.columns : [scheduleEmpDefault]);
@@ -49,22 +49,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
         const copyData = [...data];
         const dataUpdate = getNewDataBulkEdit(changes, copyData);
         socket ? socket.emit('update_schedule', date, dataUpdate, roomId) : history.push('/error');
-        setData(dataUpdate);
         resolve();
-        return dataUpdate;
-
-        // const rows = Object.values(selectedRows);
-        // const updatedRows = [...data];
-        // rows.map(emp => {
-        //     const index = emp.oldData.tableData.id;
-        //     compareOldAndNewData(emp.oldData, emp.newData);
-        //     updatedRows[index] = emp.newData;
-        //     setData(updatedRows);
-        //     return ''
-        // })
-        // const newSchedule = updatedRows;
-        // socket ? socket.emit('update_schedule', date, newSchedule, roomId) : history.push('/error');
-
     }
 
     // MEJORAR ESTO
@@ -82,13 +67,13 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
         const index = dataUpdate.indexOf(target);
         dataUpdate[index] = newData;
         socket ? socket.emit('update_schedule', date, dataUpdate, roomId) : history.push('/error');
-        setData([...dataUpdate]);
         resolve();
         return dataUpdate;
     }
 
     const handleAditional = () => {
 
+        const newColumns = [];
         if (dataColumns.length > 5) {
             const getNumberOfAditionals = parseInt((dataColumns[dataColumns.length - 2].field).match(/\d+/)[0]) + 1;
             setAditionalCount(getNumberOfAditionals + 1);
@@ -96,7 +81,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
             setAditionalCount(aditionalCount + 1);
         }
 
-        const adictionanlSelect = {
+        const aditionalSelect = {
             field: `additional_${aditionalCount}`,
             title: `Adicional ${aditionalCount}`,
             lookup: aditionals,
@@ -107,9 +92,8 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
             title: `Anexo ${aditionalCount}`,
             align: 'left',
         }
-        const newColumns = [...dataColumns, adictionanlSelect, aditionalInput];
+        newColumns.push(...dataColumns, aditionalSelect, aditionalInput);
         socket ? socket.emit('update_schedule_columns', date, newColumns, roomId) : history.push('/error');
-
     }
 
     const deleteRow = (oldData, resolve) => {
@@ -134,7 +118,6 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
             setLoadingExcel(false)
             setIsDialogOpen(false)
         }).catch(_err => {
-            console.log(_err)
             history.push('/error');
         });
     }
@@ -150,7 +133,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                     datepicker={datePicker(date, handleDatePicker)}
                     enableAditionalButton={true}
                     disableDeleteButton={false}
-                    disableOnRowUpdate={false}
+                    disableOnRowUpdate={true}
                     disableOnBulkUpdate={false}
                     dataColumns={dataColumns}
                     updateRow={updateRow}
