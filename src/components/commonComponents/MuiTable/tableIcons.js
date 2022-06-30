@@ -20,6 +20,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import UpdateIcon from '@material-ui/icons/Update';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 
 export const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -44,5 +45,6 @@ export const tableIcons = {
     Aditional: forwardRef((props, ref) => <DynamicFeedIcon {...props} ref={ref} />),
     ListAll: forwardRef((props, ref) => <ListAltIcon {...props} ref={ref} />),
     Update: forwardRef((props, ref) => <UpdateIcon {...props} ref={ref} />),
-    DailyShift: forwardRef((props, ref) => <DateRangeIcon {...props} ref={ref} />)
+    DailyShift: forwardRef((props, ref) => <DateRangeIcon {...props} ref={ref} />),
+    DeleteSweep:forwardRef((props, ref) => <DeleteSweepIcon {...props} ref={ref} />)
 };

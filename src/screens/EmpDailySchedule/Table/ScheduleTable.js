@@ -17,6 +17,11 @@ import fileDownload from 'js-file-download'
 const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
 
+
+const getNumberOfAditionals = (dataColumns) => {
+    return parseInt((dataColumns[dataColumns.length - 2].field).match(/\d+/)[0]) + 1;
+}
+
 export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => {
 
     const classes = useStyles();
@@ -42,7 +47,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                 setAditionalCount(parseInt((allData.columns[allData.columns.length - 2].field).match(/\d+/)[0]) + 1) :
                 setAditionalCount(1);
         });
-    }, [allData])
+    }, [allData]);
 
 
     const bulkUpdate = (changes, resolve) => {
@@ -71,29 +76,55 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
         return dataUpdate;
     }
 
-    const handleAditional = () => {
-
+    const handleAditional = (action) => {
         const newColumns = [];
-        if (dataColumns.length > 5) {
-            const getNumberOfAditionals = parseInt((dataColumns[dataColumns.length - 2].field).match(/\d+/)[0]) + 1;
-            setAditionalCount(getNumberOfAditionals + 1);
-        } else {
-            setAditionalCount(aditionalCount + 1);
+
+        if (action === 'add') {
+            if (dataColumns.length > 5) {
+                const numberOfAditionals = getNumberOfAditionals(dataColumns);
+                setAditionalCount(numberOfAditionals + 1);
+            } else {
+                setAditionalCount(aditionalCount + 1);
+            }
+
+            const aditionalSelect = {
+                field: `additional_${aditionalCount}`,
+                title: `Adicional ${aditionalCount}`,
+                lookup: aditionals,
+                align: 'left',
+            }
+            const aditionalInput = {
+                field: `additional_${aditionalCount}_info`,
+                title: `Anexo ${aditionalCount}`,
+                align: 'left',
+            }
+            newColumns.push(...dataColumns, aditionalSelect, aditionalInput);
         }
 
-        const aditionalSelect = {
-            field: `additional_${aditionalCount}`,
-            title: `Adicional ${aditionalCount}`,
-            lookup: aditionals,
-            align: 'left',
+        if (action === 'remove') {
+            if (dataColumns.length > 5) {
+                const numberOfAditionals = getNumberOfAditionals(dataColumns);
+                setAditionalCount(numberOfAditionals - 1);
+                const deletedColumns = dataColumns.splice(dataColumns.length - 2, 2);
+                data.map((el) => {
+                    delete el[deletedColumns[0].field];
+                    delete el[deletedColumns[1].field];
+                    return '';
+                })
+            }
+            newColumns.push(...dataColumns);
         }
-        const aditionalInput = {
-            field: `additional_${aditionalCount}_info`,
-            title: `Anexo ${aditionalCount}`,
-            align: 'left',
-        }
-        newColumns.push(...dataColumns, aditionalSelect, aditionalInput);
-        socket ? socket.emit('update_schedule_columns', date, newColumns, roomId) : history.push('/error');
+
+        const saveWithPromise = new Promise((resolve, _rej) => {
+            socket ? socket.emit('update_schedule_columns', date, newColumns, roomId) : history.push('/error');
+            resolve();
+        })
+
+        saveWithPromise.then(() => {
+            socket ? socket.emit('update_schedule', date, data, roomId) : history.push('/error');
+        })
+
+
     }
 
     const deleteRow = (oldData, resolve) => {
@@ -132,6 +163,9 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                     title={'PERSONAL'}
                     datepicker={datePicker(date, handleDatePicker)}
                     enableAditionalButton={true}
+                    maxAditionalsReached={dataColumns.length >= 13}
+                    enableDeleteAditionalButton={true}
+                    minAditionalReached={dataColumns.length <= 5}
                     disableDeleteButton={false}
                     disableOnRowUpdate={true}
                     disableOnBulkUpdate={false}

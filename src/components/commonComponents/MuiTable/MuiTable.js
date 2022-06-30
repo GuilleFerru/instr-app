@@ -73,7 +73,10 @@ export const MuiTable = (
         pageSizeOptions = [10, 15, 20, 25, 50],
         enableDailyWorkSearchButton = false,
         getDailyWorkDataForSearch,
-        enableGenerateDailyShiftButton
+        enableGenerateDailyShiftButton = false,
+        enableDeleteAditionalButton = false,
+        maxAditionalsReached = false,
+        minAditionalReached = false,
 
     }) => {
 
@@ -104,7 +107,8 @@ export const MuiTable = (
         goToPlantShutdownWorksToDo,
         updateShutdownWork,
         searchDailyWork,
-        generateDailyShift } = muiTableCommonActions(getNewDate);
+        generateDailyShift,
+        deleteAditional } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -168,7 +172,8 @@ export const MuiTable = (
                     }
                 }}
                 actions={[
-                    (enableAditionalButton && addAditional(tableIcons, handleAditional)),
+                    (enableAditionalButton && addAditional(tableIcons, handleAditional, maxAditionalsReached)),
+                    (enableDeleteAditionalButton && deleteAditional(tableIcons, handleAditional, minAditionalReached)),
                     (enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData)),
                     (enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData)))),
                     (enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon)))),

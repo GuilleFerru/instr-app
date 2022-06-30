@@ -19,12 +19,20 @@ export const muiTableCommonActions = (getNewDate) => {
     }
 
 
-    const addAditional = (tableIcons, handleAditional) => ({
-        tooltip: 'Agregar Adicional',
+    const addAditional = (tableIcons, handleAditional, maxAditionalsReached) => ({
+        tooltip: maxAditionalsReached ? 'No se pueden agregar mas adicionales' : 'Agregar Adicional',
         icon: tableIcons.Aditional,
+        disabled: maxAditionalsReached,
         isFreeAction: true,
-        onClick: () => handleAditional() ? handleAditional() : null,
+        onClick: () => handleAditional('add') ? handleAditional('add') : null,
+    })
 
+    const deleteAditional = (tableIcons, handleAditional, minAditionalReached) => ({
+        tooltip: 'Eliminar último adicional',
+        icon: tableIcons.DeleteSweep,
+        hidden: minAditionalReached,
+        isFreeAction: true,
+        onClick: () => handleAditional('remove') ? handleAditional('remove') : null,
     })
 
     const completeTask = (tableIcons, handleRoutineSchedule, rowData) => ({
@@ -146,6 +154,7 @@ export const muiTableCommonActions = (getNewDate) => {
         goToPlantShutdownWorksToDo,
         updateShutdownWork,
         searchDailyWork,
-        generateDailyShift
+        generateDailyShift,
+        deleteAditional
     }
 }
