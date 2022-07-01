@@ -69,7 +69,7 @@ export const MuiTable = (
         detailPanel,
         disableBreadcrumbs = false,
         disableToolbar = false,
-        headerStyleBackgroundColor = "#128726",
+        headerStyleBackgroundColor = "#069999",
         pageSizeOptions = [10, 15, 20, 25, 50],
         enableDailyWorkSearchButton = false,
         getDailyWorkDataForSearch,

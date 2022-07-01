@@ -6,7 +6,7 @@ export const appBarContainerStyle = theme => {
         toolbar: {
             //border: '1px solid red',
             display: 'flex',
-            background: 'green',
+            background: '#069999',
             paddingRight: "24", // keep right padding when drawer closed
             // witdh: 'auto',
         },

@@ -34,7 +34,7 @@ export const AppBarContainer = ({ handleDrawerOpen, open }) => {
             <Box className={classes.toolbarContent}>
                 <Title
                     component={'h1'}
-                    variant={'h6'}
+                    variant={'h5'}
                     color={'inherit'}
                     value={'INSTRUMENTOS PR3'}
                 />

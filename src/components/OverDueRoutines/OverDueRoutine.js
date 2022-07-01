@@ -42,14 +42,15 @@ export const OverDueRoutine = (props) => {
         } else {
             history.push('/error');
         }
-    }, [history, socket]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Link to="/rutinas" className={classes.link}>
             <Badges
                 tooltip="Rutinas atrasadas"
                 qty={qtyOverdueRoutines}
-                color={qtyOverdueRoutines === 0 ? "secondary" : "error"}
+                color={qtyOverdueRoutines === 0 ? "primary" : "error"}
             >
                 <ScheduleIcon color={qtyOverdueRoutines === 0 ? "disabled" : "error"} />
             </Badges>
