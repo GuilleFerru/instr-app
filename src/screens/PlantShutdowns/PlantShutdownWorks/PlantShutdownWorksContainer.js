@@ -5,9 +5,6 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { PlantShutdownWorkTable } from './Table/PlantShutdownWorkTable';
 import { formatDate } from '../../../Services/DateUtils';
 
-
-
-
 export const PlantShutdownWorksContainer = () => {
 
     const { socket } = useContext(AuthContext);
@@ -43,8 +40,6 @@ export const PlantShutdownWorksContainer = () => {
             setPlantShutdownState(true);
         }
     }, [complete])
-
-
 
     return <TableCard>
         <PlantShutdownWorkTable data={data} nickname={`${name} - Inicio: ${formatDate(beginDate)}`} plantShutdownId={id} timeSchedule={timeSchedule} plantShutdownState={plantShutdownState} />

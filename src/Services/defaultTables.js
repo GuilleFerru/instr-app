@@ -408,6 +408,7 @@ export const defaultPlantShutdownWorksTable = [
       'P': 'Pendiente',
       'C': 'Completado',
       'R': 'Demorado',
+      'RE': 'Reprogramado',
     },
     width: "10%"
   }

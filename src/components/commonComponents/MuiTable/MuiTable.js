@@ -89,10 +89,6 @@ export const MuiTable = (
     });
 
 
-
-
-
-
     const [initialFormData, setInitialFormData] = useState(initialRowData);
     const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);

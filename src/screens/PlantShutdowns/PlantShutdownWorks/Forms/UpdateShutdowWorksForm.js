@@ -26,6 +26,7 @@ const completeOptions = [
     { id: 'E', name: 'En ejecución' },
     { id: 'P', name: 'Pendiente' },
     { id: 'R', name: 'Demorado' },
+    { id: 'RE', name: 'Reprogramado' },
 ]
 
 export const UpdateShutdowWorksForm = (
