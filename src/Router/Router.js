@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Login } from '../screens/Login/LoginContainer';
 import { LayOut } from '../components/LayOut/LayOut';
-import { Dashboard } from '../components/Dashboard/Dashboard';
+import { DashboardContainer } from '../screens/Dashboard/DashboardContainer';
 import { DailyWorksContainer } from '../screens/DailyWorks/DailyWorksContainer';
 import { RoutineContainer } from '../screens/Routines/RoutinesSchedules/RoutineContainer';
 import { ScheduleContainer } from '../screens/EmpDailySchedule/ScheduleContainer';
@@ -39,7 +39,7 @@ export const Router = () => {
                     <RoutineContainer />
                 </Route>
                 <Route exact path="/dashboard">
-                    <Dashboard />
+                    <DashboardContainer />
                 </Route>
                 <Route exact path="/novedadesPersonal">
                     <ScheduleContainer />
