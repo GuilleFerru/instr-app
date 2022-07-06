@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
+import { CircularProgress } from '@material-ui/core';
 import { widgetStyle } from './WidgetStyle';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import TodayOutlinedIcon from '@material-ui/icons/TodayOutlined';
@@ -69,7 +70,7 @@ const Widget = ({ type, widgetInfo }) => {
         case "schedules":
             data = {
                 title: "CANTIDAD DE PERSONAL",
-                info: ['Diurnos', 'Turno'],
+                info: ['Diurnos', 'Supervisión'],
                 icon: (
                     <PeopleAltOutlinedIcon
                         className={classes.icon}
@@ -99,11 +100,15 @@ const Widget = ({ type, widgetInfo }) => {
                     ))}
                 </div>
                 <div className={classes.right}>
-                    {widgetData.map((data, index) => (
+                    {widgetData.length !== 0 ? widgetData.map((data, index) => (
                         <span className={classes.info} key={index}>
                             {data}
                         </span>
-                    ))}
+                    )) :
+                        <span className={classes.info}>
+                            <CircularProgress size={20} />
+                        </span>
+                    }
                 </div>
             </div>
             {data.icon}
