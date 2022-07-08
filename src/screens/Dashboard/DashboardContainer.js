@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { axiosGet } from '../../Services/Axios.js';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-
-import { DateContext } from '../../context/DateContext';
-// import { AuthContext } from '../../context/AuthContext';
 import { TableCard } from '../Card/TableCard';
 import { Dashboard } from './Main/Dashboard';
-//import { useHistory } from 'react-router-dom';
+
 
 const baseUrl = process.env.REACT_APP_API_URL;
+
+
+const defaultData = [['N/A', 'N/A', 'N/A'], ['N/A', 'N/A', 'N/A'], ['N/A', 'N/A'], ['N/A', 'N/A']]
 
 
 
@@ -17,10 +17,7 @@ export const DashboardContainer = () => {
 
     const history = useHistory();
     const [data, setData] = useState([]);
-    const { date } = useContext(DateContext);
     const { isFetching } = useContext(AuthContext);
-
-
 
 
     useEffect(() => {
@@ -28,10 +25,10 @@ export const DashboardContainer = () => {
             resolve(!isFetching)
         }).then(() => {
             let cancel = false;
-            axiosGet(`${baseUrl}/dashboard/get/${date}`).then(res => {
+            axiosGet(`${baseUrl}/dashboard/get/${new Date()}`).then(res => {
                 const data = res;
                 if (!cancel) {
-                    data === undefined ? setData([]) : setData(data);
+                    data.includes(null) ? setData(defaultData) : setData(data);
                 } else {
                     return;
                 }

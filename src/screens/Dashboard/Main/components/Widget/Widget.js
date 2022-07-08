@@ -70,7 +70,7 @@ const Widget = ({ type, widgetInfo }) => {
         case "schedules":
             data = {
                 title: "CANTIDAD DE PERSONAL",
-                info: ['Diurnos', 'Supervisión'],
+                info: ['Diurnos', 'Turno', 'Supervisión'],
                 icon: (
                     <PeopleAltOutlinedIcon
                         className={classes.icon}
@@ -94,7 +94,7 @@ const Widget = ({ type, widgetInfo }) => {
             <div className={classes.content}>
                 <div className={classes.left}>
                     {data.info.map((info, index) => (
-                        <span className={classes.info} key={index}>
+                        <span className={classes.infoTitle} key={index}>
                             {info}
                         </span>
                     ))}

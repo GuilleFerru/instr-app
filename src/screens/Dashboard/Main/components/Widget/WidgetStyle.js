@@ -14,13 +14,11 @@ export const widgetStyle = theme => {
 
         },
         content: {
-            
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            
-
+            marginBottom: '10px',
         },
         left: {
             display: 'flex',
@@ -33,18 +31,25 @@ export const widgetStyle = theme => {
             justifyContent: 'space-between',
         },
         title: {
-            
             fontSize: '14px',
             fontWeight: 'bold',
             color: 'rgb(160, 160, 160);',
-            marginBottom: '5px',
+            marginBottom: '10px',
         },
         info: {
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'flex-end',
             fontSize: '16px',
-            //fontWeight: 'bold',
-            //borderBottom: '1px solid gray'
+            //color: 'rgb(160, 160, 160);',
+            marginBottom: '2px',
+        },
+        infoTitle: {
+            display: 'flex',
+            flexDirection: 'column',
+            fontSize: '16px',
+            //color: 'rgb(160, 160, 160);',
+            marginBottom: '2px',
         },
         percentage: {
             display: 'flex',
