@@ -9,7 +9,7 @@ import { Dashboard } from './Main/Dashboard';
 const baseUrl = process.env.REACT_APP_API_URL;
 
 
-const defaultData = [['N/A', 'N/A', 'N/A'], ['N/A', 'N/A', 'N/A'], ['N/A', 'N/A'], ['N/A', 'N/A']]
+const defaultData = [['N/A', 'N/A', 'N/A'], ['N/A', 'N/A', 'N/A'], ['N/A', 'N/A'], ['N/A', 'N/A', 'N/A']]
 
 
 
