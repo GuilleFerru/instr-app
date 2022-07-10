@@ -16,8 +16,10 @@ const defaultData = [['N/A', 'N/A', 'N/A'], ['N/A', 'N/A', 'N/A'], ['N/A', 'N/A'
 export const DashboardContainer = () => {
 
     const history = useHistory();
-    const [data, setData] = useState([]);
+    const [widgetData, setWidgetData] = useState([]);
+    const [manteinanceActionsData, setManteinanceActionsData] = useState([]);
     const { isFetching } = useContext(AuthContext);
+    const [monthAndYear, setMonthAndYear] = useState(new Date());
 
 
     useEffect(() => {
@@ -25,10 +27,10 @@ export const DashboardContainer = () => {
             resolve(!isFetching)
         }).then(() => {
             let cancel = false;
-            axiosGet(`${baseUrl}/dashboard/get/${new Date()}`).then(res => {
+            axiosGet(`${baseUrl}/dashboard/getWidgetData/${new Date()}`).then(res => {
                 const data = res;
                 if (!cancel) {
-                    data.includes(null) ? setData(defaultData) : setData(data);
+                    data.includes(null) ? setWidgetData(defaultData) : setWidgetData(data);
                 } else {
                     return;
                 }
@@ -39,12 +41,38 @@ export const DashboardContainer = () => {
                 cancel = true;
             }
         })
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        new Promise((resolve) => {
+            resolve(!isFetching)
+        }).then(() => {
+            let cancel = false;
+            axiosGet(`${baseUrl}/dashboard/getChartsData/${monthAndYear}`).then(res => {
+                const data = res;
+                if (!cancel) {
+                    data === undefined ? setManteinanceActionsData([]) : setManteinanceActionsData(data);
+                } else {
+                    return;
+                }
+            }).catch(_err => {
+                history.push('/error');
+            });;
+            return () => {
+                cancel = true;
+            }
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [monthAndYear]);
+
+
+    const handleMonthAndYear = (e) => {
+        setMonthAndYear(e.target.value);
+    }
+
 
     return <TableCard>
-        <Dashboard widgetData={data} />
+        <Dashboard widgetData={widgetData} manteinanceActionsData={manteinanceActionsData} handleMonthAndYear={handleMonthAndYear} monthAndYear={monthAndYear} />
     </TableCard>
 };

@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 const defaultMaterialTheme = createTheme({
     palette: {
         primary: {
-            main: '#008000'
+            main: '#069999'
         },
     },
 });

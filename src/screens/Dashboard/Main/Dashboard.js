@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import Widget from './components/Widget/Widget';
+import ManteinanceActionsChart from './components/Chart/ManteinanceActionsChart';
 import { dashboardStyle } from './DashboardStyle';
 import { useEffect } from 'react';
+import { monthPicker } from '../../../Services/DatePickers';
 
 const useStyles = makeStyles((theme) => dashboardStyle(theme));
 
-export const Dashboard = ({ widgetData }) => {
+export const Dashboard = ({ widgetData, handleMonthAndYear, monthAndYear, manteinanceActionsData }) => {
 
     const classes = useStyles({});
 
@@ -27,7 +29,6 @@ export const Dashboard = ({ widgetData }) => {
     }, [widgetData])
 
 
-
     return <div className={classes.root}>
         <div className={classes.rootContainer}>
             <div className={classes.widgets}>
@@ -36,9 +37,14 @@ export const Dashboard = ({ widgetData }) => {
                 <Widget type="plantShutdowns" widgetInfo={plantShutdownsData} />
                 <Widget type="schedules" widgetInfo={scheduleData} />
             </div>
-            <div className="charts">
-                {/* <ToDoList />
-                <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} /> */}
+            <div className={classes.chartsContainer}>
+                <div className={classes.monthPicker}>
+                    {monthPicker(monthAndYear, handleMonthAndYear)}
+                </div>
+                <div className={classes.charts}>
+                    <ManteinanceActionsChart data = {manteinanceActionsData} title="TIPOS DE TAREA POR PLANTA" />
+                    <ManteinanceActionsChart data = {manteinanceActionsData} title="TIPOS DE TAREA POR PLANTA" />
+                </div>
             </div>
         </div>
     </div>

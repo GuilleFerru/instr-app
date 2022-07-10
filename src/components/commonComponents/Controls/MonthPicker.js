@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 const defaultMaterialTheme = createTheme({
     palette: {
         primary: {
-            main: '#008000'
+            main: '#069999'
         },
     },
 });
@@ -16,8 +16,7 @@ const defaultMaterialTheme = createTheme({
 export default function MonthPicker(props) {
 
     const { name, label, value, onChange } = props
-
- 
+    
     const convertToDefEventPara = (name, value) => ({
         target: {
             name, value
