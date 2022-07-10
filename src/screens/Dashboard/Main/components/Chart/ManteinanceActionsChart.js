@@ -58,7 +58,7 @@ const style = {
 //         fill: "#ffc658"
 //     }
 // ];
-const ManteinanceActionsChart = ({data, title }) => {
+const ManteinanceActionsChart = ({ data, title }) => {
 
     const classes = useStyles();
 
@@ -66,8 +66,8 @@ const ManteinanceActionsChart = ({data, title }) => {
         <div className="chart">
             <div className={classes.title}>{title}</div>
             <RadialBarChart
-                width={800}
-                height={400}
+                width={730}
+                height={350}
                 cx={150}
                 cy={150}
                 innerRadius={20}

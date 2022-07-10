@@ -39,7 +39,6 @@ export const dashboardStyle = theme => {
         charts: {
             display: 'flex',
             flexDirection: 'row',
-            gap: '50px',
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
