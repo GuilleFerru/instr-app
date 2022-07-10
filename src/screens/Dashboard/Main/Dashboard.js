@@ -42,8 +42,8 @@ export const Dashboard = ({ widgetData, handleMonthAndYear, monthAndYear, mantei
                     {monthPicker(monthAndYear, handleMonthAndYear)}
                 </div>
                 <div className={classes.charts}>
-                    <ManteinanceActionsChart data = {manteinanceActionsData} title="TIPOS DE TAREA POR PLANTA" />
-                    <ManteinanceActionsChart data = {manteinanceActionsData} title="TIPOS DE TAREA POR PLANTA" />
+                    <ManteinanceActionsChart data = {manteinanceActionsData} title="MANTENIMIENTOS POR TIPO DE TAREAS" />
+                    <ManteinanceActionsChart data = {manteinanceActionsData} title="COPIA PARA TESTEO" />
                 </div>
             </div>
         </div>
