@@ -17,7 +17,8 @@ export const DashboardContainer = () => {
 
     const history = useHistory();
     const [widgetData, setWidgetData] = useState([]);
-    const [manteinanceActionsData, setManteinanceActionsData] = useState([]);
+    const [dataManteinanceType, setDataManteinanceType] = useState([]);
+    const [dataManteinance, setDataManteinance] = useState([]);
     const { isFetching } = useContext(AuthContext);
     const [monthAndYear, setMonthAndYear] = useState(new Date());
 
@@ -52,7 +53,8 @@ export const DashboardContainer = () => {
             axiosGet(`${baseUrl}/dashboard/getChartsData/${monthAndYear}`).then(res => {
                 const data = res;
                 if (!cancel) {
-                    data === undefined ? setManteinanceActionsData([]) : setManteinanceActionsData(data);
+                    data === undefined ? setDataManteinanceType([]) : setDataManteinanceType(data[0]);
+                    data === undefined ? setDataManteinance([]) : setDataManteinance(data[1]);
                 } else {
                     return;
                 }
@@ -73,6 +75,6 @@ export const DashboardContainer = () => {
 
 
     return <TableCard>
-        <Dashboard widgetData={widgetData} manteinanceActionsData={manteinanceActionsData} handleMonthAndYear={handleMonthAndYear} monthAndYear={monthAndYear} />
+        <Dashboard widgetData={widgetData} manteinanceActionsData={dataManteinanceType} manteinanceData={dataManteinance} handleMonthAndYear={handleMonthAndYear} monthAndYear={monthAndYear} />
     </TableCard>
 };

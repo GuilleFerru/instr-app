@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import Widget from './components/Widget/Widget';
 import ManteinanceActionsChart from './components/Chart/ManteinanceActionsChart';
+import ManteinanceChart from './components/Chart/ManteinanceChart';
 import { dashboardStyle } from './DashboardStyle';
 import { useEffect } from 'react';
 import { monthPicker } from '../../../Services/DatePickers';
 
 const useStyles = makeStyles((theme) => dashboardStyle(theme));
 
-export const Dashboard = ({ widgetData, handleMonthAndYear, monthAndYear, manteinanceActionsData }) => {
+export const Dashboard = ({ widgetData, handleMonthAndYear, monthAndYear, manteinanceActionsData, manteinanceData }) => {
 
     const classes = useStyles({});
 
@@ -43,7 +44,7 @@ export const Dashboard = ({ widgetData, handleMonthAndYear, monthAndYear, mantei
                 </div>
                 <div className={classes.charts}>
                     <ManteinanceActionsChart data = {manteinanceActionsData} title="MANTENIMIENTOS POR TIPO DE TAREAS" />
-                    <ManteinanceActionsChart data = {manteinanceActionsData} title="COPIA PARA TESTEO" />
+                    <ManteinanceChart data = {manteinanceData} title="MANTENIMIENTO POR PLANTAS" />
                 </div>
             </div>
         </div>

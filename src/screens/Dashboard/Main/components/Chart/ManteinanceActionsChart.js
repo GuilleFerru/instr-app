@@ -67,7 +67,7 @@ const ManteinanceActionsChart = ({ data, title }) => {
             <div className={classes.title}>{title}</div>
             <RadialBarChart
                 width={730}
-                height={350}
+                height={500}
                 cx={150}
                 cy={150}
                 innerRadius={20}
