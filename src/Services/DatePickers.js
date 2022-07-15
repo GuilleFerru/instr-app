@@ -1,7 +1,7 @@
 import DatePicker from '../components/commonComponents/Controls/DatePicker';
 import MonthPicker from '../components/commonComponents/Controls/MonthPicker';
 import YearPicker from '../components/commonComponents/Controls/YearPicker';
-import StaticDateRangePicker from '../components/commonComponents/Controls/StaticDateRangePicker';
+//import StaticDateRangePicker from '../components/commonComponents/Controls/StaticDateRangePicker';
 
 export const datePicker = (date, handleDatePicker) => {
     return (
