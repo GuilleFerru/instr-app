@@ -426,3 +426,53 @@ export const plantShutDownWorksInitialRowData = (timeSchedule) => ({
   complete: 'P'
 })
 
+export const defaultHolidayScoreTable = [
+  { field: 'id', title: 'Numero', hidden: true },
+  {
+    field: 'legajo',
+    title: 'Legajo',
+    editable: 'never',
+    width: '10%'
+  },
+  {
+    field: 'fullName',
+    title: 'Nombre Completo',
+    lookup: {},
+    editable: 'never',
+    width: '30%'
+  },
+  {
+    field: 'averagePoints',
+    title: 'Promedio',
+    editable: 'never',
+    width: '15%'
+  },
+  {
+    field: 'rotativeShiftResult',
+    title: 'Turno',
+    editable: 'never',
+    width: '15%'
+  },
+  {
+    field: 'dailyShiftResult',
+    title: 'Diurno',
+    editable: 'never',
+    width: '15%'
+  },
+  {
+    field: 'generalResult',
+    title: 'General',
+    editable: 'never',
+    width: '15%'
+  }
+]
+
+export const holidayScoreInitialRowData = {
+  id: 0,
+  legajo: '',
+  fullName: '',
+  averagePoints: 0,
+  rotativeShiftResult: '',
+  dailyShiftResult: '',
+  generalResult: ''
+}

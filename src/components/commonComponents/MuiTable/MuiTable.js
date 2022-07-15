@@ -77,6 +77,8 @@ export const MuiTable = (
         enableDeleteAditionalButton = false,
         maxAditionalsReached = false,
         minAditionalReached = false,
+        disableHolidayPeriodSelector = true,
+        HolidayPeriodsSelector
 
     }) => {
 
@@ -220,6 +222,26 @@ export const MuiTable = (
                                         <div className={classes.datePicker}>
                                             {datepicker}
                                         </div>
+                                    </div>
+                                )}
+                                {disableHolidayPeriodSelector ? null : (
+
+                                    <div className={classes.holidayPeriodSelector}>
+                                        <HolidayPeriodsSelector
+                                            id={'holidayPeriodSelector'}
+                                            label={"Seleccione"}
+                                            required={true}
+                                            autoWidth={false}
+                                            margin={"dense"}
+                                            // variant={'outlined'}
+                                            options={[{
+                                                id: 1,
+                                                name: '2022-2023'
+                                            }]}
+                                            value={1}
+                                        // setValue={setAttelier}
+                                        // handleSelect={handleAttelierSelect}
+                                        />
                                     </div>
                                 )}
                             </div>

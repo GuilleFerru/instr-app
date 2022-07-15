@@ -33,6 +33,15 @@ export const muiTableStyle = theme => {
         reloadDataButton: {
             margin: '0 0 0.1rem 0.1rem',
         },
+        holidayPeriodSelector: {
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'nowrap',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            width: '100%',
+            margin: '0 0 0.1rem 0.1rem',
+        }
         // datePicker: {
         //     margin: '0 0 1rem 1rem',
         // },

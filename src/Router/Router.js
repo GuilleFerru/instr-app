@@ -10,6 +10,7 @@ import { RoutineDetailsContainer } from '../screens/Routines/RoutinesDetails/Rou
 import { PlantShutdownListContainer } from '../screens/PlantShutdowns/PlantShutdownList/PlantShutdownListContainer';
 import { PlantShutdownWorksContainer } from '../screens/PlantShutdowns/PlantShutdownWorks/PlantShutdownWorksContainer';
 import { PlantShutdownWorksToDoContainer } from '../screens/PlantShutdowns/PlantShutdownWorksToDo/PlantShutdownWorksToDoContainer';
+import { HolidayContainer } from '../screens/Holiday/Holidays/HolidayContainer';
 import { AuthContext } from '../context/AuthContext';
 import { ErrorPage } from '../components/commonComponents/ErrorPage/ErrorPage';
 // import { StoreListContainer } from '../screens/StoreList/StoreListContainer';
@@ -52,6 +53,9 @@ export const Router = () => {
                 </Route>
                 <Route exact path="/parosDePlanta/tareasParoDePlanta">
                     <PlantShutdownWorksContainer />
+                </Route>
+                <Route exact path="/vacacionesPersonal">
+                    <HolidayContainer />
                 </Route>
             </LayOut>
             : <Login />}

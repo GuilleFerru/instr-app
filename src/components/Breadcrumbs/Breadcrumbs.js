@@ -40,6 +40,7 @@ const Breadcrumbs = props => {
         '/parosDePlanta': 'Paros de Planta',
         '/parosDePlanta/tareasParoDePlanta': 'Tareas Paro de Planta',
         '/parosDePlanta/tareasParoDePlantaSinAsignar': 'Tareas Paro de Planta sin asignar',
+        '/vacacionesPersonal': 'Vacaciones del Personal',
     };
 
     return (

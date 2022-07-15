@@ -160,7 +160,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                 <MuiTable
                     data={data}
                     setData={setData}
-                    title={'PERSONAL'}
+                    title={'PARTE DIARIO'}
                     datepicker={datePicker(date, handleDatePicker)}
                     enableAditionalButton={true}
                     maxAditionalsReached={dataColumns.length >= 13}

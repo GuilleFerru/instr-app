@@ -14,11 +14,16 @@ const useStyles = makeStyles((theme) => drawerContainerStyle(theme));
 export const DrawerContainer = ({ handleDrawerClose, open }) => {
 
     const classes = useStyles();
-    const [openList, setOpenList] = useState(false);
+    const [openWorkList, setOpenWorkList] = useState(false);
+    const [openEmpList, setOpenEmpList] = useState(false);
 
-    const handleClick = () => {
-        setOpenList(!openList);
+    const handleClickWorkList = () => {
+        setOpenWorkList(!openWorkList);
     };
+
+    const handleClickEmpList = () => {
+        setOpenEmpList(!openEmpList);
+    }
 
     return <Drawer
         variant="permanent"
@@ -34,8 +39,10 @@ export const DrawerContainer = ({ handleDrawerClose, open }) => {
         <Divider />
         <List>
             <ListItems
-                openList={openList}
-                handleClick={handleClick}
+                openWorkList={openWorkList}
+                handleClickWorkList={handleClickWorkList}
+                openEmpList = {openEmpList}
+                handleClickEmpList = {handleClickEmpList}
                 classes={classes}
             />
         </List>

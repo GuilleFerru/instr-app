@@ -111,7 +111,6 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 disableInitialFormData={false}
                 initialRowData={{ otherRoutinesInitialRowData }}
                 monthAndYear={monthAndYear}
-
             />
         </ThemeProvider>
     </div>
