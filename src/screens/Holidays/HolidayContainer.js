@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { axiosGet } from '../../../Services/Axios.js';
+import React, { useState, useEffect, useMemo } from 'react';
+import { axiosGet } from '../../Services/Axios.js';
 import { useHistory } from 'react-router-dom';
-import { TableCard } from '../../Card/TableCard';
-import { HolidayScores } from './Tables/HolidayScores';
+import { TableCard } from '../Card/TableCard';
+import { Holiday } from './Main/Holiday.js';
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
-export const HolidayScoresContainer = () => {
+export const HolidayContainer = () => {
 
     const history = useHistory();
     const [data, setData] = useState([]);
     const [date, setDate] = useState(new Date());
+    const allData = useMemo(() => data, [data]);
 
 
     useEffect(() => {
         setData([])
         let cancel = false;
-        axiosGet(`${baseUrl}/holidays/getScore/${date}`).then(res => {
+        axiosGet(`${baseUrl}/holidays/getData/${date}`).then(res => {
             const data = res;
             if (!cancel) {
                 data === undefined ? setData([]) : setData(data);
@@ -32,10 +33,7 @@ export const HolidayScoresContainer = () => {
     }, [date, history]);
 
 
-
-
-
     return <TableCard>
-        <HolidayScores allData={data} setDate={setDate} date={date} />
+        <Holiday data={allData} setDate={setDate} date={date} />
     </TableCard>
 };

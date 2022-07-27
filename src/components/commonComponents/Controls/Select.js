@@ -6,7 +6,11 @@ const useStyles = makeStyles(theme => ({
     textField: {
         marginRight: theme.spacing(2),
         minWidth: (props) => props.minWidth
-    }
+    },
+    input: {
+        marginRight: theme.spacing(2),
+        width: '500px'
+    },
 }))
 
 export const Select = (props) => {
@@ -19,7 +23,7 @@ export const Select = (props) => {
     };
 
     return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin}>
-        <InputLabel>{label}</InputLabel>
+        <InputLabel id={id}>{label}</InputLabel>
         <MuiSelect
             id={id}
             label={label}
@@ -27,12 +31,11 @@ export const Select = (props) => {
             value={value}
             onChange={handleSelect}
             autoWidth={autoWidth}
+            
         >
             {
-                options.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
-                        {option.name}
-                    </MenuItem>
+                options && options.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>
                 ))
             }
         </MuiSelect>

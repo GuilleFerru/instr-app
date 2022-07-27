@@ -45,7 +45,6 @@ export default function DatePicker(props) {
 
     return (
         <ThemeProvider theme={defaultMaterialTheme}>
-
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale} >
                 <MuiDatePicker
                     disableToolbar

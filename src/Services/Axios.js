@@ -82,8 +82,20 @@ export const axiosPut = (url, body) => {
     // axios.put(url, body, options()).then(_res => _res.status).catch(err => { console.log(err) });
 };
 
-export const axiosPost = (url, body) => {
-    axios.post(url, body, options()).then(_res => _res.status).catch(err => { console.log(err) });
+export const axiosPost = async (url, body) => {
+    // axios.post(url, body, options()).then(_res => _res.status).catch(err => { console.log(err) });
+    try {
+        const _res = await axios.post(url, body, options());
+        if (_res.status === 200) {
+            return _res.data;
+        }
+        return _res.status;
+    } catch (err) {
+        return { error: err };
+        //return err;
+    }
+
+
 };
 
 export const axiosDelete = (url, data) => {

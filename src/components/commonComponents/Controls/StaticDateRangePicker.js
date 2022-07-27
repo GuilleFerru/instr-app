@@ -1,53 +1,48 @@
-// import React from 'react'
-// import TextField from "@material-ui/core/TextField";
-// import { MuiPickersUtilsProvider, StaticDateRangePicker as MuiStaticDateRangePicker  } from "@material-ui/pickers"
-// import { DateRangeDelimiter, DateRange } from "@material-ui/pickers";
-// import DateFnsUtils from "@date-io/date-fns";
-// import esLocale from "date-fns/locale/es"
-// import { createTheme } from "@material-ui/core";
-// import { ThemeProvider } from "@material-ui/styles";
+import React from 'react';
+import { DateRangePicker, defaultInputRanges, defaultStaticRanges } from 'react-date-range';
+import esLocale from "date-fns/locale/es"
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
-// const defaultMaterialTheme = createTheme({
-//     palette: {
-//         primary: {
-//             main: '#069999'
-//         },
-//     },
-// });
+export default function StaticDateRangePicker(props) {
 
-// export default function StaticDateRangePicker(props) {
+    const { staticDateArray, setStaticDateArray } = props
 
-//     const { name, label, value, onChange } = props
+    const spanishStaticRanges = (defaultStaticRanges) => {
+        const spanishStaticData = ['Hoy', 'Ayer', 'Esta semana', 'Semana pasada', 'Este mes', 'Mes pasado']
+        for (let i = 0; i < defaultStaticRanges.length; i++) {
+            defaultStaticRanges[i].label = spanishStaticData[i]
+        }
+        return defaultStaticRanges
+    }
 
-//     //const [value, setValue] = React.useState < DateRange < Date >> ([null, null]);
+    const spanishStaticInputRanges = (defaultInputRanges) => {
+        const spanishInputData = ['Días hasta hoy', 'Días desde hoy'];
+        for (let i = 0; i < defaultInputRanges.length; i++) {
+            defaultInputRanges[i].label = spanishInputData[i]
+        }
+        return defaultInputRanges
+    }
 
-//     const convertToDefEventPara = (name, value) => ({
-//         target: {
-//             name, value
-//         }
-//     })
+    return (
+        <DateRangePicker
+            //onChange={date => onChange(convertToDefEventPara(name, date.selection))}
+            onChange={item => setStaticDateArray([item.selection])}
+            //weekStartsOn={1}
+            showSelectionPreview={true}
+            moveRangeOnFirstSelection={false}
+            months={2}
+            ranges={staticDateArray}
+            direction="horizontal"
+            locale={esLocale}
+            staticRanges={spanishStaticRanges(defaultStaticRanges)}
+            inputRanges={spanishStaticInputRanges(defaultInputRanges)}
+        />
+    )
 
-//     return (
-//         <ThemeProvider theme={defaultMaterialTheme}>
-//             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale} >
-//                 <MuiStaticDateRangePicker
-//                     displayStaticWrapperAs="desktop"
-//                     value={value}
-//                     onChange={date => onChange(convertToDefEventPara(name, date))}
-//                     //onChange={(newValue) => setValue(newValue)}
-//                     renderInput={(startProps, endProps) => (
-//                         <React.Fragment>
-//                             <TextField {...startProps} />
-//                             {/* <DateRangeDelimiter> to </DateRangeDelimiter> */}
-//                             <TextField {...endProps} />
-//                         </React.Fragment>
-//                     )}
-//                 />
-//             </MuiPickersUtilsProvider>
-//         </ThemeProvider>
-//     )
-// }
 
+
+}
 
 
 

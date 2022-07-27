@@ -29,7 +29,6 @@ export const Dashboard = ({ widgetData, handleMonthAndYear, monthAndYear, mantei
         });
     }, [widgetData])
 
-
     return <div className={classes.root}>
         <div className={classes.rootContainer}>
             <div className={classes.widgets}>

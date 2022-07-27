@@ -55,3 +55,19 @@ export const getDayName = (dayNumber) => {
     const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
     return days[dayNumber];
 }
+
+export const initOfHolidayPeriod = () => {
+    const date = new Date();
+    const y = date.getFullYear();
+    const m = 9;
+    const d = 1;
+    return new Date(y, m, d);
+}
+
+export const endOfHolidayPeriod = () => {
+    const date = new Date();
+    const y = date.getFullYear() + 1;
+    const m = 8;
+    const d = 30;
+    return new Date(y, m, d);
+}

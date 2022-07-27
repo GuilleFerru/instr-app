@@ -139,7 +139,6 @@ export const SearchDailyWorkForm = (
         setSearchFor(initialFValues);
         setIsDialogOpen(false);
         defaultValues();
-
     }
 
 

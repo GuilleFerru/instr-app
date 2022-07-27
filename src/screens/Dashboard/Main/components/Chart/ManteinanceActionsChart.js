@@ -6,58 +6,12 @@ import { manteinanceActionsChartStyle } from './ManteinanceActionsChartStyle';
 
 const useStyles = makeStyles((theme) => manteinanceActionsChartStyle(theme));
 
-
-
 const style = {
     top: 0,
     left: 350,
     lineHeight: "24px"
 };
 
-// const data = [
-//     {
-//         name: "18-24",
-//         uv: 31.47,
-//         pv: 5000,
-//         fill: "#8884d8"
-//     },
-//     {
-//         name: "25-29",
-//         uv: 26.69,
-//         pv: 5000,
-//         fill: "#83a6ed"
-//     },
-//     {
-//         name: "30-34",
-//         uv: 15.69,
-//         pv: 5000,
-//         fill: "#8dd1e1"
-//     },
-//     {
-//         name: "35-39",
-//         uv: 8.22,
-//         pv: 5000,
-//         fill: "#82ca9d"
-//     },
-//     {
-//         name: "40-49",
-//         uv: 8.63,
-//         pv: 5000,
-//         fill: "#a4de6c"
-//     },
-//     {
-//         name: "50+",
-//         uv: 2.63,
-//         pv: 5000,
-//         fill: "#d0ed57"
-//     },
-//     {
-//         name: "unknow",
-//         uv: 20,
-//         pv: 5000,
-//         fill: "#ffc658"
-//     }
-// ];
 const ManteinanceActionsChart = ({ data, title }) => {
 
     const classes = useStyles();
@@ -74,7 +28,6 @@ const ManteinanceActionsChart = ({ data, title }) => {
                 outerRadius={150}
                 barSize={10}
                 data={data}
-
             >
                 <RadialBar
                     minAngle={15}
