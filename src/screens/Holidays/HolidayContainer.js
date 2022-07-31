@@ -1,39 +1,47 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { axiosGet } from '../../Services/Axios.js';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
 import { TableCard } from '../Card/TableCard';
 import { Holiday } from './Main/Holiday.js';
 
-const baseUrl = process.env.REACT_APP_API_URL;
+
 
 export const HolidayContainer = () => {
 
     const history = useHistory();
+    const { socket } = useContext(AuthContext);
     const [data, setData] = useState([]);
-    const [date, setDate] = useState(new Date());
-    const allData = useMemo(() => data, [data]);
+
 
 
     useEffect(() => {
-        setData([])
         let cancel = false;
-        axiosGet(`${baseUrl}/holidays/getData/${date}`).then(res => {
-            const data = res;
-            if (!cancel) {
-                data === undefined ? setData([]) : setData(data);
-            } else {
-                return;
+        if (socket) {
+            socket.emit('get_holiday_data', new Date());
+            socket.on('get_holiday_data', (data) => {
+                cancel = false;
+                if (!cancel) {
+                    data === undefined ? setData([]) : setData(data);
+                } else {
+                    return;
+                }
+            })
+            socket.on('holiday_leave_room', () => socket.off('holiday_leave_room'));
+            return () => {
+                socket.off('get_holiday_data');
+                cancel = true;
             }
-        }).catch(_err => {
+        } else {
             history.push('/error');
-        });;
-        return () => {
-            cancel = true;
         }
-    }, [date, history]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+
+
 
 
     return <TableCard>
-        <Holiday data={allData} setDate={setDate} date={date} />
+        <Holiday data={data} />
     </TableCard>
 };

@@ -16,20 +16,16 @@ const useStyles = makeStyles(theme => ({
 export const Select = (props) => {
 
     const classes = useStyles(props);
-    const { id, disabled, label, options, variant, name, margin, setValue, value = '', autoWidth, helperText } = props;
+    const { id, disabled, label, options, variant, name, margin, value = '', handleChange, autoWidth, helperText } = props;
 
-    const handleSelect = (event) => {
-        setValue(event.target.value);
-    };
-
-    return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin}>
+    return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin} style={{minWidth: 234.75}}>
         <InputLabel id={id}>{label}</InputLabel>
         <MuiSelect
             id={id}
             label={label}
             name={name}
             value={value}
-            onChange={handleSelect}
+            onChange={handleChange}
             autoWidth={autoWidth}
         >
             {

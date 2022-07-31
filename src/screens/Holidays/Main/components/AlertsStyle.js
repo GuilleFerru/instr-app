@@ -11,7 +11,8 @@ export const alertsStyle = theme => {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
-            margin: 'auto'
+            margin: 'auto',
+            position: 'float',
         }
     })
 }

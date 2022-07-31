@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { AuthContext } from '../../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Button } from '@material-ui/core';
 import { addDays } from 'date-fns';
 import { holidaySelectorStyle } from './HolidaySelectorStyle';
-import { Select } from '../../../../components/commonComponents/Controls/Select';
+import { Select } from '../components/Select';
 import StaticDateRangePicker from '../../../../components/commonComponents/Controls/StaticDateRangePicker';
-//import { useHistory } from 'react-router-dom';
 import MoreIcon from '@material-ui/icons/More';
 import SaveIcon from '@material-ui/icons/Save';
-
-
 
 //const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => holidaySelectorStyle(theme));
 
-export const HolidaySelector = ({ periodOptions, employeeOptions }) => {
+export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) => {
 
+    const isMounted = useRef(false);
     const classes = useStyles();
+    const { socket } = useContext(AuthContext);
     //const history = useHistory();
 
-    const [employees, setEmployees] = useState('');
-    const [periodSelectData, setPeriodSelectData] = useState('');
+    const [employee, setEmployee] = useState('');
+    const [period, setPeriod] = useState('');
     //const [periodData, setPeriodData] = useState([]);
 
     const [staticDateArray, setStaticDateArray] = useState([
@@ -33,23 +33,39 @@ export const HolidaySelector = ({ periodOptions, employeeOptions }) => {
     ]);
 
 
-    const handlePeriodSelect = event => {
-        setPeriodSelectData(event.target.value)
+    useEffect(() => {
+        if (isMounted.current) {
+            const currentPeriod = periodOptions.find(option => option.name === periodData.periodName).id;
+            setPeriod(currentPeriod);
+            setEmployee(employeeOptions[0].id);
+        } else {
+            isMounted.current = true;
+        }
+    }, [employeeOptions, periodData, periodOptions]);
+
+
+    const handlePeriodChange = (event) => {
+        setPeriod(event.target.value);
+        //socket.emit('get_holiday_period', event.target.value);
     }
 
-    const handleEmployeeSelect = event => {
-        setEmployees(event.target.value)
+    const handleEmployeeChange = event => {
+        setEmployee(event.target.value)
     }
 
     const handleEmpHolidayDetails = () => {
         console.log('id');
     }
 
-    const handleSaveEmpHoliday = () => {
-        console.log('periodSelector');
-    }
     const handleSubmit = (event) => {
         event.preventDefault();
+        const empNewDataHoliday = {
+            employeeleg: employee,
+            periodId: period,
+            startDate: staticDateArray[0].startDate,
+            endDate: staticDateArray[0].endDate
+        }
+        socket.emit('create_employee_holiday', empNewDataHoliday)
     }
 
     return <>
@@ -59,30 +75,28 @@ export const HolidaySelector = ({ periodOptions, employeeOptions }) => {
                 <div className={classes.employeeData}>
                     <Box mb={2}>
                         <Select
-                            label={""}
+                            label={"Seleccione un periodo"}
                             required={true}
-                            id={'period-for-selector'}
+                            id={'period-for-select'}
                             autoWidth={true}
                             margin={"dense"}
                             variant={'outlined'}
                             options={periodOptions}
-                            value={periodSelectData}
-                            setValue={setPeriodSelectData}
-                            handleSelect={handlePeriodSelect}
+                            value={period}
+                            handleChange={handlePeriodChange}
                         />
                     </Box>
                     <Box mb={2}>
                         <Select
-                            label={""}
+                            label={"Seleccione un empleado"}
                             required={true}
-                            id={'employee'}
+                            id={'period-for-emplolyee'}
                             autoWidth={true}
                             margin={"dense"}
                             variant={'outlined'}
                             options={employeeOptions}
-                            value={employees}
-                            setValue={setEmployees}
-                            handleSelect={handleEmployeeSelect}
+                            value={employee}
+                            handleChange={handleEmployeeChange}
                         />
                     </Box>
                     <Box mb={2}>
@@ -96,7 +110,7 @@ export const HolidaySelector = ({ periodOptions, employeeOptions }) => {
                 </div>
                 <div className={classes.save}>
                     <Box >
-                        <Button onClick={handleSaveEmpHoliday} color="primary" endIcon={<SaveIcon />} variant="contained">
+                        <Button onClick={handleSubmit} color="primary" endIcon={<SaveIcon />} variant="contained">
                             Guardar
                         </Button>
                     </Box>

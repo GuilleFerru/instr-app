@@ -44,51 +44,51 @@ export const holidayStyle = theme => {
             alignItems: 'flex-start',
             width: '100%',
         },
-        alert: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            margin: 'auto'
-        },
-        periodoContainer: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            margin: '10px',
-            width: '100%',
-        },
-        puntajeTabla: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            margin: 'auto',
-        },
-        form: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            //gap: '300px',
-            //alignItems: 'flex-start',
-            margin: '0 0 50px 0',
-            width: '100%',
-        },
-        employees: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            margin: '0 0 0 10px',
-        },
-        datePicker: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            margin: 'auto',
-            ...shadowEffect,
-        }
+        // alert: {
+        //     display: 'flex',
+        //     flexDirection: 'row',
+        //     justifyContent: 'center',
+        //     margin: 'auto'
+        // },
+        // periodoContainer: {
+        //     display: 'flex',
+        //     flexDirection: 'row',
+        //     justifyContent: 'space-between',
+        //     alignItems: 'flex-start',
+        //     margin: '10px',
+        //     width: '100%',
+        // },
+        // puntajeTabla: {
+        //     display: 'flex',
+        //     flexDirection: 'column',
+        //     justifyContent: 'center',
+        //     alignItems: 'flex-start',
+        //     margin: 'auto',
+        // },
+        // form: {
+        //     display: 'flex',
+        //     flexDirection: 'row',
+        //     justifyContent: 'flex-start',
+        //     //gap: '300px',
+        //     //alignItems: 'flex-start',
+        //     margin: '0 0 50px 0',
+        //     width: '100%',
+        // },
+        // employees: {
+        //     display: 'flex',
+        //     flexDirection: 'column',
+        //     justifyContent: 'space-between',
+        //     alignItems: 'flex-start',
+        //     margin: '0 0 0 10px',
+        // },
+        // datePicker: {
+        //     display: 'flex',
+        //     flexDirection: 'column',
+        //     justifyContent: 'center',
+        //     alignItems: 'flex-start',
+        //     margin: 'auto',
+        //     ...shadowEffect,
+        // }
 
     })
 }
