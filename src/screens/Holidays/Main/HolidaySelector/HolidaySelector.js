@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { AuthContext } from '../../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Button } from '@material-ui/core';
-import { addDays } from 'date-fns';
+//import { addDays } from 'date-fns';
 import { holidaySelectorStyle } from './HolidaySelectorStyle';
 import { Select } from '../components/Select';
 import StaticDateRangePicker from '../../../../components/commonComponents/Controls/StaticDateRangePicker';
@@ -20,13 +20,14 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     //const history = useHistory();
 
     const [employee, setEmployee] = useState('');
+    const [employeeName, setEmployeeName] = useState('');
     const [period, setPeriod] = useState('');
     //const [periodData, setPeriodData] = useState([]);
 
     const [staticDateArray, setStaticDateArray] = useState([
         {
             startDate: new Date(),
-            endDate: addDays(new Date(), 7),
+            endDate: new Date(),
             key: 'selection',
             color: '#069999',
         }
@@ -38,6 +39,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
             const currentPeriod = periodOptions.find(option => option.name === periodData.periodName).id;
             setPeriod(currentPeriod);
             setEmployee(employeeOptions[0].id);
+            setEmployeeName(employeeOptions[0].name);
         } else {
             isMounted.current = true;
         }
@@ -51,6 +53,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
 
     const handleEmployeeChange = event => {
         setEmployee(event.target.value)
+        setEmployeeName(employeeOptions.find(option => option.id === event.target.value).name)
     }
 
     const handleEmpHolidayDetails = () => {
@@ -60,7 +63,8 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const handleSubmit = (event) => {
         event.preventDefault();
         const empNewDataHoliday = {
-            employeeleg: employee,
+            employee: employee,
+            employeeName: employeeName,
             periodId: period,
             startDate: staticDateArray[0].startDate,
             endDate: staticDateArray[0].endDate
@@ -90,7 +94,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                         <Select
                             label={"Seleccione un empleado"}
                             required={true}
-                            id={'period-for-emplolyee'}
+                            id={'period-for-employee'}
                             autoWidth={true}
                             margin={"dense"}
                             variant={'outlined'}

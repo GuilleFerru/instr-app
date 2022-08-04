@@ -21,6 +21,7 @@ export const HolidayContainer = () => {
             socket.on('get_holiday_data', (data) => {
                 cancel = false;
                 if (!cancel) {
+                    
                     data === undefined ? setData([]) : setData(data);
                 } else {
                     return;
