@@ -8,9 +8,27 @@ import { Select } from '../components/Select';
 import StaticDateRangePicker from '../../../../components/commonComponents/Controls/StaticDateRangePicker';
 import MoreIcon from '@material-ui/icons/More';
 import SaveIcon from '@material-ui/icons/Save';
+import { AlertClose } from '../components/AlertClose';
+
+
 
 //const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => holidaySelectorStyle(theme));
+
+const staticDateArrayDefault = [
+    {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection',
+        color: '#069999',
+    }
+]
+
+const calculateTakenDays = (staticDateArray) => {
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.round((staticDateArray[0].endDate - staticDateArray[0].startDate) / oneDay) + 1;
+}
+
 
 export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) => {
 
@@ -22,42 +40,50 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const [employee, setEmployee] = useState('');
     const [employeeName, setEmployeeName] = useState('');
     const [period, setPeriod] = useState('');
-    //const [periodData, setPeriodData] = useState([]);
-
-    const [staticDateArray, setStaticDateArray] = useState([
-        {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: 'selection',
-            color: '#069999',
-        }
-    ]);
+    const [periodName, setPeriodName] = useState('');
+    const [leftDays, setLeftDays] = useState('1');
+    const [succesAdd, setSuccesAdd] = useState(false);
+    const [displayedName, setDisplayedName] = useState('');
+    const [takenDays, setTakenDays] = useState('0')
+    const [staticDateArray, setStaticDateArray] = useState(staticDateArrayDefault);
 
 
     useEffect(() => {
         if (isMounted.current) {
-            const currentPeriod = periodOptions.find(option => option.name === periodData.periodName).id;
-            setPeriod(currentPeriod);
+            const currentPeriod = periodOptions.find(option => option.name === periodData.periodName);
+            setPeriod(currentPeriod.id);
+            setPeriodName(currentPeriod.name);
             setEmployee(employeeOptions[0].id);
             setEmployeeName(employeeOptions[0].name);
+            setLeftDays(employeeOptions[0].holidayDays);
         } else {
             isMounted.current = true;
         }
     }, [employeeOptions, periodData, periodOptions]);
 
+    useEffect(() => {
+        if (isMounted.current) {
+            socket.on('create_employee_holiday', () => {
+                setSuccesAdd(true);
+            });
+        } else {
+            isMounted.current = true;
+        }
+    }, [socket]);
+
 
     const handlePeriodChange = (event) => {
-        setPeriod(event.target.value);
-        //socket.emit('get_holiday_period', event.target.value);
+        socket.emit('get_holiday_data', undefined, event.target.value);
     }
 
     const handleEmployeeChange = event => {
         setEmployee(event.target.value)
         setEmployeeName(employeeOptions.find(option => option.id === event.target.value).name)
+        setLeftDays(employeeOptions.find(option => option.id === event.target.value).holidayDays)
     }
 
     const handleEmpHolidayDetails = () => {
-        console.log('id');
+        //console.log('id');
     }
 
     const handleSubmit = (event) => {
@@ -69,10 +95,22 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
             startDate: staticDateArray[0].startDate,
             endDate: staticDateArray[0].endDate
         }
-        socket.emit('create_employee_holiday', empNewDataHoliday)
+        setTakenDays(calculateTakenDays(staticDateArray));
+        setDisplayedName(employeeName)
+        setStaticDateArray(staticDateArrayDefault);
+        socket.emit('create_employee_holiday', empNewDataHoliday);
     }
 
     return <>
+        <div className={classes.alert}>
+            <AlertClose
+                open={succesAdd}
+                setOpen={setSuccesAdd}
+                title='Vacaciones guardadas'
+                text={periodName}
+                alternativeText={`Agrego ${takenDays} días de vacaciones a ${displayedName}`}
+            />
+        </div>
         <Typography variant="h6" gutterBottom>Selector de Vacaciones</Typography>
         <form className={classes.form} onSubmit={handleSubmit} >
             <div className={classes.employees}>
@@ -104,7 +142,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                         />
                     </Box>
                     <Box mb={2}>
-                        <Typography variant="overline" display="block" gutterBottom>Días Restantes: 21</Typography>
+                        <Typography variant="overline" display="block" gutterBottom>Días Restantes: {leftDays}</Typography>
                     </Box>
                     <Box mb={2} >
                         <Button onClick={handleEmpHolidayDetails} color="primary" endIcon={<MoreIcon />} variant="contained">

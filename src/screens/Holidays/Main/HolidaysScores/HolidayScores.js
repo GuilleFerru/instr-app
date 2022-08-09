@@ -82,6 +82,7 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
     const handlePeriodChange = (event) => {
         setPeriod(event.target.value);
         socket.emit('get_holiday_period', event.target.value);
+        socket.emit('get_holiday_data', undefined, event.target.value);
     }
 
 

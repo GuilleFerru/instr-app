@@ -4,15 +4,11 @@ import { useHistory } from 'react-router-dom';
 import { TableCard } from '../Card/TableCard';
 import { Holiday } from './Main/Holiday.js';
 
-
-
 export const HolidayContainer = () => {
 
     const history = useHistory();
     const { socket } = useContext(AuthContext);
     const [data, setData] = useState([]);
-
-
 
     useEffect(() => {
         let cancel = false;
@@ -21,15 +17,14 @@ export const HolidayContainer = () => {
             socket.on('get_holiday_data', (data) => {
                 cancel = false;
                 if (!cancel) {
-                    
                     data === undefined ? setData([]) : setData(data);
                 } else {
                     return;
                 }
             })
-            socket.on('holiday_leave_room', () => socket.off('holiday_leave_room'));
+            //socket.on('holiday_leave_room', () => socket.off('holiday_leave_room'));
             return () => {
-                socket.off('get_holiday_data');
+                //socket.off('get_holiday_data');
                 cancel = true;
             }
         } else {
@@ -37,11 +32,6 @@ export const HolidayContainer = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-
-
-
-
     return <TableCard>
         <Holiday data={data} />
     </TableCard>

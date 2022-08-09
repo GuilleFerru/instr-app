@@ -30,6 +30,13 @@ export const holidaySelectorStyle = theme => {
             alignItems: 'flex-start',
             margin: 'auto',
             ...shadowEffect,
+        },
+        alert: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            margin: 'auto',
+            position: 'float',
         }
 
     })
