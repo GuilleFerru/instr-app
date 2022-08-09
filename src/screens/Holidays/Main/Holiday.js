@@ -42,8 +42,6 @@ export const Holiday = ({ data }) => {
             setPeriodData(data.periodData);
             setTitle(data.periodData.periodName);
         });
-        //socket.on('holiday_leave_room', () => socket.off('holiday_leave_room'));
-        //return () => { socket.off('get_holiday_data') }
     }, [socket]);
 
 
