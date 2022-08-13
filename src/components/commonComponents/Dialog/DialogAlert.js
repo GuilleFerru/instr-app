@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const DialogAlert = ({ open, setOpenDialog, handleAgree, title, dialogText }) => {
+const DialogAlert = ({ open, setOpenDialog, handleAgree, title, dialogText, agreeButtonText, cancelButtonText, enableExtraButton, handleExtraButton, extraButtonText }) => {
 
     //const [open, setOpen] = React.useState(false);
 
@@ -30,8 +30,13 @@ const DialogAlert = ({ open, setOpenDialog, handleAgree, title, dialogText }) =>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleAgree} color="primary" autoFocus>
-                        Continuar
+                        {agreeButtonText}
                     </Button>
+                    {enableExtraButton &&
+                        <Button onClick={handleExtraButton} color="primary">
+                            {extraButtonText}
+                        </Button>
+                    }
                     <Button onClick={handleClose} color="primary">
                         Cancelar
                     </Button>

@@ -8,7 +8,7 @@ import DialogAlert from '../../../../components/commonComponents/Dialog/DialogAl
 
 const useStyles = makeStyles((theme) => alertsStyle(theme));
 
-export const Alerts = ({ title, error, success, deleteSuccess, openDeleteDialog, setOpenDeleteDialog, handleAgree }) => {
+export const Alerts = ({ title, dialogText, error, success, deleteSuccess, openDialog, setOpenDialog, handleAgree, agreeButtonText, enableExtraButton = false, handleExtraButton, extraButtonText }) => {
 
     const classes = useStyles();
 
@@ -24,11 +24,16 @@ export const Alerts = ({ title, error, success, deleteSuccess, openDeleteDialog,
         </div>
         <div className={classes.alert}>
             < DialogAlert
-                open={openDeleteDialog}
-                setOpenDialog={setOpenDeleteDialog}
+                title={title}
+                open={openDialog}
+                setOpenDialog={setOpenDialog}
                 handleAgree={handleAgree}
-                title='Estas seguro de borrar este período?'
-                dialogText={`Si borra el ${title} se perderan todos los promedios y todos los días de vacaciones asignados a este período`}
+                dialogText={dialogText}
+                agreeButtonText={agreeButtonText}
+                enableExtraButton={enableExtraButton}
+                handleExtraButton={handleExtraButton}
+                extraButtonText={extraButtonText}
+
             />
         </div>
     </>

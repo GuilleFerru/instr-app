@@ -9,6 +9,8 @@ import StaticDateRangePicker from '../../../../components/commonComponents/Contr
 import MoreIcon from '@material-ui/icons/More';
 import SaveIcon from '@material-ui/icons/Save';
 import { AlertClose } from '../components/AlertClose';
+import { Alerts } from '../components/Alerts';
+import { HolidayDetails } from './List/HolidayDetails';
 
 
 
@@ -29,6 +31,24 @@ const calculateTakenDays = (staticDateArray) => {
     return Math.round((staticDateArray[0].endDate - staticDateArray[0].startDate) / oneDay) + 1;
 }
 
+const dataToSave = (employee, employeeName, period, staticDateArray, createSchedule, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket) => {
+
+    const empNewDataHoliday = {
+        employee: employee,
+        employeeName: employeeName,
+        periodId: period,
+        startDate: staticDateArray[0].startDate,
+        endDate: staticDateArray[0].endDate,
+        createSchedule: createSchedule
+    }
+    setTakenDays(calculateTakenDays(staticDateArray));
+    setDisplayedName(employeeName)
+    setStaticDateArray(staticDateArrayDefault);
+    setOpenDialog(false);
+    socket.emit('create_employee_holiday', empNewDataHoliday);
+
+}
+
 
 export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) => {
 
@@ -46,6 +66,10 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const [displayedName, setDisplayedName] = useState('');
     const [takenDays, setTakenDays] = useState('0')
     const [staticDateArray, setStaticDateArray] = useState(staticDateArrayDefault);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [employeeDetails, setEmployeeDetails] = useState([{}]);
+    const [holidayDetailDialog, setHolidayDetailDialog] = useState(false);
+
 
 
     useEffect(() => {
@@ -83,22 +107,27 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     }
 
     const handleEmpHolidayDetails = () => {
-        //console.log('id');
+        const employeeDetail = periodData.holidaysData.filter(holiday => holiday.employee === employee)
+        setEmployeeDetails({
+            employee: employee,
+            employeeName: employeeName,
+            periodName: periodName,
+            employeeDetail: employeeDetail
+        });
+        setHolidayDetailDialog(true);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const empNewDataHoliday = {
-            employee: employee,
-            employeeName: employeeName,
-            periodId: period,
-            startDate: staticDateArray[0].startDate,
-            endDate: staticDateArray[0].endDate
-        }
-        setTakenDays(calculateTakenDays(staticDateArray));
-        setDisplayedName(employeeName)
-        setStaticDateArray(staticDateArrayDefault);
-        socket.emit('create_employee_holiday', empNewDataHoliday);
+        setOpenDialog(true);
+    }
+
+    const handleNotAddToSchedule = () => {
+        dataToSave(employee, employeeName, period, staticDateArray, false, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
+    }
+
+    const handleAddToSchedule = () => {
+        dataToSave(employee, employeeName, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
     }
 
     return <>
@@ -109,6 +138,19 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                 title='Vacaciones guardadas'
                 text={periodName}
                 alternativeText={`Agrego ${takenDays} días de vacaciones a ${displayedName}`}
+            />
+        </div>
+        <div className={classes.alert}>
+            <Alerts
+                title={'¿Desea agregar estos días al Parte Diario?'}
+                dialogText={'Si da click en Agregar al Parte Diario, estos días apareceran como adicionales en el Parte Diario.'}
+                openDialog={openDialog}
+                setOpenDialog={setOpenDialog}
+                enableExtraButton={true}
+                handleAgree={handleAddToSchedule}
+                handleExtraButton={handleNotAddToSchedule}
+                agreeButtonText={'Agregar al Parte Diario'}
+                extraButtonText={'No agregar al Parte Diario'}
             />
         </div>
         <Typography variant="h6" gutterBottom>Selector de Vacaciones</Typography>
@@ -163,5 +205,6 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                 <StaticDateRangePicker staticDateArray={staticDateArray} setStaticDateArray={setStaticDateArray} />
             </div>
         </form>
+        <HolidayDetails holidayData={employeeDetails} isDialogOpen={holidayDetailDialog} setIsDialogOpen={setHolidayDetailDialog} />
     </>
 }

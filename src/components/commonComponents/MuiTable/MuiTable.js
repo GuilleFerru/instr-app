@@ -78,7 +78,7 @@ export const MuiTable = (
         maxAditionalsReached = false,
         minAditionalReached = false,
         disableHolidayPeriodSelector = true,
-        HolidayPeriodsSelector
+        
 
     }) => {
 
@@ -224,7 +224,7 @@ export const MuiTable = (
                                         </div>
                                     </div>
                                 )}
-                                {disableHolidayPeriodSelector ? null : (
+                                {/* {disableHolidayPeriodSelector ? null : (
 
                                     <div className={classes.holidayPeriodSelector}>
                                         <HolidayPeriodsSelector
@@ -243,7 +243,7 @@ export const MuiTable = (
                                         // handleSelect={handleAttelierSelect}
                                         />
                                     </div>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     )

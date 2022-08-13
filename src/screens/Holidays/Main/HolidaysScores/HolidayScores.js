@@ -89,13 +89,15 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
     return <>
         <div className={classes.containerHeader}>
             <Alerts
-                title={title}
+                title={'Estas seguro de borrar este período?'}
                 error={error}
                 success={success}
                 deleteSuccess={deleteSuccess}
-                openDeleteDialog={openDeleteDialog}
-                setOpenDeleteDialog={setOpenDeleteDialog}
+                openDialog={openDeleteDialog}
+                setOpenDialog={setOpenDeleteDialog}
                 handleAgree={handleAgree}
+                dialogText={`Si borra el ${title} se perderan todos los promedios y todos los días de vacaciones asignados a este período`}
+                agreeButtonText={'Borrar'}
             />
         </div>
         <Typography color="inherit" variant="h6" gutterBottom>Puntajes y Promedios</Typography>

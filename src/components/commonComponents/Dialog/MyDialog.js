@@ -11,17 +11,17 @@ export const MyDialogActions = (props) => {
 }
 
 export const MyDialog = (props) => {
-
     const {
         isOpen = false,
         title = "My Dialog",
         children,
-        fullWidth
+        fullWidth,
+        maxWidth
         //...rest
     } = props;
 
 
-    return <Dialog open={isOpen} fullWidth={fullWidth}>
+    return <Dialog open={isOpen} fullWidth={fullWidth} maxWidth={maxWidth} >
         <DialogTitle>{title}</DialogTitle>
         {children}
     </Dialog>
