@@ -31,7 +31,7 @@ export const FractionDetail = ({ fractionData, isDialogOpen, setIsDialogOpen, })
         title={<Title value={'Detalle de los días tomados'} variant="button" color="primary" gutterBottom={false} />}
         isOpen={isDialogOpen}
         fullWidth={true}
-        maxWidth={'xs'}
+        maxWidth={'sm'}
     >
         <List
             component="nav"
@@ -40,7 +40,7 @@ export const FractionDetail = ({ fractionData, isDialogOpen, setIsDialogOpen, })
         >
             {fractionDetail && fractionDetail.map((item, index) => {
                 return <ListItem key={index} divider={true} dense={true} className={classes.ListItem}>
-                    <ListItemText primary={` ${Object.keys(item)[0]}`} className={classes.listItemText} />
+                    <ListItemText primary={` ${Object.keys(item)[0].replaceAll('_',' ')}`} className={classes.listItemText} />
                     <ListItemText primary={` ${Object.values(item)[0]} días`} className={classes.listItemText} />
                     <ListItemText primary={` ${item.points} puntos`} className={classes.listItemText} />
                 </ListItem>

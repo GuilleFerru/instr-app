@@ -4,7 +4,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from '@material-ui/core';
 import { holidayStyle } from './HolidayStyle';
-//import { useHistory } from 'react-router-dom';
+import {formatDate} from '../../../Services/DateUtils';
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import { HolidayScores } from './HolidaysScores/HolidayScores';
@@ -22,6 +22,8 @@ export const Holiday = ({ data }) => {
     const classes = useStyles();
     const isMounted = useRef(false);
     const [title, setTitle] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const [periodData, setPeriodData] = useState([]);
     const [periodOptions, setPeriodOptions] = useState([]);
     const [employeeOptions, setEmployeeOptions] = useState([]);
@@ -29,6 +31,8 @@ export const Holiday = ({ data }) => {
     useEffect(() => {
         if (isMounted.current) {
             setTitle(data.periodData.periodName);
+            setStartDate(formatDate(data.periodData.startDate));
+            setEndDate(formatDate(data.periodData.endDate));
             setPeriodData(data.periodData);
             setPeriodOptions(data.periodOptions);
             setEmployeeOptions(data.employeeOptions);
@@ -55,6 +59,9 @@ export const Holiday = ({ data }) => {
                 <div>
                     <Typography variant="h5" gutterBottom>
                         Vacaciones del Personal - {title}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                        El periodo comprende desde el {startDate} hasta {endDate}
                     </Typography>
                 </div>
                 <HolidayScores periodOptions={periodOptions} periodData={periodData} title={title} />

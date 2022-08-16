@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { AuthContext } from '../../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Button } from '@material-ui/core';
-//import { addDays } from 'date-fns';
 import { holidaySelectorStyle } from './HolidaySelectorStyle';
 import { Select } from '../components/Select';
 import StaticDateRangePicker from '../../../../components/commonComponents/Controls/StaticDateRangePicker';
@@ -12,9 +11,6 @@ import { AlertClose } from '../components/AlertClose';
 import { Alerts } from '../components/Alerts';
 import { HolidayDetails } from './List/HolidayDetails';
 
-
-
-//const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => holidaySelectorStyle(theme));
 
 const staticDateArrayDefault = [
@@ -46,9 +42,7 @@ const dataToSave = (employee, employeeName, period, staticDateArray, createSched
     setStaticDateArray(staticDateArrayDefault);
     setOpenDialog(false);
     socket.emit('create_employee_holiday', empNewDataHoliday);
-
 }
-
 
 export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) => {
 
@@ -56,7 +50,6 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const classes = useStyles();
     const { socket } = useContext(AuthContext);
     //const history = useHistory();
-
     const [employee, setEmployee] = useState('');
     const [employeeName, setEmployeeName] = useState('');
     const [period, setPeriod] = useState('');
@@ -69,6 +62,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const [openDialog, setOpenDialog] = useState(false);
     const [employeeDetails, setEmployeeDetails] = useState([{}]);
     const [holidayDetailDialog, setHolidayDetailDialog] = useState(false);
+    const [successDelete, setSuccessDelete] = useState(false);
 
 
 
@@ -131,6 +125,15 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     }
 
     return <>
+        <div className={classes.alert}>
+            <AlertClose
+                open={successDelete}
+                setOpen={setSuccessDelete}
+                title='Vacaciones borradas con exito'
+                text={'Ha borrado la fracción con exito'}
+                alternativeText={`Por favor continue.`}
+            />
+        </div>
         <div className={classes.alert}>
             <AlertClose
                 open={succesAdd}
@@ -205,6 +208,6 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                 <StaticDateRangePicker staticDateArray={staticDateArray} setStaticDateArray={setStaticDateArray} />
             </div>
         </form>
-        <HolidayDetails holidayData={employeeDetails} isDialogOpen={holidayDetailDialog} setIsDialogOpen={setHolidayDetailDialog} />
+        <HolidayDetails holidayData={employeeDetails} isDialogOpen={holidayDetailDialog} setIsDialogOpen={setHolidayDetailDialog} successDelete={successDelete} setSuccessDelete={setSuccessDelete} />
     </>
 }

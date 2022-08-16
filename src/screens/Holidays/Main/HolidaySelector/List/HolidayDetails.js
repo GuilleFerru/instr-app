@@ -1,26 +1,28 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { AuthContext } from '../../../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, List, ListSubheader, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Tooltip } from '@material-ui/core';
 import { holidayDetailsStyle } from './HolidayDetailsStyle';
 import { MyDialog, MyDialogActions } from '../../../../../components/commonComponents/Dialog/MyDialog';
+import { Alerts } from '../../components/Alerts';
 import { Title } from '../../../../../components/commonComponents/Title';
 import { formatDate } from '../../../../../Services/DateUtils';
 import { FractionDetail } from './FractionDetail';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
-
 const useStyles = makeStyles((theme) => holidayDetailsStyle(theme));
 
-
-export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, }) => {
+export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, setSuccessDelete }) => {
 
     const isMounted = useRef(false);
     const classes = useStyles();
+    const { socket } = useContext(AuthContext);
     const [employeeDetail, setEmployeeDetail] = useState([]);
     const [fractionDetail, setFractionDetail] = useState([]);
     const [fractionDetailDialog, setFractionDetailDialog] = useState(false);
-
+    const [handleDeleteDialog, setHandleDeleteDialog] = useState(false);
+    const [fractionToDelete, setFractionToDelete] = useState({});
 
     useEffect(() => {
         if (isMounted.current) {
@@ -40,10 +42,31 @@ export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, }) 
     }
 
     const handleDelete = (item) => {
-        
+        setHandleDeleteDialog(true);
+        setFractionToDelete(item);
     }
 
+    const submitDelete = () => {
+        socket.emit('delete_holiday_fraction', fractionToDelete);
+        setHandleDeleteDialog(false);
+        setIsDialogOpen(false);
+        setSuccessDelete(true);
+        setTimeout(() => setSuccessDelete(false), 4000);
+    }
+
+
     return <>
+        <div className={classes.alert}>
+            <Alerts
+                title={'¿Esta seguro de borrar esta fracción?'}
+                dialogText={'Si da click en Borrar, se modificara el Parte Diario y se borrara esta fracción.'}
+                openDialog={handleDeleteDialog}
+                setOpenDialog={setHandleDeleteDialog}
+                enableExtraButton={false}
+                handleAgree={submitDelete}
+                agreeButtonText={'Borrar'}
+            />
+        </div>
         <MyDialog
             title={<Title value={holidayData.employeeName} variant="button" color="primary" gutterBottom={false} />}
             isOpen={isDialogOpen}
