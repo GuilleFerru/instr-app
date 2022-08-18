@@ -27,11 +27,12 @@ const calculateTakenDays = (staticDateArray) => {
     return Math.round((staticDateArray[0].endDate - staticDateArray[0].startDate) / oneDay) + 1;
 }
 
-const dataToSave = (employee, employeeName, period, staticDateArray, createSchedule, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket) => {
+const dataToSave = (employee, employeeName, employeeCondition, period, staticDateArray, createSchedule, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket) => {
 
     const empNewDataHoliday = {
         employee: employee,
         employeeName: employeeName,
+        employeeCondition: employeeCondition,
         periodId: period,
         startDate: staticDateArray[0].startDate,
         endDate: staticDateArray[0].endDate,
@@ -52,6 +53,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     //const history = useHistory();
     const [employee, setEmployee] = useState('');
     const [employeeName, setEmployeeName] = useState('');
+    const [employeeCondition, setEmployeeCondition] = useState('');
     const [period, setPeriod] = useState('');
     const [periodName, setPeriodName] = useState('');
     const [leftDays, setLeftDays] = useState('1');
@@ -73,6 +75,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
             setPeriodName(currentPeriod.name);
             setEmployee(employeeOptions[0].id);
             setEmployeeName(employeeOptions[0].name);
+            setEmployeeCondition(employeeOptions[0].employeeCondition);
             setLeftDays(employeeOptions[0].holidayDays);
         } else {
             isMounted.current = true;
@@ -105,6 +108,8 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
         setEmployeeDetails({
             employee: employee,
             employeeName: employeeName,
+            employeeCondition: employeeCondition,
+            periodId: period,
             periodName: periodName,
             employeeDetail: employeeDetail
         });
@@ -117,11 +122,11 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     }
 
     const handleNotAddToSchedule = () => {
-        dataToSave(employee, employeeName, period, staticDateArray, false, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
+        dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, false, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
     }
 
     const handleAddToSchedule = () => {
-        dataToSave(employee, employeeName, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
+        dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
     }
 
     return <>

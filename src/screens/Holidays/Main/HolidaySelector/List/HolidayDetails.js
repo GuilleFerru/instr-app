@@ -47,7 +47,7 @@ export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, set
     }
 
     const submitDelete = () => {
-        socket.emit('delete_holiday_fraction', fractionToDelete);
+        socket.emit('delete_holiday_fraction', { ...fractionToDelete, employeeCondition: holidayData.employeeCondition });
         setHandleDeleteDialog(false);
         setIsDialogOpen(false);
         setSuccessDelete(true);
