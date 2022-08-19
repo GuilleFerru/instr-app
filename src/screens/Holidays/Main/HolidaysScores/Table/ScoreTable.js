@@ -6,35 +6,25 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { scoreTableStyle } from './ScoreTableStyle';
 
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-    tableContainer: {
-        webkitBoxShadow: '2px 4px 10px 1px rgba(0, 0, 0, 0.47)',
-        boxShadow: ' 2px 4px 10px 1px rgba(201, 201, 201, 0.47)',
-        borderRadius: '10px',
-    }
+const useStyles = makeStyles((theme) => scoreTableStyle(theme));
 
+export const ScoreTable = ({ scores }) => {
 
-});
-
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('301', 'Hector Cattaneo', 50, '', 1),
-    createData('303', 'Jorge Reinoso', 40, 2, ''),
-    createData('657', 'Edgardo Heredia', 67, 3, ''),
-    createData('645', 'Fabian Monzon', 37, 1, 4.3),
-    createData('672', 'Juan Machado', 60, '', 3.9),
-];
-
-export default function DenseTable() {
+    //const isMounted = useRef(false);
     const classes = useStyles();
+
+
+    // useEffect(() => {
+    //     if (isMounted.current) {
+            
+    //         //setData(scores);
+    //     } else {
+    //         isMounted.current = true;
+    //     }
+    // }, [scores]);
 
     return (
         <TableContainer className={classes.tableContainer}>
@@ -47,19 +37,21 @@ export default function DenseTable() {
                         <TableCell align="left">Turno</TableCell>
                         <TableCell align="left">Diurno</TableCell>
                         <TableCell align="left">General</TableCell>
+                        <TableCell align="left">Puntos</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
+                    {scores.map((row) => (
+                        <TableRow key={row.employee}>
                             <TableCell component="th" scope="row">
-                                {row.name}
+                                {row.employee}
                             </TableCell>
-                            <TableCell align="left">{row.calories}</TableCell>
-                            <TableCell align="left">{row.fat}</TableCell>
-                            <TableCell align="left">{row.carbs}</TableCell>
-                            <TableCell align="left">{row.protein}</TableCell>
-                            <TableCell align="left">{row.protein}</TableCell>
+                            <TableCell align="left">{row.employeeName}</TableCell>
+                            <TableCell align="left">{row.average}</TableCell>
+                            <TableCell align="left">{row.rotativeShiftPosition !== 0 ? row.rotativeShiftPosition : ''}</TableCell>
+                            <TableCell align="left">{row.dailyShiftPosition !== 0 ? row.dailyShiftPosition : ''}</TableCell>
+                            <TableCell align="left">{row.generalPosition}</TableCell>
+                            <TableCell align="left">{row.points}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

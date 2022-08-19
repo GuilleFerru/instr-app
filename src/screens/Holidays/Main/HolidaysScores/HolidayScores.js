@@ -6,7 +6,7 @@ import { Select } from '../components/Select';
 import ScoreIcon from '@material-ui/icons/Score';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import ScoreTable from './Table/ScoreTable';
+import { ScoreTable } from './Table/ScoreTable';
 import { GenerateNewPeriodForm } from './Form/GenerateNewPeriodForm';
 import { Alerts } from '../components/Alerts';
 import { axiosPost } from '../../../../Services/Axios';
@@ -32,12 +32,14 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
     const [success, setSuccess] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [scores, setScores] = useState([]);
 
 
     useEffect(() => {
         if (isMounted.current) {
             const currentPeriod = periodOptions.find(option => option.name === periodData.periodName).id;
             setPeriod(currentPeriod);
+            setScores(periodData.scores);
         } else {
             isMounted.current = true;
         }
@@ -81,7 +83,7 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
 
     const handlePeriodChange = (event) => {
         setPeriod(event.target.value);
-        socket.emit('get_holiday_period', event.target.value);
+        //socket.emit('get_holiday_period', event.target.value);
         socket.emit('get_holiday_data', undefined, event.target.value);
     }
 
@@ -134,7 +136,7 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
                 </ButtonGroup>
             </div>
             <div className={classes.puntajeTabla}>
-                <ScoreTable />
+                <ScoreTable scores={scores} />
             </div>
             <GenerateNewPeriodForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} generateNewPeriod={generateNewPeriod} loadingPeriod={loadingPeriod} />
         </div>

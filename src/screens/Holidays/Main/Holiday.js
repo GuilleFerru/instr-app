@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { AuthContext } from '../../../context/AuthContext';
+import React, { useState, useEffect, useRef } from 'react';
+//import { AuthContext } from '../../../context/AuthContext';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from '@material-ui/core';
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => holidayStyle(theme));
 
 export const Holiday = ({ data }) => {
 
-    const { socket } = useContext(AuthContext);
+    //const { socket } = useContext(AuthContext);
     const classes = useStyles();
     const isMounted = useRef(false);
     const [title, setTitle] = useState('');
@@ -41,12 +41,12 @@ export const Holiday = ({ data }) => {
         }
     }, [data]);
 
-    useEffect(() => {
-        socket.on('get_holiday_period', (data) => {
-            setPeriodData(data.periodData);
-            setTitle(data.periodData.periodName);
-        });
-    }, [socket]);
+    // useEffect(() => {
+    //     socket.on('get_holiday_period', (data) => {
+    //         setPeriodData(data.periodData);
+    //         setTitle(data.periodData.periodName);
+    //     });
+    // }, [socket]);
 
 
 
