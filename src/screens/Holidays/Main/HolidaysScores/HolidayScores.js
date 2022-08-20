@@ -38,7 +38,8 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
     useEffect(() => {
         if (isMounted.current) {
             const currentPeriod = periodOptions.find(option => option.name === periodData.periodName).id;
-            setPeriod(currentPeriod);
+            console.log(periodData);
+            setPeriod(currentPeriod ? currentPeriod : periodOptions[periodOptions.length - 1].id);
             setScores(periodData.scores);
         } else {
             isMounted.current = true;
