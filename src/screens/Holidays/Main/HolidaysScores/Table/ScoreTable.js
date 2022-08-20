@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -32,18 +32,18 @@ const useStyles = makeStyles((theme) => scoreTableStyle(theme));
 
 export const ScoreTable = ({ scores }) => {
 
-    const isMounted = useRef(false);
+    //const isMounted = useRef(false);
     const classes = useStyles();
 
 
-    useEffect(() => {
-        if (isMounted.current) {
-            console.log(scores);
-            //setData(scores);
-        } else {
-            isMounted.current = true;
-        }
-    }, [scores]);
+    // useEffect(() => {
+    //     if (isMounted.current) {
+    //         console.log(scores);
+    //         //setData(scores);
+    //     } else {
+    //         isMounted.current = true;
+    //     }
+    // }, [scores]);
 
     return (
         <TableContainer component={Paper}>
@@ -69,7 +69,7 @@ export const ScoreTable = ({ scores }) => {
                                 {row.employee}
                             </TableCell>
                             <TableCell align="left">{row.employeeName}</TableCell>
-                            <TableCell align="center">{row.average}</TableCell>
+                            <TableCell align="center">{row.average}%</TableCell>
                             <TableCell align="center">{row.rotativeShiftPosition !== 0 ? row.rotativeShiftPosition : ''}</TableCell>
                             <TableCell align="center">{row.dailyShiftPosition !== 0 ? row.dailyShiftPosition : ''}</TableCell>
                             <TableCell align="center">{row.generalPosition}</TableCell>
