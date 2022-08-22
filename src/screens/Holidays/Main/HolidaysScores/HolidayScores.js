@@ -8,6 +8,7 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { ScoreTable } from './Table/ScoreTable';
 import { GenerateNewPeriodForm } from './Form/GenerateNewPeriodForm';
+import { ScoreSystem } from './List/ScoreSystem'
 import { Alerts } from '../components/Alerts';
 import { axiosPost } from '../../../../Services/Axios';
 import { useHistory } from 'react-router-dom';
@@ -28,6 +29,7 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
     const [period, setPeriod] = useState('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loadingPeriod, setLoadingPeriod] = useState(false);
+    const [isScoreDialogOpen, setIsScoreDialogOpen] = useState(false);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -77,8 +79,8 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
         setTimeout(() => setDeleteSuccess(false), 4000);
     }
 
-    const handleAverageScore = () => {
-
+    const handleScoreSystem = () => {
+        setIsScoreDialogOpen(true)
     }
 
     const handlePeriodChange = (event) => {
@@ -124,8 +126,8 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
                     aria-label="vertical contained primary button group"
                     variant="contained"
                 >
-                    <Button onClick={handleAverageScore} endIcon={<AssessmentIcon />} >
-                        Ver Promedios
+                    <Button onClick={handleScoreSystem} endIcon={<AssessmentIcon />} >
+                        Ver sistema de puntaje
                     </Button>
                     <Button onClick={handleNewPeriodDialogueOpen} endIcon={<ScoreIcon />}>
                         Crear nuevo Período
@@ -139,6 +141,7 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
                 <ScoreTable scores={scores} />
             </div>
             <GenerateNewPeriodForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} generateNewPeriod={generateNewPeriod} loadingPeriod={loadingPeriod} />
+            <ScoreSystem isDialogOpen={isScoreDialogOpen} setIsDialogOpen={setIsScoreDialogOpen} />
         </div>
     </>
 }
