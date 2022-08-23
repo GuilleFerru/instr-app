@@ -39,13 +39,6 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         const index = dataUpdate.indexOf(target);
         dataUpdate[index] = newData;
         axiosPut(`${baseUrl}/routine/updateOt`, { data: newData })
-        // const index = oldRow.tableData.id;
-        // const updatedRows = [...data];
-        // updatedRows[index] = updatedRow;
-        // console.log(updatedRows)
-        // const updatedWork = updatedRow;
-        // console.log(updatedWork);
-        // axiosPut(`${baseUrl}/routine/updateOt`, { data: updatedWork })
         resolve();
         return dataUpdate;
     }
@@ -57,43 +50,16 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         const index = dataUpdate.indexOf(target);
         dataUpdate[index] = { ...selectedRows, complete: 'C', checkDay: new Date() };
         setData(dataUpdate);
-
-        // console.log(selectedRows);
-        // const index = selectedRows.tableData.id;
-        // console.log(index);
-        // const updatedRows = [...data];
-        // updatedRows[index] = { ...selectedRows, complete: 'C' };
-        // console.log(updatedRows)
-        // setData(dataUpdate);
         axiosPut(`${baseUrl}/routine/update`, { data: dataUpdate[index] }).then(res => {
             res.status === 200 && socket.emit('get_qtyOverDueRoutines');
         });
-
-        // rows.map(routine => {
-        //     const index = routine.tableData.id;
-        //     updatedRows[index] = { ...routine, complete: 'C' };
-        //     dataToAxiosPut.push({ ...routine, complete: 'C' });
-        //     setData(updatedRows);
-        //     return ''
-        // })
-        //
     }
-
-    // const handleDailyWorksRoutine = async (selectedRows) => {
-    //     for (const routine of selectedRows) {
-    //         const routineScheduleId = routine._id;
-    //         const dailyWorkRoutine = await axiosGet(`/dailyWork/getDailyWorkRoutine/${routineScheduleId}`);
-    //         setRoutineMore(dailyWorkRoutine);
-    //     }
-    // }
-
-
-
-
+    
     return <div className={classes.table}>
         <ThemeProvider theme={theme}>
             <MuiTable
                 data={data}
+                setData={setData}
                 title={'RUTINAS'}
                 datepicker={monthPicker(date, handleDatePicker)}
                 disableOnRowUpdate={false}
