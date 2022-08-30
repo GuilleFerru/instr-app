@@ -73,6 +73,9 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
         setPlantError(false);
         setAttelierError(false);
         setTagError(false);
+        setFrequencyError(false);
+        setCheckDaysError(false);
+        setOtherCheckDayError(false);
         setIsDialogOpen(false);
     };
 
