@@ -13,13 +13,6 @@ const defaultMaterialTheme = createTheme({
     },
 });
 
-// const getLastDayOfNextYear = () => {
-//     const currentYear = new Date().getFullYear() + 1;
-//     console.log(currentYear);
-//     const date = new Date(`${currentYear}-12-31`);
-//     console.log(date)
-//     return date.getDate();
-// }
 
 export default function DatePicker(props) {
 
@@ -35,6 +28,7 @@ export default function DatePicker(props) {
         maxDate = new Date('2100-01-01'),
         maxDateMessage = 'Fecha incorrecta',
         disabled = false,
+        error = false
     } = props
 
     const convertToDefEventPara = (name, value) => ({
@@ -61,6 +55,7 @@ export default function DatePicker(props) {
                     name={name}
                     value={value}
                     onChange={date => onChange(convertToDefEventPara(name, date))}
+                    error={error}
                 />
             </MuiPickersUtilsProvider>
 

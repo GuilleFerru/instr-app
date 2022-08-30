@@ -77,8 +77,9 @@ export const MuiTable = (
         enableDeleteAditionalButton = false,
         maxAditionalsReached = false,
         minAditionalReached = false,
-        disableHolidayPeriodSelector = true,
+        enableCreateNewRoutineButton = false,
         
+
 
     }) => {
 
@@ -106,7 +107,8 @@ export const MuiTable = (
         updateShutdownWork,
         searchDailyWork,
         generateDailyShift,
-        deleteAditional } = muiTableCommonActions(getNewDate);
+        deleteAditional,
+        createNewRoutine } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -181,6 +183,7 @@ export const MuiTable = (
                     (enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData)),
                     (enableDailyWorkSearchButton && searchDailyWork(tableIcons, setIsDialogOpen, getDailyWorkDataForSearch)),
                     (enableGenerateDailyShiftButton && generateDailyShift(tableIcons, setIsDialogOpen)),
+                    (enableCreateNewRoutineButton && createNewRoutine(tableIcons, setIsDialogOpen))
                 ]}
                 components={{
                     Action: (props) => {

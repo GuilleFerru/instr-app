@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
+import { RoutineCreateContainer } from '../../RoutinesCreate/RoutineCreateContainer';
 
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -21,6 +22,7 @@ export const RoutineTable = ({ allData, setDate, date }) => {
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
     const [monthAndYear, setMonthAndYear] = useState('');
+    const [isRoutineCreateDialogOpen, setIsRoutineCreateDialogOpen] = useState(false)
     const { handleDatePicker } = muiTableCommonActions(setDate);
 
     useEffect(() => {
@@ -44,7 +46,6 @@ export const RoutineTable = ({ allData, setDate, date }) => {
     }
 
     const handleRoutineSchedule = (selectedRows,) => {
-
         const dataUpdate = [...data];
         const target = dataUpdate.find((el) => el.id === selectedRows.tableData.id);
         const index = dataUpdate.indexOf(target);
@@ -54,7 +55,12 @@ export const RoutineTable = ({ allData, setDate, date }) => {
             res.status === 200 && socket.emit('get_qtyOverDueRoutines');
         });
     }
-    
+
+    const handleNewRoutine = () => {
+        setIsRoutineCreateDialogOpen(true)
+    }
+
+
     return <div className={classes.table}>
         <ThemeProvider theme={theme}>
             <MuiTable
@@ -77,7 +83,11 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 disableInitialFormData={false}
                 initialRowData={{ otherRoutinesInitialRowData }}
                 monthAndYear={monthAndYear}
+                enableCreateNewRoutineButton={true}
+                createNewRoutine={handleNewRoutine}
+                setIsDialogOpen={setIsRoutineCreateDialogOpen}
             />
+            <RoutineCreateContainer isDialogOpen={isRoutineCreateDialogOpen} setIsDialogOpen={setIsRoutineCreateDialogOpen} />
         </ThemeProvider>
     </div>
 

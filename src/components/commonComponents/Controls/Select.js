@@ -1,5 +1,5 @@
 import React from "react"
-import { makeStyles, FormControl, InputLabel, Select as MuiSelect, MenuItem, FormHelperText } from "@material-ui/core";
+import { makeStyles, FormControl, InputLabel, Select as MuiSelect, MenuItem, FormHelperText, } from "@material-ui/core";
 
 
 const useStyles = makeStyles(theme => ({
@@ -16,13 +16,13 @@ const useStyles = makeStyles(theme => ({
 export const Select = (props) => {
 
     const classes = useStyles(props);
-    const { id, disabled, label, options, variant, name, margin, setValue, value = '', autoWidth, helperText } = props;
+    const { id, disabled, label, options, variant, name, margin, setValue, value = '', autoWidth, helperText, error = false } = props;
 
     const handleSelect = (event) => {
         setValue(event.target.value);
     };
 
-    return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin}>
+    return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin} error={error}>
         <InputLabel id={id}>{label}</InputLabel>
         <MuiSelect
             id={id}
