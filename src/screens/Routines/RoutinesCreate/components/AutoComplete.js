@@ -11,7 +11,7 @@ export const AutoComplete = (props) => {
     return (
         <Autocomplete
             value={value}
-            onChange={(_e, newValue) => {
+            onChange={(e, newValue) => {
                 if (typeof newValue === 'string') {
                     setValue(newValue ? newValue.name : '');
                 } else if (newValue && newValue.inputValue) {

@@ -7,6 +7,13 @@ export const routineCreateFormStyle = theme => {
             height: 'auto',
             marginBottom: '10px',
         },
+        alert: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            margin: 'auto',
+            position: 'float',
+        }
 
     })
 }

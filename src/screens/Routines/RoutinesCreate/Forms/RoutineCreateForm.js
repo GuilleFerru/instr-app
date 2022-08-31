@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { axiosPost } from '../../../../Services/Axios.js';
-import { CssBaseline, Container, Button } from '@material-ui/core';
+import { CssBaseline, Container, Button,Dialog  } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import { routineCreateFormStyle } from './RoutineCreateFormStyle';
 import { MyDialog, MyDialogActions } from '../../../../components/commonComponents/Dialog/MyDialog';
@@ -10,15 +10,12 @@ import { Input } from '../../../../components/commonComponents/Controls/Input';
 import { AutoComplete } from '../components/AutoComplete';
 import { AutoCompleteCheckBox } from '../components/AutoCompleteCheckBox';
 import DatePicker from '../../../../components/commonComponents/Controls/DatePicker';
+import Alert from '../../../../components/Alerts/Alert.js';
 import { useHistory } from 'react-router-dom';
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles((theme) => routineCreateFormStyle(theme));
-
-
-
-
 
 export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
 
@@ -45,7 +42,13 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
     const [startDay, setStartDay] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
     const [otherCheckDay, setOtherCheckDay] = useState(null);
     const [otherCheckDayError, setOtherCheckDayError] = useState(false);
-
+    const [alert, setAlert] = useState({
+        severity: 'success',
+        title: '',
+        message: '',
+        messageAction: '',
+        collapse: false
+    })
 
 
     const handleOtherCheckDay = event => {
@@ -79,6 +82,8 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
         setIsDialogOpen(false);
     };
 
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         nickname === '' ? setNicknameError(true) : setNicknameError(false);
@@ -106,7 +111,29 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
                 nickname: nickname
             }
             axiosPost(`${baseUrl}/routine/create`, newRoutine).then(res => {
+                if (res === true) {
+                    setAlert({
+                        severity: 'success',
+                        title: 'Rutina creada correctamente',
+                        message: 'Se creo la rutina',
+                        messageAction: '',
+                        collapse: true
+                    })
+
+                } else {
+                    setAlert({
+                        severity: 'error',
+                        title: 'Rutina no creada',
+                        message: 'Intente no repetir el TAG y/o completar todos los campos',
+                        messageAction: 'Si el error persiste consulte con el administrador.',
+                        collapse: true
+                    })
+                }
+                setTimeout(() => {
+                    setAlert((prev) => ({ ...prev, collapse: false }))
+                }, 7000);
                 setIsDialogOpen(false);
+
             }).catch(err => {
                 history.push('/error')
             });
@@ -116,161 +143,172 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
 
 
 
-    return <MyDialog
-        title={<Title value="Crear una nueva Rutina" variant="button" color="primary" gutterBottom={true} />}
-        isOpen={isDialogOpen}
-        fullWidth={true}
-        maxWidth={'sm'}
-    >
-        <Container component="main" maxWidth="lg" className={classes.root}>
-            <CssBaseline />
-
-            <div className={classes.paper}>
-                <form className={classes.form} noValidate autoComplete="off"  >
-                    <AutoComplete
-                        label={"Nombre de la rutina"}
-                        name="nickname"
-                        autoCompleteId="autocomplete-nickname"
-                        value={nickname}
-                        setValue={setNickname}
-                        options={data.nicknames}
-                        placeholder="Ingrese o seleccione un nombre para la rutina"
-                        width="97.5%"
-                        error={nicknameError}
-
-                    />
-                    <Select
-                        id={'plant'}
-                        label={"Planta"}
-                        required={true}
-                        autoWidth={true}
-                        margin={"dense"}
-                        variant={'outlined'}
-                        options={data.plants}
-                        value={plant}
-                        setValue={setPlant}
-                        error={plantError}
-
-                    />
-                    <Select
-                        id={'attelier'}
-                        label={"Attelier"}
-                        required={true}
-                        autoWidth={true}
-                        margin={"dense"}
-                        variant={'outlined'}
-                        options={data.attelieres}
-                        value={attelier}
-                        setValue={setAttelier}
-                        className={classes.textField}
-                        error={attelierError}
-                    />
-                    <Input
-                        variant={"outlined"}
-                        margin={"dense"}
-                        required={true}
-                        id="tag"
-                        label="Tag"
-                        name={"tag"}
-                        autoComplete={"tag"}
-                        type={"text"}
-                        inputRef={tag}
-                        error={tagError}
-
-                    />
-                    <Input
-                        variant={"outlined"}
-                        margin={"dense"}
-                        required={true}
-                        placeholder="Rutina (frecuencia) según RG-44-XXX"
-                        id="description"
-                        label="Descripción"
-                        name="description"
-                        autoComplete="description"
-                        type="text"
-                        inputRef={description}
-                    />
-                    <Select
-                        id={'timeSchedule'}
-                        label={"Horario de ejecución"}
-                        required={true}
-                        autoWidth={true}
-                        margin={"dense"}
-                        variant={'outlined'}
-                        options={data.timeSchedules}
-                        value={timeSchedule}
-                        setValue={setTimeSchedule}
-                    />
-
-                    <Select
-                        id={'manteinance'}
-                        label={"Tipo de mantenimiento"}
-                        required={true}
-                        autoWidth={true}
-                        margin={"dense"}
-                        variant={'outlined'}
-                        options={data.manteinances}
-                        value={manteinance}
-                        setValue={setManteinance}
-                    />
-                    <Select
-                        id={'action'}
-                        label={"Acción"}
-                        required={true}
-                        autoWidth={true}
-                        margin={"dense"}
-                        variant={'outlined'}
-                        options={data.actions}
-                        value={action}
-                        setValue={setAction}
-                    />
-                    <Select
-                        id={'frequency'}
-                        label={"Frecuencia de ejecución"}
-                        required={true}
-                        autoWidth={true}
-                        margin={"dense"}
-                        variant={'outlined'}
-                        options={data.frequencies}
-                        value={frequency}
-                        setValue={setFrequency}
-                        error={frequencyError}
-                    />
-
-                    {showCheckDay ? (
-                        <AutoCompleteCheckBox
-                            value={checkDays}
-                            setValue={setCheckDays}
-                            label={"Días de ejecución"}
-                            placeholder="Seleccione los días de ejecución"
-                            width="97.5%"
-                            error={checkDaysError}
-                        />
-                    ) : ''}
-                    {showOtherCheckDay ? (
-                        <DatePicker
-                            name='date'
-                            label="Fecha de chequeo"
-                            value={otherCheckDay}
-                            onChange={handleOtherCheckDay}
-                            inputVariant="outlined"
-                            margin={"dense"}
-                            error={otherCheckDayError}
-                        />
-                    ) : ''}
-                    <MyDialogActions>
-                        <Button color="primary" onClick={handleSubmit} >
-                            Crear
-                        </Button>
-                        <Button onClick={handleDialogClose} color="primary">
-                            Cerrar
-                        </Button>
-                    </MyDialogActions>
-                </form>
+    return <>
+        <Dialog open={alert.collapse}>
+            <div className={classes.alert}>
+                <Alert
+                    severity={alert.severity}
+                    title={alert.title}
+                    message={alert.message}
+                    messageAction={alert.messageAction}
+                    collapse={alert.collapse}
+                />
             </div>
+        </Dialog>
+        <MyDialog
+            title={<Title value="Crear una nueva Rutina" variant="button" color="primary" gutterBottom={true} />}
+            isOpen={isDialogOpen}
+            fullWidth={true}
+            maxWidth={'sm'}
+        >
 
-        </Container>
-    </MyDialog >
+            <Container component="main" maxWidth="lg" className={classes.root}>
+                <CssBaseline />
 
+                <div className={classes.paper}>
+                    <form className={classes.form} noValidate autoComplete="off"  >
+                        <AutoComplete
+                            label={"Nombre de la rutina"}
+                            name="nickname"
+                            autoCompleteId="autocomplete-nickname"
+                            value={nickname}
+                            setValue={setNickname}
+                            options={data.nicknames}
+                            placeholder="Ingrese o seleccione un nombre para la rutina"
+                            width="97.5%"
+                            error={nicknameError}
+                        />
+                        <Select
+                            id={'plant'}
+                            label={"Planta"}
+                            required={true}
+                            autoWidth={true}
+                            margin={"dense"}
+                            variant={'outlined'}
+                            options={data.plants}
+                            value={plant}
+                            setValue={setPlant}
+                            error={plantError}
+
+                        />
+                        <Select
+                            id={'attelier'}
+                            label={"Attelier"}
+                            required={true}
+                            autoWidth={true}
+                            margin={"dense"}
+                            variant={'outlined'}
+                            options={data.attelieres}
+                            value={attelier}
+                            setValue={setAttelier}
+                            className={classes.textField}
+                            error={attelierError}
+                        />
+                        <Input
+                            variant={"outlined"}
+                            margin={"dense"}
+                            required={true}
+                            id="tag"
+                            label="Tag"
+                            name={"tag"}
+                            autoComplete={"tag"}
+                            type={"text"}
+                            inputRef={tag}
+                            error={tagError}
+
+                        />
+                        <Input
+                            variant={"outlined"}
+                            margin={"dense"}
+                            required={true}
+                            placeholder="Rutina (frecuencia) según RG-44-XXX"
+                            id="description"
+                            label="Descripción"
+                            name="description"
+                            autoComplete="description"
+                            type="text"
+                            inputRef={description}
+                        />
+                        <Select
+                            id={'timeSchedule'}
+                            label={"Horario de ejecución"}
+                            required={true}
+                            autoWidth={true}
+                            margin={"dense"}
+                            variant={'outlined'}
+                            options={data.timeSchedules}
+                            value={timeSchedule}
+                            setValue={setTimeSchedule}
+                        />
+
+                        <Select
+                            id={'manteinance'}
+                            label={"Tipo de mantenimiento"}
+                            required={true}
+                            autoWidth={true}
+                            margin={"dense"}
+                            variant={'outlined'}
+                            options={data.manteinances}
+                            value={manteinance}
+                            setValue={setManteinance}
+                        />
+                        <Select
+                            id={'action'}
+                            label={"Acción"}
+                            required={true}
+                            autoWidth={true}
+                            margin={"dense"}
+                            variant={'outlined'}
+                            options={data.actions}
+                            value={action}
+                            setValue={setAction}
+                        />
+                        <Select
+                            id={'frequency'}
+                            label={"Frecuencia de ejecución"}
+                            required={true}
+                            autoWidth={true}
+                            margin={"dense"}
+                            variant={'outlined'}
+                            options={data.frequencies}
+                            value={frequency}
+                            setValue={setFrequency}
+                            error={frequencyError}
+                        />
+
+                        {showCheckDay ? (
+                            <AutoCompleteCheckBox
+                                value={checkDays}
+                                setValue={setCheckDays}
+                                label={"Días de ejecución"}
+                                placeholder="Seleccione los días de ejecución"
+                                width="97.5%"
+                                error={checkDaysError}
+                            />
+                        ) : ''}
+                        {showOtherCheckDay ? (
+                            <DatePicker
+                                name='date'
+                                label="Fecha de chequeo"
+                                value={otherCheckDay}
+                                onChange={handleOtherCheckDay}
+                                inputVariant="outlined"
+                                margin={"dense"}
+                                error={otherCheckDayError}
+                            />
+                        ) : ''}
+                        <MyDialogActions>
+                            <Button color="primary" onClick={handleSubmit} >
+                                Crear
+                            </Button>
+                            <Button onClick={handleDialogClose} color="primary">
+                                Cerrar
+                            </Button>
+                        </MyDialogActions>
+                    </form>
+                </div>
+            </Container>
+        </MyDialog >
+    </>
 
 }

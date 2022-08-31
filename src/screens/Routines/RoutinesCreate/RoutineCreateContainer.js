@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { axiosGet } from '../../../Services/Axios.js';
 import { useHistory } from 'react-router-dom';
-import { TableCard } from '../../Card/TableCard';
 import { RoutineCreateForm } from './Forms/RoutineCreateForm';
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -30,7 +29,6 @@ export const RoutineCreateContainer = ({ isDialogOpen, setIsDialogOpen }) => {
         }
     }, [history]);
 
-    return <TableCard>
-        <RoutineCreateForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} data={data} />
-    </TableCard>
+    return <RoutineCreateForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} data={data} />
+    
 };

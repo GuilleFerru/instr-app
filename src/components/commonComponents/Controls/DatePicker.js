@@ -58,7 +58,6 @@ export default function DatePicker(props) {
                     error={error}
                 />
             </MuiPickersUtilsProvider>
-
         </ThemeProvider>
     )
 }
