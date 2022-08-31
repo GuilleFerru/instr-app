@@ -251,6 +251,7 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
                             options={data.manteinances}
                             value={manteinance}
                             setValue={setManteinance}
+                            disabled={true}
                         />
                         <Select
                             id={'action'}
@@ -262,6 +263,7 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
                             options={data.actions}
                             value={action}
                             setValue={setAction}
+                            disabled={true}
                         />
                         <Select
                             id={'frequency'}
