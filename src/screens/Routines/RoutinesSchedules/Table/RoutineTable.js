@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { RoutineCreateContainer } from '../../RoutinesCreate/RoutineCreateContainer';
+import { RoutineCrudContainer } from '../../RoutinesCRUD/RoutineCrudContainer';
 
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -22,7 +22,8 @@ export const RoutineTable = ({ allData, setDate, date }) => {
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
     const [monthAndYear, setMonthAndYear] = useState('');
-    const [isRoutineCreateDialogOpen, setIsRoutineCreateDialogOpen] = useState(false)
+    const [isRoutineCreateDialogOpen, setIsRoutineCreateDialogOpen] = useState(false);
+    const [isRoutineEditDialogOpen, setIsRoutineEditDialogOpen] = useState(false);
     const { handleDatePicker } = muiTableCommonActions(setDate);
 
     useEffect(() => {
@@ -56,9 +57,12 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         });
     }
 
-    const handleNewRoutine = () => {
-        setIsRoutineCreateDialogOpen(true)
-    }
+    // const handleNewRoutine = () => {
+    //     setIsRoutineCreateDialogOpen(true)
+    // }
+    // const handleEditRoutine = () => {
+    //     setIsRoutineEditDialogOpen(true)
+    // }
 
 
     return <div className={classes.table}>
@@ -84,10 +88,16 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 initialRowData={{ otherRoutinesInitialRowData }}
                 monthAndYear={monthAndYear}
                 enableCreateNewRoutineButton={true}
-                createNewRoutine={handleNewRoutine}
                 setIsDialogOpen={setIsRoutineCreateDialogOpen}
+                setRoutineEditDialogOpen={setIsRoutineEditDialogOpen}
+                enableEditRoutineButton={true}
             />
-            <RoutineCreateContainer isDialogOpen={isRoutineCreateDialogOpen} setIsDialogOpen={setIsRoutineCreateDialogOpen} />
+            <RoutineCrudContainer
+                isCreateDialogOpen={isRoutineCreateDialogOpen}
+                setIsCreateDialogOpen={setIsRoutineCreateDialogOpen}
+                isEditDialogOpen={isRoutineEditDialogOpen}
+                setIsEditDialogOpen={setIsRoutineEditDialogOpen}
+            />
         </ThemeProvider>
     </div>
 

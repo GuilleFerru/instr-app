@@ -6,7 +6,7 @@ const filter = createFilterOptions();
 
 export const AutoComplete = (props) => {
 
-    const { label, options, value, setValue, autoCompleteId, placeholder, width, error } = props;
+    const { label, options, value, setValue, autoCompleteId, placeholder, width, error, disabled } = props;
 
     return (
         <Autocomplete
@@ -30,7 +30,7 @@ export const AutoComplete = (props) => {
                 }
                 return filtered;
             }}
-
+            disabled={disabled}
             selectOnFocus
             clearOnBlur
             handleHomeEndKeys

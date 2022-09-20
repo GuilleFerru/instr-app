@@ -63,6 +63,7 @@ export const MuiTable = (
         enableGoToPlantShutdownWorksToDoButton = false,
         enableUpdateShutdownWorkButton = false,
         setIsDialogOpen = false,
+        setRoutineEditDialogOpen = false,
         setRowData,
         enablePaging = false,
         enableDetailPanel = false,
@@ -78,9 +79,7 @@ export const MuiTable = (
         maxAditionalsReached = false,
         minAditionalReached = false,
         enableCreateNewRoutineButton = false,
-        
-
-
+        enableEditRoutineButton = false,
     }) => {
 
     const positionRef = React.useRef();
@@ -108,7 +107,8 @@ export const MuiTable = (
         searchDailyWork,
         generateDailyShift,
         deleteAditional,
-        createNewRoutine } = muiTableCommonActions(getNewDate);
+        createNewRoutine,
+        editRoutine } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -183,7 +183,8 @@ export const MuiTable = (
                     (enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData)),
                     (enableDailyWorkSearchButton && searchDailyWork(tableIcons, setIsDialogOpen, getDailyWorkDataForSearch)),
                     (enableGenerateDailyShiftButton && generateDailyShift(tableIcons, setIsDialogOpen)),
-                    (enableCreateNewRoutineButton && createNewRoutine(tableIcons, setIsDialogOpen))
+                    (enableCreateNewRoutineButton && createNewRoutine(tableIcons, setIsDialogOpen)),
+                    (enableEditRoutineButton && editRoutine(tableIcons, setRoutineEditDialogOpen)),
                 ]}
                 components={{
                     Action: (props) => {
@@ -227,26 +228,6 @@ export const MuiTable = (
                                         </div>
                                     </div>
                                 )}
-                                {/* {disableHolidayPeriodSelector ? null : (
-
-                                    <div className={classes.holidayPeriodSelector}>
-                                        <HolidayPeriodsSelector
-                                            id={'holidayPeriodSelector'}
-                                            label={"Seleccione"}
-                                            required={true}
-                                            autoWidth={false}
-                                            margin={"dense"}
-                                            // variant={'outlined'}
-                                            options={[{
-                                                id: 1,
-                                                name: '2022-2023'
-                                            }]}
-                                            value={1}
-                                        // setValue={setAttelier}
-                                        // handleSelect={handleAttelierSelect}
-                                        />
-                                    </div>
-                                )} */}
                             </div>
                         </div>
                     )

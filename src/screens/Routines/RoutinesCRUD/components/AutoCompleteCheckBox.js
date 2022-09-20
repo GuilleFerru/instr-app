@@ -11,7 +11,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export const AutoCompleteCheckBox = (props) => {
 
-    const { label, value, setValue, autoCompleteId, placeholder, width, error } = props;
+    const { label, value, setValue, autoCompleteId, placeholder, width, error, disabled } = props;
+
     return (
         <Autocomplete
             multiple
@@ -22,9 +23,10 @@ export const AutoCompleteCheckBox = (props) => {
             id={autoCompleteId}
             options={days}
             disableCloseOnSelect
+            disabled={disabled}
             getOptionLabel={(option) => option.name}
             renderOption={(option, { selected }) => (
-                <React.Fragment>
+                <>
                     <Checkbox
                         icon={icon}
                         checkedIcon={checkedIcon}
@@ -32,12 +34,13 @@ export const AutoCompleteCheckBox = (props) => {
                         checked={selected}
                     />
                     {option.name}
-                </React.Fragment>
+                </>
             )}
+            getOptionSelected={(option, value) => option.name === value.name}
             selectOnFocus
             style={{ width: width }}
             renderInput={(params) => (
-                <TextField {...params} label={label} placeholder={placeholder} variant="outlined" margin="dense" error={error}  />
+                <TextField {...params} label={label} placeholder={placeholder} variant="outlined" margin="dense" error={error} />
             )}
         />
     );

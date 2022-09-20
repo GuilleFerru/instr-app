@@ -14,6 +14,9 @@ const theme = createTheme ({
         },
         black: {
             main: '#000000',
+        },
+        danger: {
+            main: '#ff0000',
         }
 
     }

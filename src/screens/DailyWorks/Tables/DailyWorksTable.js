@@ -64,7 +64,6 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
         return dataUpdate;
     }
 
-
     const bulkUpdate = (changes, resolve) => {
         const copyData = [...data];
         const dataUpdate = getNewDataBulkEdit(changes, copyData);

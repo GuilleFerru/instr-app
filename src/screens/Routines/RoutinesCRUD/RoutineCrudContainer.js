@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { axiosGet } from '../../../Services/Axios.js';
 import { useHistory } from 'react-router-dom';
-import { RoutineCreateForm } from './Forms/RoutineCreateForm';
+import { RoutineCreateForm } from './RoutinesCreate/RoutineCreateForm';
+import { RoutineEdit } from './RoutinesEdit/RoutineEdit';
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
-export const RoutineCreateContainer = ({ isDialogOpen, setIsDialogOpen }) => {
+export const RoutineCrudContainer = ({ isCreateDialogOpen, setIsCreateDialogOpen, isEditDialogOpen, setIsEditDialogOpen }) => {
 
     const history = useHistory();
     const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ export const RoutineCreateContainer = ({ isDialogOpen, setIsDialogOpen }) => {
     useEffect(() => {
         setData([])
         let cancel = false;
-        axiosGet(`${baseUrl}/routine/getDataForRoutineCreate`).then(res => {
+        axiosGet(`${baseUrl}/routine/getDataForRoutineCrud`).then(res => {
             const data = res;
             if (!cancel) {
                 data === undefined ? setData([]) : setData(data);
@@ -29,6 +30,9 @@ export const RoutineCreateContainer = ({ isDialogOpen, setIsDialogOpen }) => {
         }
     }, [history]);
 
-    return <RoutineCreateForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} data={data} />
-    
-};
+    return <>
+        <RoutineCreateForm data={data} isDialogOpen={isCreateDialogOpen} setIsDialogOpen={setIsCreateDialogOpen} routineAction={"create"} />
+        <RoutineEdit data={data} isDialogOpen={isEditDialogOpen} setIsDialogOpen={setIsEditDialogOpen} routineAction={"edit"} />
+
+    </>
+}

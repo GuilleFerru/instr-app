@@ -149,6 +149,15 @@ export const muiTableCommonActions = (getNewDate) => {
         }
     })
 
+    const editRoutine = (tableIcons, setRoutineEditDialogOpen) => ({
+        tooltip: 'Editar Rutina',
+        icon: tableIcons.Edit,
+        isFreeAction: true,
+        onClick: (_evt) => {
+            setRoutineEditDialogOpen(true)
+        }
+    })
+
 
 
     return {
@@ -165,6 +174,7 @@ export const muiTableCommonActions = (getNewDate) => {
         searchDailyWork,
         generateDailyShift,
         deleteAditional,
-        createNewRoutine
+        createNewRoutine,
+        editRoutine
     }
 }

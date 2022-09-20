@@ -13,7 +13,12 @@ export const routineCreateFormStyle = theme => {
             justifyContent: 'center',
             margin: 'auto',
             position: 'float',
+        },
+        titleError: {
+            color: '#ff0000'
+        },
+        titleNormal: {
+            color: '#069999'
         }
-
     })
 }
