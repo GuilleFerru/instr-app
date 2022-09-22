@@ -7,12 +7,9 @@ import { Select } from '../../../../components/commonComponents/Controls/Select'
 import { Title } from '../../../../components/commonComponents/Title';
 import { routineEditStyle } from './RoutineEditStyle';
 import { RoutineEditForm } from './RoutineEditForm';
-
 import { useHistory } from 'react-router-dom';
 
-
 const baseUrl = process.env.REACT_APP_API_URL;
-
 const useStyles = makeStyles((theme) => routineEditStyle(theme));
 
 export const RoutineEdit = ({ data, isDialogOpen, setIsDialogOpen }) => {
@@ -64,7 +61,7 @@ export const RoutineEdit = ({ data, isDialogOpen, setIsDialogOpen }) => {
                             setValue={setRoutineId}
                         />
                         <MyDialogActions>
-                            <Button color="primary" onClick={handleSubmit} >
+                            <Button color="primary" onClick={handleSubmit} disabled={routineId === '' ? true : false}>
                                 Editar
                             </Button>
                             <Button onClick={handleDialogClose} color="primary">
@@ -75,7 +72,7 @@ export const RoutineEdit = ({ data, isDialogOpen, setIsDialogOpen }) => {
                 </div>
             </Container>
         </MyDialog >
-        <RoutineEditForm data={data} routine={routine} isDialogOpen={editDialogOpen} setIsDialogOpen={setEditDialogOpen}  ></RoutineEditForm>
+        <RoutineEditForm data={data} routine={routine} isDialogOpen={editDialogOpen} setIsDialogOpen={setEditDialogOpen}></RoutineEditForm>
     </>
 }
 

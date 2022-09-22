@@ -11,6 +11,13 @@ export const parseStringToDate = (stringDate) => {
     return d && d.getMonth() === b[1] - 1 ? d : new Date(NaN);
 }
 
+export const dateInLocalDate = (date) => {
+    const localDate = new Date(date).toLocaleDateString('es-AR');
+    const dateResp = parseStringToDate(localDate);
+    return dateResp;
+}
+
+
 export const parseStringToString = (stringDate) => {
     const arrayDate = stringDate.split(/\D+/)
     const day = arrayDate[2].charAt(0) === '0' ? arrayDate[2].substring(1) : arrayDate[2];

@@ -42,7 +42,7 @@ export const muiTableCommonActions = (getNewDate) => {
         hidden: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C')
     })
 
-    const watchTask = (rowData, Link, monthAndYear, ListAltIcon) => ({
+    const watchTask = (rowData, Link, monthAndYear, ListAltIcon, routineDate) => ({
         tooltip: rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? 'Debe completar la tarea' : 'Ver mas',
         icon: () => <Link to={{
             pathname: `/rutinas/rutinasDetalles`,
@@ -51,6 +51,7 @@ export const muiTableCommonActions = (getNewDate) => {
                 nickname: rowData.nickname,
                 tag: rowData.tag,
                 monthAndYear: monthAndYear,
+                routineDate: routineDate,
                 from: 'rutinas'
             },
         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,

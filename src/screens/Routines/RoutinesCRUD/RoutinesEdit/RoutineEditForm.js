@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { DateContext } from '../../../../context/DateContext';
 import { routineCrudCommonActions } from '../RoutineCrudCommonActions';
 import { axiosPut } from '../../../../Services/Axios.js';
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,16 +10,12 @@ import { useHistory } from 'react-router-dom';
 const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => routineEditStyle(theme));
 
-
-
-
 export const RoutineEditForm = ({ data, routine, isDialogOpen, setIsDialogOpen }) => {
-
-
 
     const classes = useStyles();
     const isMounted = useRef(false);
     const history = useHistory();
+    const { handleRoutineDate } = useContext(DateContext);
     const [nickname, setNickname] = useState('');
     const [nicknameError, setNicknameError] = useState(false);
     const [plant, setPlant] = useState(0);
@@ -149,15 +146,15 @@ export const RoutineEditForm = ({ data, routine, isDialogOpen, setIsDialogOpen }
                 } else {
                     showAlert('error', 'Error al actualizar la rutina', 'No se pudo actualizar la rutina', 'Intente nuevamente', true);
                 }
-                setTimeout(() => {setAlert((prev) => ({ ...prev, collapse: false }))}, 1000);
+                setTimeout(() => { setAlert((prev) => ({ ...prev, collapse: false })) }, 2000);
                 setIsDialogOpen(false);
-            }).catch(err => {
-                console.error(err);
+            }).catch(_err => {
                 history.push('/error')
             });
         }
         errorDefault();
-        
+        //lo uso para que no se recargue la pagina
+        handleRoutineDate(new Date());
     }
 
 

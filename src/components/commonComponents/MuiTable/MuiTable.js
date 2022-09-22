@@ -80,6 +80,7 @@ export const MuiTable = (
         minAditionalReached = false,
         enableCreateNewRoutineButton = false,
         enableEditRoutineButton = false,
+        routineDate = null
     }) => {
 
     const positionRef = React.useRef();
@@ -176,7 +177,7 @@ export const MuiTable = (
                     (enableDeleteAditionalButton && deleteAditional(tableIcons, handleAditional, minAditionalReached)),
                     (enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData)),
                     (enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData)))),
-                    (enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon)))),
+                    (enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon, routineDate)))),
                     (enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate)))),
                     (enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon)))),
                     (enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon)),
@@ -202,7 +203,7 @@ export const MuiTable = (
                         <div >
                             {disableBreadcrumbs ? null : (
                                 <div className={classes.toolbarHeader}>
-                                    <Breadcrumbs />
+                                    <Breadcrumbs/>
                                     <OverDueRoutine />
                                 </div>
                             )}

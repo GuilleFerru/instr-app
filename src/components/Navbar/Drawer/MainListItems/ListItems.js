@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from "react-router-dom";
 import { List } from "@material-ui/core";
+import { DateContext } from '../../../../context/DateContext';
 import { ListItem, ListItemIcon, ListItemText, Collapse } from "@material-ui/core/";
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -18,10 +19,11 @@ import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, handleClickEmpList, classes }) => {
 
   // const { handleLeaveRoom } = mainListActions();
+  const { handleRoutineDate } = useContext(DateContext);
 
   return (
     <>
-       <ListItem button component={Link} to="/dashboard">
+      <ListItem button component={Link} to="/dashboard">
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
@@ -42,7 +44,7 @@ export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, hand
             </ListItemIcon>
             <ListItemText primary="Tareas Diarias" />
           </ListItem>
-          <ListItem button component={Link} to="/rutinas" className={classes.nested}>
+          <ListItem button onClick={() => handleRoutineDate(new Date())} component={Link} to="/rutinas" className={classes.nested}>
             <ListItemIcon>
               <ScheduleIcon />
             </ListItemIcon>

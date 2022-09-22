@@ -31,8 +31,7 @@ export const RoutineCrudContainer = ({ isCreateDialogOpen, setIsCreateDialogOpen
     }, [history]);
 
     return <>
-        <RoutineCreateForm data={data} isDialogOpen={isCreateDialogOpen} setIsDialogOpen={setIsCreateDialogOpen} routineAction={"create"} />
-        <RoutineEdit data={data} isDialogOpen={isEditDialogOpen} setIsDialogOpen={setIsEditDialogOpen} routineAction={"edit"} />
-
+        <RoutineCreateForm data={data} isDialogOpen={isCreateDialogOpen} setIsDialogOpen={setIsCreateDialogOpen} />
+        <RoutineEdit data={data} isDialogOpen={isEditDialogOpen} setIsDialogOpen={setIsEditDialogOpen} />
     </>
 }

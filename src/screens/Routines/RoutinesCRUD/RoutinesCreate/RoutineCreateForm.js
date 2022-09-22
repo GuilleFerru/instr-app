@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { DateContext } from '../../../../context/DateContext';
 import { routineCrudCommonActions } from '../RoutineCrudCommonActions';
 import { axiosPost } from '../../../../Services/Axios.js';
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,7 +15,7 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
 
     const classes = useStyles();
     const history = useHistory();
-
+    const { handleRoutineDate } = useContext(DateContext);
     const [nickname, setNickname] = useState('');
     const [nicknameError, setNicknameError] = useState(false);
     const [plant, setPlant] = useState(0);
@@ -111,12 +112,14 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
                 } else {
                     showAlert('error', 'Error al crear la rutina', 'Ha ocurrido un error al crear la rutina', 'Intente no repetir el TAG', true);
                 }
-                setTimeout(() => {setAlert((prev) => ({ ...prev, collapse: false }))}, 2000);
+                setTimeout(() => { setAlert((prev) => ({ ...prev, collapse: false })) }, 2000);
                 setIsDialogOpen(false);
 
             }).catch(err => {
                 history.push('/error')
             });
+            //lo uso para que no se recargue la pagina
+            handleRoutineDate(new Date());
         }
     }
 

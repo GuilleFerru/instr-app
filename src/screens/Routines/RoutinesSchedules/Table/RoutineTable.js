@@ -35,7 +35,6 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         });
     }, [allData]);
 
-
     const updateRow = (newData, oldData, resolve) => {
         const dataUpdate = [...data];
         const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
@@ -57,20 +56,12 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         });
     }
 
-    // const handleNewRoutine = () => {
-    //     setIsRoutineCreateDialogOpen(true)
-    // }
-    // const handleEditRoutine = () => {
-    //     setIsRoutineEditDialogOpen(true)
-    // }
-
-
     return <div className={classes.table}>
         <ThemeProvider theme={theme}>
             <MuiTable
                 data={data}
                 setData={setData}
-                title={'RUTINAS'}
+                title={`Rutinas ${monthAndYear}`}
                 datepicker={monthPicker(date, handleDatePicker)}
                 disableOnRowUpdate={false}
                 dataColumns={dataColumns}
@@ -78,7 +69,7 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 enablePaging={true}
                 pageSize={10}
                 pageSizeOptions={[10, 20, 30]}
-                date={date}
+                routineDate={date}
                 handleRoutineSchedule={handleRoutineSchedule}
                 enableRoutinesDetails={true}
                 enableCompleteTaskButton={true}

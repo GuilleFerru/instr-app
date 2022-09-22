@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { DateContext } from '../../../context/DateContext';
 import { axiosGet } from '../../../Services/Axios.js';
 import { TableCard } from '../../Card/TableCard';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -10,8 +11,13 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export const RoutineDetailsContainer = () => {
     const location = useLocation();
     const history = useHistory();
-    const { routineScheduleId, nickname, tag, monthAndYear } = location.state;
+    const { routineScheduleId, nickname, tag, monthAndYear, routineDate } = location.state;
     const [data, setData] = useState([]);
+    const { handleRoutineDate } = useContext(DateContext);
+
+    useEffect(() => {
+        handleRoutineDate(routineDate);
+    }, [handleRoutineDate, location, routineDate]);
 
     useEffect(() => {
         let cancel = false;

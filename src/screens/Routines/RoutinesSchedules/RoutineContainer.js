@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { DateContext } from '../../../context/DateContext';
 import { axiosGet } from '../../../Services/Axios.js';
 import { useHistory } from 'react-router-dom';
 import { TableCard } from '../../Card/TableCard';
@@ -6,11 +7,19 @@ import { RoutineTable } from './Table/RoutineTable';
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
+
+
 export const RoutineContainer = () => {
 
     const history = useHistory();
+    const { routineDate } = useContext(DateContext);
     const [data, setData] = useState([]);
     const [date, setDate] = useState(new Date());
+
+    useEffect(() => {
+        routineDate && setDate(routineDate);
+    }, [routineDate]);
+
 
     useEffect(() => {
         setData([])
@@ -28,6 +37,7 @@ export const RoutineContainer = () => {
         return () => {
             cancel = true;
         }
+
     }, [date, history]);
 
     return <TableCard>
