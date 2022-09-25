@@ -20,8 +20,9 @@ export const RoutineDetailsContainer = () => {
     }, [handleRoutineDate, location, routineDate]);
 
     useEffect(() => {
+        const abortController = new AbortController();
         let cancel = false;
-        axiosGet(`${baseUrl}/dailyWork/getDailyWorkRoutine/${routineScheduleId}`).then(res => {
+        axiosGet(`${baseUrl}/dailyWork/getDailyWorkRoutine/${routineScheduleId}`, { signal: abortController.signal }).then(res => {
             const data = res;
             if (!cancel) {
                 data === undefined ? setData([]) : setData(data);
@@ -33,6 +34,7 @@ export const RoutineDetailsContainer = () => {
         });;
         return () => {
             cancel = true;
+            abortController.abort();
         }
     }, [history, routineScheduleId]);
 

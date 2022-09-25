@@ -1,4 +1,5 @@
 import { useRef, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { loginCall } from "../../Services/Axios";
 import { Fade, Button, CssBaseline, Link, Grid, Box, makeStyles, Container, CircularProgress } from '@material-ui/core';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
@@ -10,18 +11,17 @@ import { LogoNavbar } from "../../components/Navbar/LogoNavbar";
 import { Title } from '../../components/commonComponents/Title';
 import { AuthContext } from '../../context/AuthContext';
 
-
-
-
 const useStyles = makeStyles((theme) => loginContainerStyle(theme));
 
 
 export const Login = () => {
 
     const classes = useStyles();
+    const location = useLocation();
     const username = useRef();
     const password = useRef();
     const { isFetching, dispatch } = useContext(AuthContext);
+    const { idle } = location.state || false;
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -85,6 +85,9 @@ export const Login = () => {
                                     'Iniciar sesión'
                                 )}
                             </Button>
+                            {idle ?
+                                (<Title variant={'overline'} color={'error'} value={'Deslogueo por inactividad. Vuelva a iniciar sesión'} />)
+                                : (null)}
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="#" variant="body2">

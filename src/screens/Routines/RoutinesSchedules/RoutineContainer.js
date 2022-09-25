@@ -22,9 +22,10 @@ export const RoutineContainer = () => {
 
 
     useEffect(() => {
+        const abortController = new AbortController();
         setData([])
         let cancel = false;
-        axiosGet(`${baseUrl}/routine/getAllRoutines/${date}`).then(res => {
+        axiosGet(`${baseUrl}/routine/getAllRoutines/${date}`, { signal: abortController.signal }).then(res => {
             const data = res;
             if (!cancel) {
                 data === undefined ? setData([]) : setData(data);
@@ -36,6 +37,7 @@ export const RoutineContainer = () => {
         });;
         return () => {
             cancel = true;
+            abortController.abort();
         }
 
     }, [date, history]);

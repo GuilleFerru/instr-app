@@ -4,7 +4,7 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from '@material-ui/core';
 import { holidayStyle } from './HolidayStyle';
-import {formatDate} from '../../../Services/DateUtils';
+import { formatDate } from '../../../Services/DateUtils';
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
 import { HolidayScores } from './HolidaysScores/HolidayScores';
@@ -57,12 +57,14 @@ export const Holiday = ({ data }) => {
             </div>
             <div className={classes.container}>
                 <div>
-                    <Typography variant="h5" gutterBottom>
-                        Vacaciones del Personal - {title}
-                    </Typography>
+                    <div className={classes.mainTitles}>
+                        <Typography variant="h5" gutterBottom> Vacaciones del Personal </Typography>
+                        <Typography variant="h6" gutterBottom> Selección y puntajes para el {title} </Typography>
+                    </div>
                     <Typography variant="subtitle1" gutterBottom>
                         El periodo comprende desde el {startDate} hasta {endDate}
                     </Typography>
+
                 </div>
                 <HolidayScores periodOptions={periodOptions} periodData={periodData} title={title} />
                 <HolidaySelector periodOptions={periodOptions} periodData={periodData} employeeOptions={employeeOptions} />

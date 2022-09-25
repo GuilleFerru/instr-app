@@ -115,7 +115,7 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
                 setTimeout(() => { setAlert((prev) => ({ ...prev, collapse: false })) }, 2000);
                 setIsDialogOpen(false);
 
-            }).catch(err => {
+            }).catch(_err => {
                 history.push('/error')
             });
             //lo uso para que no se recargue la pagina

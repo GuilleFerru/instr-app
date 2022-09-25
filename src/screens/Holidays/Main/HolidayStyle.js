@@ -37,6 +37,14 @@ export const holidayStyle = theme => {
             },
             ...shadowEffect,
         },
+        mainTitles: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            width: '100%',
+            height: 'auto',
+        },
         containerHeader: {
             display: 'flex',
             flexDirection: 'row',

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useIdleTimer } from 'react-idle-timer'
 import { useHistory } from "react-router-dom";
 import { ListItem, ListItemIcon, ListItemText, ListItemAvatar, Avatar } from "@material-ui/core/";
 import { AuthContext } from '../../context/AuthContext';
@@ -11,13 +12,19 @@ export const Logout = () => {
     const history = useHistory();
     const { user, dispatch, socket } = useContext(AuthContext);
 
-    const handleLogout = () => {
+    const handleLogout = (idle = false) => {
         socket && socket.disconnect();
-        // window.localStorage.removeItem('user');
         dispatch({ type: 'LOGOUT_SUCCESS' });
-        history.push('/');
+        history.push('/', { from: 'logout', idle });
     }
 
+    const onIdle = () => {
+        handleLogout(true);
+    }
+
+    // 3 horas
+    useIdleTimer({ onIdle, timeout: 60000 * 60 * 3});
+    
     return <>
         <ListItem>
             <ListItemAvatar>
@@ -27,7 +34,7 @@ export const Logout = () => {
             </ListItemAvatar>
             <ListItemText primary={`${user.name} ${user.lastname}`} secondary={user.username} />
         </ListItem>
-        <ListItem button onClick={handleLogout}>
+        <ListItem button onClick={() => handleLogout(false)}>
             <ListItemIcon>
                 <Avatar>
                     <ExitToAppIcon />
@@ -37,3 +44,5 @@ export const Logout = () => {
         </ListItem>
     </>
 }
+
+

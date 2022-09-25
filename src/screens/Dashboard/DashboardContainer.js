@@ -27,8 +27,9 @@ export const DashboardContainer = () => {
         new Promise((resolve) => {
             resolve(!isFetching)
         }).then(() => {
+            const abortController = new AbortController();
             let cancel = false;
-            axiosGet(`${baseUrl}/dashboard/getWidgetData/${new Date()}`).then(res => {
+            axiosGet(`${baseUrl}/dashboard/getWidgetData/${new Date()}`, { signal: abortController.signal }).then(res => {
                 const data = res;
                 if (!cancel) {
                     data.includes(null) ? setWidgetData(defaultData) : setWidgetData(data);
@@ -40,17 +41,20 @@ export const DashboardContainer = () => {
             });;
             return () => {
                 cancel = true;
+                abortController.abort();
             }
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
+
         new Promise((resolve) => {
             resolve(!isFetching)
         }).then(() => {
+            const abortController = new AbortController();
             let cancel = false;
-            axiosGet(`${baseUrl}/dashboard/getChartsData/${monthAndYear}`).then(res => {
+            axiosGet(`${baseUrl}/dashboard/getChartsData/${monthAndYear}`, { signal: abortController.signal }).then(res => {
                 const data = res;
                 if (!cancel) {
                     data === undefined ? setDataManteinanceType([]) : setDataManteinanceType(data[0]);
@@ -63,6 +67,7 @@ export const DashboardContainer = () => {
             });;
             return () => {
                 cancel = true;
+                abortController.abort();
             }
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps

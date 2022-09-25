@@ -13,9 +13,10 @@ export const RoutineCrudContainer = ({ isCreateDialogOpen, setIsCreateDialogOpen
 
 
     useEffect(() => {
+        const abortController = new AbortController();
         setData([])
         let cancel = false;
-        axiosGet(`${baseUrl}/routine/getDataForRoutineCrud`).then(res => {
+        axiosGet(`${baseUrl}/routine/getDataForRoutineCrud`, { signal: abortController.signal }).then(res => {
             const data = res;
             if (!cancel) {
                 data === undefined ? setData([]) : setData(data);
@@ -27,6 +28,7 @@ export const RoutineCrudContainer = ({ isCreateDialogOpen, setIsCreateDialogOpen
         });;
         return () => {
             cancel = true;
+            abortController.abort();
         }
     }, [history]);
 
