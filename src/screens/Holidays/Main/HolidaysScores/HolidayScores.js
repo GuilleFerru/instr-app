@@ -104,7 +104,7 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
                 agreeButtonText={'Borrar'}
             />
         </div>
-        <Typography color="inherit" variant="h6" gutterBottom>Puntajes y Promedios</Typography>
+        <Typography color="inherit" variant="h6" >Puntajes y Promedios</Typography>
         <div className={classes.periodoContainer}>
             <div>
                 <Box mb={2}>

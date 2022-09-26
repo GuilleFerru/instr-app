@@ -194,15 +194,20 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                     <Box mb={2}>
                         <Typography variant="overline" display="block" gutterBottom>Días Restantes: {leftDays}</Typography>
                     </Box>
+                    {period === periodOptions[0]?.id && (
+                        <Box mb={2}>
+                            <Typography variant="button" display="block" gutterBottom color='error'>No se puede modificar este período</Typography>
+                        </Box>
+                    )}
                     <Box mb={2} >
-                        <Button onClick={handleEmpHolidayDetails} color="primary" endIcon={<MoreIcon />} variant="contained">
+                        <Button onClick={handleEmpHolidayDetails} color="primary" endIcon={<MoreIcon />} variant="contained" disabled={period === periodOptions[0]?.id}>
                             Ver Mas
                         </Button>
                     </Box>
                 </div>
                 <div className={classes.save}>
                     <Box >
-                        <Button onClick={handleSubmit} color="primary" endIcon={<SaveIcon />} variant="contained">
+                        <Button onClick={handleSubmit} color="primary" endIcon={<SaveIcon />} variant="contained" disabled={period === periodOptions[0]?.id}>
                             Guardar
                         </Button>
                     </Box>

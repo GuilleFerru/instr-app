@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-//import { AuthContext } from '../../../context/AuthContext';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from '@material-ui/core';
@@ -11,14 +10,10 @@ import { HolidayScores } from './HolidaysScores/HolidayScores';
 import { HolidaySelector } from './HolidaySelector/HolidaySelector';
 
 
-
-
-//const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => holidayStyle(theme));
 
 export const Holiday = ({ data }) => {
 
-    //const { socket } = useContext(AuthContext);
     const classes = useStyles();
     const isMounted = useRef(false);
     const [title, setTitle] = useState('');
@@ -27,6 +22,7 @@ export const Holiday = ({ data }) => {
     const [periodData, setPeriodData] = useState([]);
     const [periodOptions, setPeriodOptions] = useState([]);
     const [employeeOptions, setEmployeeOptions] = useState([]);
+    const [actualPeriod, setActualPeriod] = useState([]);
 
     useEffect(() => {
         if (isMounted.current) {
@@ -36,18 +32,15 @@ export const Holiday = ({ data }) => {
             setPeriodData(data.periodData);
             setPeriodOptions(data.periodOptions);
             setEmployeeOptions(data.employeeOptions);
+            setActualPeriod(data.periodOptions.map((period, index) => {
+                const actualPeriod = data.periodData.periodName === period.name ? data.periodOptions[index - 1]?.name.slice(7) || '2019-2020' : null;
+                return actualPeriod;
+            }));
+
         } else {
             isMounted.current = true;
         }
     }, [data]);
-
-    // useEffect(() => {
-    //     socket.on('get_holiday_period', (data) => {
-    //         setPeriodData(data.periodData);
-    //         setTitle(data.periodData.periodName);
-    //     });
-    // }, [socket]);
-
 
 
     return <div className={classes.table}>
@@ -59,12 +52,16 @@ export const Holiday = ({ data }) => {
                 <div>
                     <div className={classes.mainTitles}>
                         <Typography variant="h5" gutterBottom> Vacaciones del Personal </Typography>
-                        <Typography variant="h6" gutterBottom> Selección y puntajes para el {title} </Typography>
+                        <Typography variant="overline" >
+                            El periodo seleccionado es {actualPeriod} y comprende desde el {startDate} hasta {endDate}.
+                        </Typography>
+                        <Typography color="inherit" variant="overline">
+                            Los puntajes se calcularan para el {title}.
+                        </Typography>
+                        <Typography color="inherit" variant="overline" gutterBottom>
+                            En el selector de vacaciones se muestra el {title} pero se deben anotar las vacaciones correspondientes al Período {actualPeriod}
+                        </Typography>
                     </div>
-                    <Typography variant="subtitle1" gutterBottom>
-                        El periodo comprende desde el {startDate} hasta {endDate}
-                    </Typography>
-
                 </div>
                 <HolidayScores periodOptions={periodOptions} periodData={periodData} title={title} />
                 <HolidaySelector periodOptions={periodOptions} periodData={periodData} employeeOptions={employeeOptions} />

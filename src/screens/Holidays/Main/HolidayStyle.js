@@ -44,6 +44,9 @@ export const holidayStyle = theme => {
             alignItems: 'flex-start',
             width: '100%',
             height: 'auto',
+            margin: '0',
+            padding: '0',
+
         },
         containerHeader: {
             display: 'flex',
