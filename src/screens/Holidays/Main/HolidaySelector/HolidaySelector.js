@@ -7,6 +7,7 @@ import { Select } from '../components/Select';
 import StaticDateRangePicker from '../../../../components/commonComponents/Controls/StaticDateRangePicker';
 import MoreIcon from '@material-ui/icons/More';
 import SaveIcon from '@material-ui/icons/Save';
+import Backdrop from '../../../../components/Backdrop/Backdrop';
 import { AlertClose } from '../components/AlertClose';
 import { Alerts } from '../components/Alerts';
 import { HolidayDetails } from './List/HolidayDetails';
@@ -27,7 +28,7 @@ const calculateTakenDays = (staticDateArray) => {
     return Math.round((staticDateArray[0].endDate - staticDateArray[0].startDate) / oneDay) + 1;
 }
 
-const dataToSave = (employee, employeeName, employeeCondition, period, staticDateArray, createSchedule, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket) => {
+const dataToSave = (employee, employeeName, employeeCondition, period, staticDateArray, createSchedule, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading) => {
 
     const empNewDataHoliday = {
         employee: employee,
@@ -42,7 +43,10 @@ const dataToSave = (employee, employeeName, employeeCondition, period, staticDat
     setDisplayedName(employeeName)
     setStaticDateArray(staticDateArrayDefault);
     setOpenDialog(false);
+    setOnLoading(true);
     socket.emit('create_employee_holiday', empNewDataHoliday);
+
+
 }
 
 export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) => {
@@ -50,7 +54,6 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const isMounted = useRef(false);
     const classes = useStyles();
     const { socket } = useContext(AuthContext);
-    //const history = useHistory();
     const [employee, setEmployee] = useState('');
     const [employeeName, setEmployeeName] = useState('');
     const [employeeCondition, setEmployeeCondition] = useState('');
@@ -65,6 +68,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const [employeeDetails, setEmployeeDetails] = useState([{}]);
     const [holidayDetailDialog, setHolidayDetailDialog] = useState(false);
     const [successDelete, setSuccessDelete] = useState(false);
+    const [onLoading, setOnLoading] = useState(false);
 
 
 
@@ -84,9 +88,12 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
 
     useEffect(() => {
         if (isMounted.current) {
-            socket.on('create_employee_holiday', () => {
+            const listener = () => {
                 setSuccesAdd(true);
-            });
+                setOnLoading(false);
+            }
+            socket.on('create_employee_holiday', listener);
+            return () => { socket.off('create_employee_holiday', listener) }
         } else {
             isMounted.current = true;
         }
@@ -122,11 +129,11 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     }
 
     const handleNotAddToSchedule = () => {
-        dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, false, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
+        dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, false, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading)
     }
 
     const handleAddToSchedule = () => {
-        dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket)
+        dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading)
     }
 
     return <>
@@ -219,5 +226,6 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
             </div>
         </form>
         <HolidayDetails holidayData={employeeDetails} isDialogOpen={holidayDetailDialog} setIsDialogOpen={setHolidayDetailDialog} successDelete={successDelete} setSuccessDelete={setSuccessDelete} />
+        <Backdrop open={onLoading} />
     </>
 }

@@ -37,7 +37,6 @@ export const holidaySelectorStyle = theme => {
             justifyContent: 'center',
             margin: 'auto',
             position: 'float',
-        }
-
+        },
     })
 }
