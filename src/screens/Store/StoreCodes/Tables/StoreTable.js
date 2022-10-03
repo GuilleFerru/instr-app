@@ -1,22 +1,22 @@
 import React from 'react'
 import XLSX from 'xlsx';
 import { makeStyles } from "@material-ui/core/styles";
-import { useStoreListTable } from './UseStoreListTable';
-import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
-import { storeListTableStyle } from './StoreListTableStyle'
+import { UseStoreTable } from './UseStoreTable';
+import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
+import { storeTableStyle } from './StoreTableStyle'
 
 
 
 
-const useStyles = makeStyles((theme) => storeListTableStyle(theme));
+const useStyles = makeStyles((theme) => storeTableStyle(theme));
 const EXTENSION = ['xlsx', 'xls', 'csv'];
 
-export const StoreListTable = props => {
+export const StoreTable = props => {
     const classes = useStyles();
 
 
 
-    const { data, setData, colDefs, setColDefs, date } = useStoreListTable();
+    const { data, setData, colDefs, setColDefs, date } = UseStoreTable();
 
     const getExention = (file) => {
         const parts = file.name.split('.');
@@ -57,7 +57,7 @@ export const StoreListTable = props => {
             } else {
                 alert('Archivo Invalido')
             }
-        } else{
+        } else {
             setData([]);
             setColDefs([])
         }

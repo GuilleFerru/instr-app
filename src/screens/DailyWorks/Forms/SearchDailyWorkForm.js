@@ -121,7 +121,6 @@ export const SearchDailyWorkForm = (
         setIsDialogOpen(false);
         setSearchFor(initialFValues);
         defaultValues();
-
     };
 
     const handleSubmit = (event) => {

@@ -13,10 +13,13 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import StoreIcon from '@material-ui/icons/Store';
+import ListIcon from '@material-ui/icons/List';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 // ]import { mainListActions } from "./MainListActions";
 
 
-export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, handleClickEmpList, classes }) => {
+export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, handleClickEmpList, handleClickStoreList, openStoreList, classes }) => {
 
   // const { handleLeaveRoom } = mainListActions();
   const { handleRoutineDate } = useContext(DateContext);
@@ -78,6 +81,29 @@ export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, hand
               <BeachAccessIcon />
             </ListItemIcon>
             <ListItemText primary="Vacaciones" />
+          </ListItem>
+        </List>
+      </Collapse>
+      <ListItem button onClick={handleClickStoreList}>
+        <ListItemIcon>
+          <StoreIcon />
+        </ListItemIcon>
+        <ListItemText primary="Almacén" />
+        {openStoreList ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={openStoreList} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button component={Link} to="/itemsAlmacen" className={classes.nested} disabled>
+            <ListItemIcon>
+              <ListIcon />
+            </ListItemIcon>
+            <ListItemText primary="Items de almacén" />
+          </ListItem>
+          <ListItem button component={Link} to="/reclamosStock" className={classes.nested}>
+            <ListItemIcon>
+              <PlaylistAddIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reclamos stock" />
           </ListItem>
         </List>
       </Collapse>

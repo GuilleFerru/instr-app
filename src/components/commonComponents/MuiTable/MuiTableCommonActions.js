@@ -159,6 +159,27 @@ export const muiTableCommonActions = (getNewDate) => {
         }
     })
 
+    const addToClaimItem = (tableIcons, handleAddToClaimItem, rowData) => ({
+        tooltip: rowData.claimed === true ? 'Ítem ya reclamado' : 'Agregar para reclamar',
+        icon: tableIcons.Check,
+        isFreeAction: false,
+        disabled: rowData.claimed === true,
+        onClick: (_evt, rowData) => {
+            handleAddToClaimItem(rowData)
+        }
+    })
+
+    const claimItems = (tableIcons, handleClaimedItem, itemsToClaimQty) => ({
+        tooltip: itemsToClaimQty === 0 ? 'Debe agregar ítems para reclamar' : 'Reclamar ítems agregados',
+        icon: tableIcons.Complete,
+        isFreeAction: true,
+        disabled: itemsToClaimQty === 0,
+        onClick: (_evt, rowData) => {
+            handleClaimedItem(rowData)
+        }
+    })
+
+
 
 
     return {
@@ -176,6 +197,8 @@ export const muiTableCommonActions = (getNewDate) => {
         generateDailyShift,
         deleteAditional,
         createNewRoutine,
-        editRoutine
+        editRoutine,
+        addToClaimItem,
+        claimItems
     }
 }

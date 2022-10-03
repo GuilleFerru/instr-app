@@ -16,6 +16,7 @@ export const DrawerContainer = ({ handleDrawerClose, open }) => {
     const classes = useStyles();
     const [openWorkList, setOpenWorkList] = useState(false);
     const [openEmpList, setOpenEmpList] = useState(false);
+    const [openStoreList, setOpenStoreList] = useState(false);
 
     const handleClickWorkList = () => {
         setOpenWorkList(!openWorkList);
@@ -23,6 +24,10 @@ export const DrawerContainer = ({ handleDrawerClose, open }) => {
 
     const handleClickEmpList = () => {
         setOpenEmpList(!openEmpList);
+    }
+
+    const handleClickStoreList = () => {
+        setOpenStoreList(!openStoreList);
     }
 
     return <Drawer
@@ -43,6 +48,8 @@ export const DrawerContainer = ({ handleDrawerClose, open }) => {
                 handleClickWorkList={handleClickWorkList}
                 openEmpList = {openEmpList}
                 handleClickEmpList = {handleClickEmpList}
+                openStoreList = {openStoreList}
+                handleClickStoreList = {handleClickStoreList}
                 classes={classes}
             />
         </List>

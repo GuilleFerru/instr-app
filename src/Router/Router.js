@@ -13,11 +13,11 @@ import { PlantShutdownWorksToDoContainer } from '../screens/PlantShutdowns/Plant
 import { HolidayContainer } from '../screens/Holidays/HolidayContainer';
 import { AuthContext } from '../context/AuthContext';
 import { ErrorPage } from '../components/commonComponents/ErrorPage/ErrorPage';
-// import { StoreListContainer } from '../screens/StoreList/StoreListContainer';
+import { StoreContainer } from '../screens/Store/StoreCodes/StoreContainer';
+import { StoreReclaimsContainer } from '../screens/Store/StoreReclaims/StoreReclaimsContainer';
 
 export const Router = () => {
     const { user } = useContext(AuthContext);
-    // console.log(user)
     return <Switch>
         <Route exact path="/">
             {user ? <Redirect to="/dashboard" /> : <Login />}
@@ -56,6 +56,12 @@ export const Router = () => {
                 </Route>
                 <Route exact path="/vacacionesPersonal">
                     <HolidayContainer />
+                </Route>
+                <Route exact path="/itemsAlmacen">
+                    <StoreContainer />
+                </Route>
+                <Route exact path="/reclamosStock">
+                    <StoreReclaimsContainer />
                 </Route>
             </LayOut>
             : <Login />}

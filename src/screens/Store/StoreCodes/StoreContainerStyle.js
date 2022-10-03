@@ -1,4 +1,4 @@
-export const storeListContainerStyle = theme => {
+export const storeContainerStyle = theme => {
     return ({
         paper: {
             margin: theme.spacing(2),

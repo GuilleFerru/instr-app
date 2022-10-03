@@ -80,7 +80,12 @@ export const MuiTable = (
         minAditionalReached = false,
         enableCreateNewRoutineButton = false,
         enableEditRoutineButton = false,
-        routineDate = null
+        routineDate = null,
+        enableAddToClaimItemButton = false,
+        handleAddToClaimItem,
+        itemsToClaimQty,
+        enableClaimItemsButton = false,
+        handleClaimItems,
     }) => {
 
     const positionRef = React.useRef();
@@ -109,7 +114,9 @@ export const MuiTable = (
         generateDailyShift,
         deleteAditional,
         createNewRoutine,
-        editRoutine } = muiTableCommonActions(getNewDate);
+        editRoutine,
+        addToClaimItem,
+        claimItems } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -186,6 +193,8 @@ export const MuiTable = (
                     (enableGenerateDailyShiftButton && generateDailyShift(tableIcons, setIsDialogOpen)),
                     (enableCreateNewRoutineButton && createNewRoutine(tableIcons, setIsDialogOpen)),
                     (enableEditRoutineButton && editRoutine(tableIcons, setRoutineEditDialogOpen)),
+                    (enableAddToClaimItemButton && (rowData => addToClaimItem(tableIcons, handleAddToClaimItem, rowData))),
+                    (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems,itemsToClaimQty)),
                 ]}
                 components={{
                     Action: (props) => {
@@ -203,7 +212,7 @@ export const MuiTable = (
                         <div >
                             {disableBreadcrumbs ? null : (
                                 <div className={classes.toolbarHeader}>
-                                    <Breadcrumbs/>
+                                    <Breadcrumbs />
                                     <OverDueRoutine />
                                 </div>
                             )}
