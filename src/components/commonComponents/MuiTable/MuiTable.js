@@ -86,6 +86,9 @@ export const MuiTable = (
         itemsToClaimQty,
         enableClaimItemsButton = false,
         handleClaimItems,
+        enableFiltering = false,
+        enableDeleteClaimItemsButton = false,
+        handleDeleteClaimedItems
     }) => {
 
     const positionRef = React.useRef();
@@ -116,7 +119,8 @@ export const MuiTable = (
         createNewRoutine,
         editRoutine,
         addToClaimItem,
-        claimItems } = muiTableCommonActions(getNewDate);
+        claimItems,
+        deleteClaimItems } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -168,6 +172,7 @@ export const MuiTable = (
                     grouping: disableGroupingOption ? undefined : true,
                     exportMenu: [ExportPdfButton(pdfTitle)],
                     paging: enablePaging,
+                    filtering: enableFiltering,
                     rowStyle: rowData => ({
                         backgroundColor: (selectedRow === rowData.tableData.id) ? '#8a8a8a' : '#FFF',
                         color: (selectedRow === rowData.tableData.id) ? '#FFF' : '#000',
@@ -194,7 +199,8 @@ export const MuiTable = (
                     (enableCreateNewRoutineButton && createNewRoutine(tableIcons, setIsDialogOpen)),
                     (enableEditRoutineButton && editRoutine(tableIcons, setRoutineEditDialogOpen)),
                     (enableAddToClaimItemButton && (rowData => addToClaimItem(tableIcons, handleAddToClaimItem, rowData))),
-                    (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems,itemsToClaimQty)),
+                    (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems, itemsToClaimQty)),
+                    (enableDeleteClaimItemsButton && deleteClaimItems(tableIcons, handleDeleteClaimedItems, itemsToClaimQty)),
                 ]}
                 components={{
                     Action: (props) => {

@@ -8,6 +8,7 @@ import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable';
 import { storeReclaimsTableStyle } from './StoreReclaimsTableStyle';
 import { StoreReclaimsEmail } from '../Form/StoreReclaimsEmail';
+import { Alerts } from '../../components/Alerts';
 //import emailjs from '@emailjs/browser';
 
 const useStyles = makeStyles((theme) => storeReclaimsTableStyle(theme));
@@ -24,6 +25,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
     const [itemsToClaim, setItemsToClaim] = useState([]);
     const [itemsToClaimQty, setItemsToClaimQty] = useState(0);
     const [openSendMailDialog, setOpenSendMailDialog] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
     const [values, setValues] = useState({
         name: '',
         email: '',
@@ -32,7 +34,9 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
 
     useEffect(() => {
         if (isMounted.current) {
-            setData(allData)
+            setData(allData);
+            setItemsToClaim([]);
+            setItemsToClaimQty(0);
         } else {
             isMounted.current = true;
         }
@@ -67,6 +71,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                     "locale": "es-AR",
                     "format": "dd-MMM-yyyy"
                 },
+                filtering: false,
                 initialEditValue: new Date(),
                 width: '15%',
             },
@@ -78,7 +83,24 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                     "locale": "es-AR",
                     "format": "dd-MMM-yyyy"
                 },
+                filtering: false,
                 width: '15%',
+                // editComponent: props => (
+                //     <MuiPickersUtilsProvider utils={DateFnsUtils}
+                //         locale={props.dateTimePickerLocalization}>
+                //         <DatePicker
+                //             format="dd/MM/yyyy"
+                //             value={props.value || null}
+                //             onChange={props.onChange}
+                //             clearable
+                //             InputProps={{
+                //                 style: {
+                //                     fontSize: 13,
+                //                 }
+                //             }}
+                //         />
+                //     </MuiPickersUtilsProvider>
+                // )
                 //initialEditValue: new Date()
             },
             {
@@ -110,7 +132,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                 field: 'claimedBy',
                 title: 'Reclamado por',
                 //initialEditValue: ((rowData) => rowData?.claimed ? `${user.name} ${user.lastname}` : ''),
-
+                filtering: false,
                 width: '15%',
             },
             {
@@ -119,6 +141,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                 type: 'numeric',
                 align: 'left',
                 initialEditValue: 1,
+                filtering: false,
                 width: '10%',
 
             }
@@ -140,13 +163,17 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
     }
 
     const updateRow = (newData, oldData, resolve) => {
-        const dataUpdate = [...data];
-        const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
-        const index = dataUpdate.indexOf(target);
-        dataUpdate[index] = newData;
-        socket ? socket.emit('update_store_claim', newData) : history.push('/error');
+        if (newData?.addedToClaim) {
+            setOpenAlert(true);
+        } else {
+            const dataUpdate = [...data];
+            const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
+            const index = dataUpdate.indexOf(target);
+            dataUpdate[index] = newData;
+            socket ? socket.emit('update_store_claim', newData) : history.push('/error');
+            return dataUpdate;
+        }
         resolve();
-        return dataUpdate;
     }
 
     const bulkUpdate = (changes, resolve) => {
@@ -159,13 +186,17 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
             copyData[index] = changes[key];
             return changes[key].newData;
         })
-        setData(dataUpdate);
-        socket ? socket.emit('bulk_update_store_claims', dataToUpdate) : history.push('/error');
+        const addeToClaim = dataToUpdate.some(item => item.addedToClaim);
+        if (addeToClaim) {
+            setOpenAlert(true);
+        } else {
+            setData(dataUpdate);
+            socket ? socket.emit('bulk_update_store_claims', dataToUpdate) : history.push('/error');
+        }
         resolve();
     }
 
     const handleAddToClaimItem = (rowData) => {
-        // const dataUpdate = [...data];
         const target = data.find((el) => el.id === rowData.tableData.id);
         const index = data.indexOf(target);
         data[index] = { ...data[index], claimed: true, claimdate: new Date(), claimedBy: `${user.name} ${user.lastname}`, addedToClaim: true };
@@ -176,6 +207,11 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
     const handleClaimItems = () => {
         setOpenSendMailDialog(true);
     }
+
+    const handleDeleteClaimedItems = () => {
+        socket.emit('get_store_claims');
+    }
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -196,7 +232,9 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
     }
 
     return <div className={classes.table}>
+
         <div className={classes.containerHeader}>
+            <Alerts open={openAlert} setOpenAlert={setOpenAlert} severity={'error'} title={'No se puede editar, se debe desagregar primero.'} />
             <StoreReclaimsEmail
                 itemsToClaim={itemsToClaim}
                 handleSubmit={handleSubmit}
@@ -208,6 +246,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
             />
         </div>
         <ThemeProvider theme={theme}>
+
             <MuiTable className={classes.table}
                 data={data}
                 dataColumns={columns}
@@ -216,6 +255,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                 pageSize={20}
                 pageSizeOptions={[20, 30, 50]}
                 disableDefaultSearch={false}
+                //enableFiltering={true}
                 disableAddButton={false}
                 rowAdd={rowAdd}
                 disableDeleteButton={false}
@@ -229,6 +269,8 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                 itemsToClaimQty={itemsToClaimQty}
                 enableClaimItemsButton={true}
                 handleClaimItems={handleClaimItems}
+                enableDeleteClaimItemsButton={true}
+                handleDeleteClaimedItems={handleDeleteClaimedItems}
             />
         </ThemeProvider>
     </div>

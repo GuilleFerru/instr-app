@@ -179,7 +179,15 @@ export const muiTableCommonActions = (getNewDate) => {
         }
     })
 
-
+    const deleteClaimItems = (tableIcons, handleDeleteClaimedItem, itemsToClaimQty) => ({
+        tooltip: itemsToClaimQty === 0 ? 'Debe agregar ítems para eliminar' : 'Desagregar ítems',
+        icon: tableIcons.DeleteSweep,
+        isFreeAction: true,
+        disabled: itemsToClaimQty === 0,
+        onClick: (_evt, rowData) => {
+            handleDeleteClaimedItem(rowData)
+        }
+    })
 
 
     return {
@@ -199,6 +207,7 @@ export const muiTableCommonActions = (getNewDate) => {
         createNewRoutine,
         editRoutine,
         addToClaimItem,
-        claimItems
+        claimItems,
+        deleteClaimItems
     }
 }
