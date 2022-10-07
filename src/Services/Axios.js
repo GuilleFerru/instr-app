@@ -96,6 +96,7 @@ export const axiosPost = async (url, body) => {
     }
 };
 
+
 export const axiosDelete = (url, data) => {
     axios.delete(url, { data: { data } }, options()).then(_res => _res.status).catch(err => { console.log(err) });
 }
