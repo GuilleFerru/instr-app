@@ -23,7 +23,7 @@ export const Logout = () => {
     }
 
     // 3 horas
-    useIdleTimer({ onIdle, timeout: 60000 * 60 * 3});
+    useIdleTimer({ onIdle, timeout: 60000 * 60 * 1});
     
     return <>
         <ListItem>
