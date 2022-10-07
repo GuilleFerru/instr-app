@@ -94,8 +94,6 @@ export const axiosPost = async (url, body) => {
         return { error: err };
         //return err;
     }
-
-
 };
 
 export const axiosDelete = (url, data) => {
