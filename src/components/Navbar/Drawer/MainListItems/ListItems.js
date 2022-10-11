@@ -93,7 +93,7 @@ export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, hand
       </ListItem>
       <Collapse in={openStoreList} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button component={Link} to="/itemsAlmacen" className={classes.nested} disabled>
+          <ListItem button component={Link} to="/itemsAlmacen" className={classes.nested} >
             <ListItemIcon>
               <ListIcon />
             </ListItemIcon>

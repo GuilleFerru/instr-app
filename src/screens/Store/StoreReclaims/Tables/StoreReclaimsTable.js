@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
+import { TextField } from "@material-ui/core";
 import { useHistory } from 'react-router-dom';
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { AuthContext } from '../../../../context/AuthContext';
@@ -59,8 +60,16 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                 field: 'description',
                 title: 'Descripción',
                 multiline: true,
+                editComponent: ({ value, onChange }) => (
+                    <TextField
+                        onChange={e => onChange(e.target.value)}
+                        value={value}
+                        multiline
+                    />
+                ),
+                align: 'justify',
                 type: 'string',
-                width: '25%',
+                width: '30%',
 
             },
             {
@@ -131,7 +140,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
             {
                 field: 'claimedBy',
                 title: 'Reclamado por',
-                //initialEditValue: ((rowData) => rowData?.claimed ? `${user.name} ${user.lastname}` : ''),
+                //initialEditValue: (`${user.name} ${user.lastname}`),
                 filtering: false,
                 width: '15%',
             },
@@ -142,7 +151,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                 align: 'left',
                 initialEditValue: 1,
                 filtering: false,
-                width: '10%',
+                width: '5%',
 
             }
 

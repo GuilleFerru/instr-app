@@ -1,22 +1,24 @@
 import React from 'react'
 import XLSX from 'xlsx';
-import { makeStyles } from "@material-ui/core/styles";
-import { UseStoreTable } from './UseStoreTable';
-import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
-import { storeTableStyle } from './StoreTableStyle'
+//import { makeStyles } from "@material-ui/core/styles";
+import { Input } from '@mui/material';
+import { axiosPost } from '../../../../Services/Axios.js';
+//import { MuiTable  } from '../../../../components/commonComponents/MuiTable/MuiTable'
+//import { storeTableStyle } from './StoreTableStyle'
 
 
 
-
-const useStyles = makeStyles((theme) => storeTableStyle(theme));
+const baseUrl = process.env.REACT_APP_API_URL;
+//const useStyles = makeStyles((theme) => storeTableStyle(theme));
 const EXTENSION = ['xlsx', 'xls', 'csv'];
 
 export const StoreTable = props => {
-    const classes = useStyles();
 
+    //const classes = useStyles();
 
+    // const [colDefs, setColDefs] = useState([]);
+    // const [data, setData] = useState([]);
 
-    const { data, setData, colDefs, setColDefs, date } = UseStoreTable();
 
     const getExention = (file) => {
         const parts = file.name.split('.');
@@ -29,9 +31,21 @@ export const StoreTable = props => {
         data.forEach(row => {
             let rowData = {}
             row.forEach((element, index) => {
-                rowData[headers[index]] = element;
-                rows.push(rowData)
+                if (headers[index] !== 'STK.ACT.') {
+                    if (headers[index] === 'DESCRIPCION AMPLIADA') {
+                        rowData['bigDescription'] = element;
+                    } else if (headers[index] === 'DESCRIPCION REDUCIDA') {
+                        rowData['smallDescription'] = element;
+                    } else if (headers[index] === 'U.FISICA') {
+                        rowData['storeUbication'] = element;
+                    } else if (headers[index] === 'UM') {
+                        rowData['unit'] = element;
+                    } else if (headers[index] === 'ITEM') {
+                        rowData['item'] = element;
+                    }
+                }
             })
+            rows.push(rowData)
         })
         return rows;
     }
@@ -47,9 +61,14 @@ export const StoreTable = props => {
             const fileData = XLSX.utils.sheet_to_json(workSheet, { header: 1 })
             const headers = fileData[5];
             const heads = headers.map(head => ({ title: head, field: head }))
-            setColDefs(heads)
-            fileData.splice(0, 7)
-            setData(convertToJson(headers, fileData));
+
+
+            console.log('fileData', heads)
+            fileData.splice(0, 7);
+            axiosPost(`${baseUrl}/store/uploadStoreItems`, convertToJson(headers, fileData))
+            //axiosPost('http://localhost:3001/api/store/import', convertToJson(headers, fileData))
+            console.log(convertToJson(headers, fileData))
+
         }
         if (file) {
             if (getExention(file)) {
@@ -58,16 +77,17 @@ export const StoreTable = props => {
                 alert('Archivo Invalido')
             }
         } else {
-            setData([]);
-            setColDefs([])
+            //setData([]);
+            //setColDefs([])
         }
 
 
     }
 
     return <>
-        <input type='file' onChange={importExcel}></input>
-        <MuiTable className={classes.table}
+
+        <Input type='file' onChange={importExcel}></Input>
+        {/* <MuiTable className={classes.table}
             title={'Listado de almacen'}
             data={data}
             setData={setData}
@@ -77,13 +97,12 @@ export const StoreTable = props => {
             // handleAditional={handleAditional}
             // bulkUpdate={bulkUpdate}
             // handleDatePicker={handleDatePicker}
-            date={date}
+            //date={date}
             disableAddButton={true}
             disableDeleteButton={true}
             disableOnRowUpdate={true}
             disableOnBulkUpdate={true}
             disableAditionalButton={true}
-
-        />
+        /> */}
     </>
 }
