@@ -1,26 +1,87 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import XLSX from 'xlsx';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
+import { axiosGet } from '../../../../Services/Axios.js';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
-import Breadcrumbs from '../../../../components/Breadcrumbs/Breadcrumbs';
-import { Input, Typography } from '@mui/material';
+import { MySearchBar } from '../../../../components/commonComponents/Controls/SearchBar';
+import { TextField } from '@material-ui/core';
 import { axiosPost } from '../../../../Services/Axios.js';
-//import { MuiTable  } from '../../../../components/commonComponents/MuiTable/MuiTable'
+import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { storeTableStyle } from './StoreTableStyle'
-
-
 
 const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => storeTableStyle(theme));
 const EXTENSION = ['xlsx', 'xls', 'csv'];
 
-export const StoreTable = props => {
+
+export const StoreTable = ({ getData, data }) => {
 
     const classes = useStyles();
+    const history = useHistory();
 
-    // const [colDefs, setColDefs] = useState([]);
-    // const [data, setData] = useState([]);
+    const columns = useMemo(
+        () => [
+            {
+                field: 'id',
+                title: 'Id',
+                hidden: true,
+            },
+            {
+                field: 'item',
+                title: 'Item',
+                width: '5%',
+            },
+            {
+                field: 'smallDescription',
+                title: 'Descripción reducida',
+                multiline: true,
+                editComponent: ({ value, onChange }) => (
+                    <TextField
+                        onChange={e => onChange(e.target.value)}
+                        value={value}
+                        multiline
+                    />
+                ),
+                align: 'justify',
+                type: 'string',
+                width: '20%',
+            },
+            {
+                field: 'bigDescription',
+                title: 'Descripción ampliada',
+                multiline: true,
+                editComponent: ({ value, onChange }) => (
+                    <TextField
+                        onChange={e => onChange(e.target.value)}
+                        value={value}
+                        multiline
+                    />
+                ),
+                align: 'justify',
+                type: 'string',
+                width: '50%',
+            },
+            {
+                field: 'unit',
+                title: 'Unidad',
+                width: '5%',
+            },
+            {
+                field: 'storeUbication',
+                title: 'Ubicación',
+                width: '10%',
+            },
+            {
+                field: 'quantity',
+                title: 'Cantidad',
+                width: '10%',
+            },
+        ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [],
+    );
 
 
     const getExention = (file) => {
@@ -34,19 +95,20 @@ export const StoreTable = props => {
         data.forEach(row => {
             let rowData = {}
             row.forEach((element, index) => {
-                if (headers[index] !== 'STK.ACT.') {
-                    if (headers[index] === 'DESCRIPCION AMPLIADA') {
-                        rowData['bigDescription'] = typeof element === 'string' ? element.replace(/\s+/g, ' ').trim() : element;
-                    } else if (headers[index] === 'DESCRIPCION REDUCIDA') {
-                        rowData['smallDescription'] = element;
-                    } else if (headers[index] === 'U.FISICA') {
-                        rowData['storeUbication'] = element;
-                    } else if (headers[index] === 'UM') {
-                        rowData['unit'] = element;
-                    } else if (headers[index] === 'ITEM') {
-                        rowData['item'] = element;
-                    }
+                if (headers[index] === 'STK.ACT.') {
+                    rowData['quantity'] = element;
+                } else if (headers[index] === 'DESCRIPCION AMPLIADA') {
+                    rowData['bigDescription'] = typeof element === 'string' ? element.replace(/\s+/g, ' ').trim() : element;
+                } else if (headers[index] === 'DESCRIPCION REDUCIDA') {
+                    rowData['smallDescription'] = typeof element === 'string' ? element.replace(/\s+/g, ' ').trim() : element;;
+                } else if (headers[index] === 'U.FISICA') {
+                    rowData['storeUbication'] = element;
+                } else if (headers[index] === 'UM') {
+                    rowData['unit'] = element;
+                } else if (headers[index] === 'ITEM') {
+                    rowData['item'] = element;
                 }
+
             })
             rows.push(rowData)
         })
@@ -73,47 +135,49 @@ export const StoreTable = props => {
             } else {
                 alert('Archivo Invalido')
             }
-        } else {
-            //setData([]);
-            //setColDefs([])
         }
+    }
 
+    const searchData = (value) => {
+        if (value) {
+            axiosGet(`${baseUrl}/store/searchBy/${value}`).then(data => {
+                getData(data);
 
+            }).catch(_err => {
+                history.push('/error');
+            });
+        } else {
+
+        }
+    }
+
+    const handleLoadNewStoreItems = () => {
+        importExcel();
     }
 
     return <>
+        {/* <Input type='file' onChange={importExcel} hidden></Input> */}
         <ThemeProvider theme={theme}>
-            <div className={classes.breadcrumb}>
-                <Breadcrumbs />
-            </div>
-            <div className={classes.container}>
-                <div>
-                    <div className={classes.mainTitles}>
-                        <Typography variant="h5" gutterBottom> Items codificados </Typography>
-                        <Input type='file' onChange={importExcel}></Input>
-                    </div>
-                </div>
-            </div>
+            <MuiTable className={classes.table}
+                title={'Listado de almacen'}
+                data={data}
+                dataColumns={columns}
+                disableCustomSearch={false}
+                CustomSearchBar={MySearchBar}
+                searchPlaceHolder={'Buscar por código o descripción'}
+                searchData={searchData}
+                enablePaging={true}
+                pageSize={20}
+                pageSizeOptions={[20, 40, 100]}
+                disableAddButton={true}
+                disableDeleteButton={true}
+                disableOnRowUpdate={true}
+                disableOnBulkUpdate={true}
+                disableAditionalButton={true}
+                enableLoadNewStoreItemsButton={true}
+                handleLoadNewStoreItems={handleLoadNewStoreItems}
+            />
         </ThemeProvider >
-
-
-        {/* <MuiTable className={classes.table}
-            title={'Listado de almacen'}
-            data={data}
-            setData={setData}
-            dataColumns={colDefs}
-            pageSize={15}
-            // updateRow={updateRow}
-            // handleAditional={handleAditional}
-            // bulkUpdate={bulkUpdate}
-            // handleDatePicker={handleDatePicker}
-            //date={date}
-            disableAddButton={true}
-            disableDeleteButton={true}
-            disableOnRowUpdate={true}
-            disableOnBulkUpdate={true}
-            disableAditionalButton={true}
-        /> */}
     </>
 
 

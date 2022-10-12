@@ -88,7 +88,9 @@ export const MuiTable = (
         handleClaimItems,
         enableFiltering = false,
         enableDeleteClaimItemsButton = false,
-        handleDeleteClaimedItems
+        handleDeleteClaimedItems,
+        enableLoadNewStoreItemsButton = false,
+        handleLoadNewStoreItems,
     }) => {
 
     const positionRef = React.useRef();
@@ -120,7 +122,8 @@ export const MuiTable = (
         editRoutine,
         addToClaimItem,
         claimItems,
-        deleteClaimItems } = muiTableCommonActions(getNewDate);
+        deleteClaimItems,
+        loadNewStoreItems } = muiTableCommonActions(getNewDate);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -201,6 +204,7 @@ export const MuiTable = (
                     (enableAddToClaimItemButton && (rowData => addToClaimItem(tableIcons, handleAddToClaimItem, rowData))),
                     (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems, itemsToClaimQty)),
                     (enableDeleteClaimItemsButton && deleteClaimItems(tableIcons, handleDeleteClaimedItems, itemsToClaimQty)),
+                    (enableLoadNewStoreItemsButton && loadNewStoreItems(tableIcons, handleLoadNewStoreItems)),
                 ]}
                 components={{
                     Action: (props) => {

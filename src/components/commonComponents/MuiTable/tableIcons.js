@@ -22,6 +22,7 @@ import UpdateIcon from '@material-ui/icons/Update';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import BuildIcon from '@material-ui/icons/Build';
+import BackupIcon from '@material-ui/icons/Backup';
 
 
 export const tableIcons = {
@@ -50,4 +51,5 @@ export const tableIcons = {
     DailyShift: forwardRef((props, ref) => <DateRangeIcon {...props} ref={ref} />),
     DeleteSweep: forwardRef((props, ref) => <DeleteSweepIcon {...props} ref={ref} />),
     EditTwo: forwardRef((props, ref) => <BuildIcon {...props} ref={ref} />),
+    Backup: forwardRef((props, ref) => <BackupIcon {...props} ref={ref} />),
 };

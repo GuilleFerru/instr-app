@@ -189,6 +189,17 @@ export const muiTableCommonActions = (getNewDate) => {
         }
     })
 
+    const loadNewStoreItems = (tableIcons, handleLoadNewStoreItems) => ({
+        tooltip: 'Actualizar items',
+        icon: tableIcons.Backup,
+        isFreeAction: true,
+        disabled: true,
+        onClick: (_evt, rowData) => {
+            handleLoadNewStoreItems(rowData)
+        }
+    })
+
+
 
     return {
         handleDatePicker,
@@ -208,6 +219,7 @@ export const muiTableCommonActions = (getNewDate) => {
         editRoutine,
         addToClaimItem,
         claimItems,
-        deleteClaimItems
+        deleteClaimItems,
+        loadNewStoreItems
     }
 }
