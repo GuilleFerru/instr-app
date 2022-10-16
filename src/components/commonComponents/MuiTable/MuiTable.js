@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createRef, useContext } from 'react'
+import { AuthContext } from '../../../context/AuthContext';
 import MaterialTable, { MTableAction } from '@material-table/core';
 import { makeStyles } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
@@ -10,6 +11,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import WorkOffIcon from '@material-ui/icons/WorkOff';
+import BackupIcon from '@material-ui/icons/Backup';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
 import { ExportPdfButton } from './exportPdf';
@@ -17,6 +19,8 @@ import { OverDueRoutine } from '../../OverDueRoutines/OverDueRoutine';
 import { LoadDataTable } from '../../LoadDataTable/LoadDataTable';
 import { muiTableCommonActions } from './MuiTableCommonActions';
 import { tableLocalization } from './tableLocalization';
+
+
 
 const useStyles = makeStyles((theme) => muiTableStyle(theme));
 
@@ -49,6 +53,8 @@ export const MuiTable = (
         disableDefaultSearch = true,
         disableCustomSearch = true,
         disableReloadDataButton = true,
+        disableColumnButton = true,
+        disableExportMenu = true,
         resetData,
         searchPlaceHolder,
         enableDuplicateButton = false,
@@ -101,7 +107,7 @@ export const MuiTable = (
         return { ...column };
     });
 
-
+    const { user } = useContext(AuthContext);
     const [initialFormData, setInitialFormData] = useState(initialRowData);
     const { getNewDate } = useContext(DateContext);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -123,7 +129,7 @@ export const MuiTable = (
         addToClaimItem,
         claimItems,
         deleteClaimItems,
-        loadNewStoreItems } = muiTableCommonActions(getNewDate);
+        loadNewStoreItems } = muiTableCommonActions(getNewDate, user);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -143,22 +149,22 @@ export const MuiTable = (
                 localization={tableLocalization(LoadDataTable, data)}
                 detailPanel={enableDetailPanel ? [detailPanel] : null}
                 editable={{
-                    onRowAdd: disableAddButton ? undefined : (newRow) => {
+                    onRowAdd: disableAddButton || user.userType === 'user' ? undefined : (newRow) => {
                         initialFormData && setInitialFormData(initialRowData);
                         return new Promise((resolve, _) => {
                             rowAdd(newRow, resolve);
                         });
                     },
-                    onRowAddCancelled: disableAddButton ? undefined : () => {
+                    onRowAddCancelled: disableAddButton || user.userType === 'user' ? undefined : () => {
                         initialFormData && setInitialFormData(initialRowData);
                     },
-                    onRowDelete: disableDeleteButton ? undefined : selectedRow => new Promise((resolve, _) => {
+                    onRowDelete: disableDeleteButton || user.userType === 'user' ? undefined : selectedRow => new Promise((resolve, _) => {
                         deleteRow(selectedRow, resolve);
                     }),
-                    onRowUpdate: disableOnRowUpdate ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
+                    onRowUpdate: disableOnRowUpdate || user.userType === 'user' ? undefined : (updatedRow, oldRow) => new Promise((resolve, _) => {
                         setData(updateRow(updatedRow, oldRow, resolve));
                     }),
-                    onBulkUpdate: disableOnBulkUpdate ? undefined : selectedRows => new Promise((resolve, _) => {
+                    onBulkUpdate: disableOnBulkUpdate || user.userType === 'user' ? undefined : selectedRows => new Promise((resolve, _) => {
                         bulkUpdate(selectedRows, resolve);
                     }),
                 }}
@@ -170,10 +176,14 @@ export const MuiTable = (
                     actionsCellStyle: { justifyContent: 'flex-end' },
                     addRowPosition: 'first',
                     pageSize: pageSize,
+                    emptyRowsWhenPaging: false,
                     pageSizeOptions: pageSizeOptions,
                     selection: disableCheckButton ? undefined : true,
                     grouping: disableGroupingOption ? undefined : true,
-                    exportMenu: [ExportPdfButton(pdfTitle)],
+                    exportAllData: true,
+                    exportMenu: [ExportPdfButton(pdfTitle, disableExportMenu)],
+                    columnsButton: disableColumnButton ? false : true,
+                    //exportButton: disableExportMenu ? false : true,
                     paging: enablePaging,
                     filtering: enableFiltering,
                     rowStyle: rowData => ({
@@ -204,7 +214,7 @@ export const MuiTable = (
                     (enableAddToClaimItemButton && (rowData => addToClaimItem(tableIcons, handleAddToClaimItem, rowData))),
                     (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems, itemsToClaimQty)),
                     (enableDeleteClaimItemsButton && deleteClaimItems(tableIcons, handleDeleteClaimedItems, itemsToClaimQty)),
-                    (enableLoadNewStoreItemsButton && loadNewStoreItems(tableIcons, handleLoadNewStoreItems)),
+                    (enableLoadNewStoreItemsButton && loadNewStoreItems(IconButton, BackupIcon, handleLoadNewStoreItems)),
                 ]}
                 components={{
                     Action: (props) => {

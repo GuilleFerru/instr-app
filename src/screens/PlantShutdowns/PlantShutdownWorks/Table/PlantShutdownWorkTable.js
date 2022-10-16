@@ -101,6 +101,7 @@ export const PlantShutdownWorkTable = props => {
                 title={nickname}
                 dataColumns={dataColumns}
                 initialRowData={plantShutDownWorksInitialRowData(props.timeSchedule)}
+                disableColumnButton={false}
                 enableUpdateShutdownWorkButton={true}
                 disableInitialFormData={false}
                 disableAddButton={props.plantShutdownState}

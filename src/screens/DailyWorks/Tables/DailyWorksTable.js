@@ -124,6 +124,7 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
                 disableDeleteButton={false}
                 disableOnRowUpdate={false}
                 disableOnBulkUpdate={false}
+                disableColumnButton={false}
                 dataColumns={dataColumns}
                 rowAdd={rowAdd}
                 updateRow={updateRow}

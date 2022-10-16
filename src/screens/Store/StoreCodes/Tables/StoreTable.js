@@ -6,10 +6,12 @@ import { axiosGet } from '../../../../Services/Axios.js';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import { MySearchBar } from '../../../../components/commonComponents/Controls/SearchBar';
-import { TextField } from '@material-ui/core';
+import { TextField, } from '@material-ui/core';
 import { axiosPost } from '../../../../Services/Axios.js';
-import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
-import { storeTableStyle } from './StoreTableStyle'
+import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable';
+import { storeTableStyle } from './StoreTableStyle';
+
+
 
 const baseUrl = process.env.REACT_APP_API_URL;
 const useStyles = makeStyles((theme) => storeTableStyle(theme));
@@ -84,6 +86,8 @@ export const StoreTable = ({ getData, data }) => {
     );
 
 
+
+
     const getExention = (file) => {
         const parts = file.name.split('.');
         const extension = parts[parts.length - 1];
@@ -147,12 +151,7 @@ export const StoreTable = ({ getData, data }) => {
                 history.push('/error');
             });
         } else {
-
         }
-    }
-
-    const handleLoadNewStoreItems = () => {
-        importExcel();
     }
 
     return <>
@@ -175,7 +174,7 @@ export const StoreTable = ({ getData, data }) => {
                 disableOnBulkUpdate={true}
                 disableAditionalButton={true}
                 enableLoadNewStoreItemsButton={true}
-                handleLoadNewStoreItems={handleLoadNewStoreItems}
+                handleLoadNewStoreItems={importExcel}
             />
         </ThemeProvider >
     </>

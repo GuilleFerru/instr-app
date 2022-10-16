@@ -23,6 +23,10 @@ export const tableLocalization = (LoadDataTable, data) => ({
         searchTooltip: 'Buscar',
         searchPlaceholder: 'Buscar',
         nRowsSelected: '{0} fila(s) seleccionada(s)',
+        exportTitle: 'Exportar a PDF',
+        exportAriaLabel: 'Exportar a PDF',
+        showColumnsTitle: 'Mostrar Columnas',
+        showColumnsAriaLabel: 'Mostrar Columnas',
     },
     pagination: {
         labelRowsSelect: 'filas',

@@ -25,7 +25,7 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
     const classes = useStyles();
     const history = useHistory();
     const isMounted = useRef(false);
-    const { socket } = useContext(AuthContext);
+    const { user, socket } = useContext(AuthContext);
     const [period, setPeriod] = useState('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loadingPeriod, setLoadingPeriod] = useState(false);
@@ -129,10 +129,10 @@ export const HolidayScores = ({ periodOptions, periodData, title }) => {
                     <Button onClick={handleScoreSystem} endIcon={<AssessmentIcon />} >
                         Ver sistema de puntaje
                     </Button>
-                    <Button onClick={handleNewPeriodDialogueOpen} endIcon={<ScoreIcon />}>
+                    <Button onClick={handleNewPeriodDialogueOpen} endIcon={<ScoreIcon />} disabled={user?.userType === 'user'}>
                         Crear nuevo Período
                     </Button>
-                    <Button onClick={handleDeleteButton} endIcon={<DeleteForeverIcon />}>
+                    <Button onClick={handleDeleteButton} endIcon={<DeleteForeverIcon />} disabled={user?.userType === 'user'}>
                         Borrar Período
                     </Button>
                 </ButtonGroup>

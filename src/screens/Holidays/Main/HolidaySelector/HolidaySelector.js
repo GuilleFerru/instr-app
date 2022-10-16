@@ -53,7 +53,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
 
     const isMounted = useRef(false);
     const classes = useStyles();
-    const { socket } = useContext(AuthContext);
+    const { user, socket } = useContext(AuthContext);
     const [employee, setEmployee] = useState('');
     const [employeeName, setEmployeeName] = useState('');
     const [employeeCondition, setEmployeeCondition] = useState('');
@@ -214,7 +214,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                 </div>
                 <div className={classes.save}>
                     <Box >
-                        <Button onClick={handleSubmit} color="primary" endIcon={<SaveIcon />} variant="contained" disabled={period === periodOptions[0]?.id}>
+                        <Button onClick={handleSubmit} color="primary" endIcon={<SaveIcon />} variant="contained" disabled={period === periodOptions[0]?.id || user?.userType === 'user'}>
                             Guardar
                         </Button>
                     </Box>

@@ -1,4 +1,4 @@
-export const muiTableCommonActions = (getNewDate) => {
+export const muiTableCommonActions = (getNewDate, user) => {
 
     const handleDatePicker = e => {
         getNewDate(e.target.value)
@@ -23,6 +23,7 @@ export const muiTableCommonActions = (getNewDate) => {
         tooltip: maxAditionalsReached ? 'No se pueden agregar mas adicionales' : 'Agregar Adicional',
         icon: tableIcons.Aditional,
         disabled: maxAditionalsReached,
+        hidden: user?.userType === 'user',
         isFreeAction: true,
         onClick: () => handleAditional('add') ? handleAditional('add') : null,
     })
@@ -30,7 +31,7 @@ export const muiTableCommonActions = (getNewDate) => {
     const deleteAditional = (tableIcons, handleAditional, minAditionalReached) => ({
         tooltip: 'Eliminar último adicional',
         icon: tableIcons.DeleteSweep,
-        hidden: minAditionalReached,
+        hidden: minAditionalReached || user?.userType === 'user',
         isFreeAction: true,
         onClick: () => handleAditional('remove') ? handleAditional('remove') : null,
     })
@@ -39,7 +40,7 @@ export const muiTableCommonActions = (getNewDate) => {
         tooltip: 'Completar Tarea',
         icon: tableIcons.Complete,
         onClick: (evt, data) => handleRoutineSchedule(data) ? handleRoutineSchedule(data) : null,
-        hidden: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C')
+        hidden: (rowData.checkDay !== undefined && /[aeiou]/g.test(rowData.checkDay)) || (rowData.complete === 'C') || (user?.userType === 'user'),
     })
 
     const watchTask = (rowData, Link, monthAndYear, ListAltIcon, routineDate) => ({
@@ -56,6 +57,7 @@ export const muiTableCommonActions = (getNewDate) => {
             },
         }} style={{ textDecoration: 'none', color: 'inherit' }}> <ListAltIcon /></Link>,
         disabled: rowData.complete === 'P' && !/[aeiou]/g.test(rowData.checkDay) ? true : false,
+        //hidden: user?.userType === 'user',
     })
 
     const goToDate = (Link, rowData, ListAltIcon, parseStringToDate) => ({
@@ -73,6 +75,7 @@ export const muiTableCommonActions = (getNewDate) => {
     const duplicateRow = (tableIcons, materialTableRef, setInitialFormData) => ({
         tooltip: 'Duplicar fila',
         icon: tableIcons.Duplicate,
+        hidden: user?.userType === 'user',
         onClick: (_evt, rowData) => {
             const materialTable = materialTableRef.current;
             const { tableData, id, tag, ...dataRest } = rowData
@@ -114,6 +117,7 @@ export const muiTableCommonActions = (getNewDate) => {
 
     const updateShutdownWork = (tableIcons, setIsDialogOpen, setRowData) => ({
         tooltip: 'Actualizar tarea',
+        hidden: user?.userType === 'user',
         icon: tableIcons.Update,
         onClick: (_evt, rowData) => {
             setIsDialogOpen(true)
@@ -143,6 +147,7 @@ export const muiTableCommonActions = (getNewDate) => {
 
     const createNewRoutine = (tableIcons, setIsDialogOpen) => ({
         tooltip: 'Crear nueva Rutina',
+        hidden: user?.userType === 'user',
         isFreeAction: true,
         icon: tableIcons.Add,
         onClick: (_evt) => {
@@ -152,6 +157,7 @@ export const muiTableCommonActions = (getNewDate) => {
 
     const editRoutine = (tableIcons, setRoutineEditDialogOpen) => ({
         tooltip: 'Editar Rutina',
+        hidden: user?.userType === 'user',
         icon: tableIcons.Edit,
         isFreeAction: true,
         onClick: (_evt) => {
@@ -161,6 +167,7 @@ export const muiTableCommonActions = (getNewDate) => {
 
     const addToClaimItem = (tableIcons, handleAddToClaimItem, rowData) => ({
         tooltip: rowData.claimed === true ? 'Ítem ya reclamado' : 'Agregar para reclamar',
+        hidden: user?.userType === 'user',
         icon: tableIcons.Check,
         isFreeAction: false,
         disabled: rowData.claimed === true,
@@ -171,6 +178,7 @@ export const muiTableCommonActions = (getNewDate) => {
 
     const claimItems = (tableIcons, handleClaimedItem, itemsToClaimQty) => ({
         tooltip: itemsToClaimQty === 0 ? 'Debe agregar ítems para reclamar' : 'Reclamar ítems agregados',
+        hidden: user?.userType === 'user',
         icon: tableIcons.Complete,
         isFreeAction: true,
         disabled: itemsToClaimQty === 0,
@@ -181,6 +189,7 @@ export const muiTableCommonActions = (getNewDate) => {
 
     const deleteClaimItems = (tableIcons, handleDeleteClaimedItem, itemsToClaimQty) => ({
         tooltip: itemsToClaimQty === 0 ? 'Debe agregar ítems para eliminar' : 'Desagregar ítems',
+        hidden: user?.userType === 'user',
         icon: tableIcons.DeleteSweep,
         isFreeAction: true,
         disabled: itemsToClaimQty === 0,
@@ -189,14 +198,30 @@ export const muiTableCommonActions = (getNewDate) => {
         }
     })
 
-    const loadNewStoreItems = (tableIcons, handleLoadNewStoreItems) => ({
+    const loadNewStoreItems = (IconButton, BackupIcon, handleLoadNewStoreItems) => ({
         tooltip: 'Actualizar items',
-        icon: tableIcons.Backup,
+        hidden: user?.userType === 'user',
+        //icon: tableIcons.Backup,
         isFreeAction: true,
-        disabled: true,
-        onClick: (_evt, rowData) => {
-            handleLoadNewStoreItems(rowData)
-        }
+        disabled: false,
+        icon: () => (
+            <span >
+                <label htmlFor="loadNewStoreItems">
+                    <IconButton aria-label="Actualizar items" component="span" >
+                        <BackupIcon />
+                    </IconButton>
+                </label>
+                <input
+                    hidden
+                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                    multiple
+                    type="file"
+                    onChange={handleLoadNewStoreItems}
+                    id="loadNewStoreItems"
+                />
+            </span >
+        ),
+
     })
 
 

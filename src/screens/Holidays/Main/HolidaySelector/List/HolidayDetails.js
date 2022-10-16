@@ -17,7 +17,7 @@ export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, set
 
     const isMounted = useRef(false);
     const classes = useStyles();
-    const { socket } = useContext(AuthContext);
+    const { user, socket } = useContext(AuthContext);
     const [employeeDetail, setEmployeeDetail] = useState([]);
     const [fractionDetail, setFractionDetail] = useState([]);
     const [fractionDetailDialog, setFractionDetailDialog] = useState(false);
@@ -97,7 +97,7 @@ export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, set
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Eliminar Fracción">
-                                <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item)}>
+                                <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item)} disabled={user?.userType === 'user'}>
                                     <DeleteIcon />
                                 </IconButton>
                             </Tooltip>
