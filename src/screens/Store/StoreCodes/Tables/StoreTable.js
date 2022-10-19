@@ -153,9 +153,10 @@ export const StoreTable = ({ getData, data, subTitle }) => {
 
     const searchData = (value) => {
         if (value) {
+            setOnLoading(true);
             axiosGet(`${baseUrl}/store/searchBy/${value}`).then(data => {
                 getData(data);
-
+                setOnLoading(false);
             }).catch(_err => {
                 history.push('/error');
             });
