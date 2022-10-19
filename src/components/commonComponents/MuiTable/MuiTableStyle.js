@@ -41,7 +41,15 @@ export const muiTableStyle = theme => {
             alignItems: 'center',
             width: '100%',
             margin: '0 0 0.1rem 0.1rem',
-        }
+        },
+        subTitle: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0 1.5rem  0.5rem 1.5rem',
+        },
+
         // datePicker: {
         //     margin: '0 0 1rem 1rem',
         // },

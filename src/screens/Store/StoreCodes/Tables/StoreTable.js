@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import XLSX from 'xlsx';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { axiosGet } from '../../../../Services/Axios.js';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
+import Backdrop from '../../../../components/Backdrop/Backdrop';
 import { MySearchBar } from '../../../../components/commonComponents/Controls/SearchBar';
 import { TextField, } from '@material-ui/core';
 import { axiosPost } from '../../../../Services/Axios.js';
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => storeTableStyle(theme));
 const EXTENSION = ['xlsx', 'xls', 'csv'];
 
 
-export const StoreTable = ({ getData, data }) => {
+export const StoreTable = ({ getData, data, subTitle }) => {
 
     const classes = useStyles();
     const history = useHistory();
@@ -84,7 +85,7 @@ export const StoreTable = ({ getData, data }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     );
-
+    const [onLoading, setOnLoading] = useState(false);
 
 
 
@@ -122,6 +123,7 @@ export const StoreTable = ({ getData, data }) => {
     const importExcel = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
+        setOnLoading(true);
         reader.onload = (event) => {
             const bstr = event.target.result;
             const workBook = XLSX.read(bstr, { type: 'binary' });
@@ -130,8 +132,15 @@ export const StoreTable = ({ getData, data }) => {
             const fileData = XLSX.utils.sheet_to_json(workSheet, { header: 1 })
             const headers = fileData[5];
             //const heads = headers.map(head => ({ title: head, field: head }))
-            fileData.splice(0, 7);
-            axiosPost(`${baseUrl}/store/uploadStoreItems`, convertToJson(headers, fileData))
+            const excelDate = fileData.splice(0, 7)[1][5];
+            const date = excelDate ? new Date(Math.round((excelDate - (25567 + 1)) * 86400 * 1000)) : new Date();
+            const data = {
+                date: date,
+                items: convertToJson(headers, fileData)
+            }
+            axiosPost(`${baseUrl}/store/uploadStoreItems`, data).then(res => {
+                res && setOnLoading(false);
+            })
         }
         if (file) {
             if (getExention(file)) {
@@ -159,6 +168,8 @@ export const StoreTable = ({ getData, data }) => {
         <ThemeProvider theme={theme}>
             <MuiTable className={classes.table}
                 title={'Listado de almacen'}
+                subTitle={subTitle}
+                disableSubTitle={false}
                 data={data}
                 dataColumns={columns}
                 disableCustomSearch={false}
@@ -176,6 +187,7 @@ export const StoreTable = ({ getData, data }) => {
                 enableLoadNewStoreItemsButton={true}
                 handleLoadNewStoreItems={importExcel}
             />
+            <Backdrop open={onLoading} />
         </ThemeProvider >
     </>
 

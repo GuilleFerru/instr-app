@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef, useContext } from 'react'
 import { AuthContext } from '../../../context/AuthContext';
 import MaterialTable, { MTableAction } from '@material-table/core';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
 import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import { MTableToolbar } from '@material-table/core';
@@ -29,6 +29,8 @@ export const MuiTable = (
         data,
         setData,
         title,
+        subTitle,
+        disableSubTitle = true,
         datepicker,
         disableCheckButton = true,
         enableAditionalButton = false,
@@ -228,6 +230,7 @@ export const MuiTable = (
                             return <></>;
                         }
                     },
+
                     Toolbar: props => (
                         <div >
                             {disableBreadcrumbs ? null : (
@@ -239,6 +242,9 @@ export const MuiTable = (
                             <div className={classes.toolbarBody} >
                                 {disableToolbar ? null : (
                                     <MTableToolbar {...props} />
+                                )}
+                                {disableSubTitle ? null : (
+                                    <Typography variant="overline" id="tableTitle"  className={classes.subTitle}> {subTitle} </Typography>
                                 )}
                                 {disableCustomSearch ? null : (
                                     <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
@@ -258,6 +264,7 @@ export const MuiTable = (
                                         </div>
                                     </div>
                                 )}
+
                             </div>
                         </div>
                     )
