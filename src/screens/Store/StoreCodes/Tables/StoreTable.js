@@ -26,11 +26,11 @@ export const StoreTable = ({ getData, data, subTitle }) => {
 
     const columns = useMemo(
         () => [
-            {
-                field: 'id',
-                title: 'Id',
-                hidden: true,
-            },
+            // {
+            //     field: '_id',
+            //     title: 'Id',
+            //     hidden: true,
+            // },
             {
                 field: 'item',
                 title: 'Item',
