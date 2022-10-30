@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, useReducer } from 'react';
+import { TYPES } from '../../../../actions/holidayEmpActions';
 import { AuthContext } from '../../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Button } from '@material-ui/core';
@@ -11,6 +12,7 @@ import Backdrop from '../../../../components/Backdrop/Backdrop';
 import { AlertClose } from '../components/AlertClose';
 import { Alerts } from '../components/Alerts';
 import { HolidayDetails } from './List/HolidayDetails';
+import { holidayEmpReducer, holidayEmpInitialState } from '../../../../reducers/holidayEmpReducer';
 
 const useStyles = makeStyles((theme) => holidaySelectorStyle(theme));
 
@@ -49,17 +51,16 @@ const dataToSave = (employee, employeeName, employeeCondition, period, staticDat
 
 }
 
+
 export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) => {
 
     const isMounted = useRef(false);
     const classes = useStyles();
     const { user, socket } = useContext(AuthContext);
-    const [employee, setEmployee] = useState('');
-    const [employeeName, setEmployeeName] = useState('');
-    const [employeeCondition, setEmployeeCondition] = useState('');
+    const [state, dispatch] = useReducer(holidayEmpReducer, holidayEmpInitialState);
+    const { employee, employeeName, employeeCondition, leftDays } = state;
     const [period, setPeriod] = useState('');
     const [periodName, setPeriodName] = useState('');
-    const [leftDays, setLeftDays] = useState('1');
     const [succesAdd, setSuccesAdd] = useState(false);
     const [displayedName, setDisplayedName] = useState('');
     const [takenDays, setTakenDays] = useState('0')
@@ -77,10 +78,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
             const currentPeriod = periodOptions.find(option => option.name === periodData.periodName);
             setPeriod(currentPeriod.id);
             setPeriodName(currentPeriod.name);
-            setEmployee(employeeOptions[0].id);
-            setEmployeeName(employeeOptions[0].name);
-            setEmployeeCondition(employeeOptions[0].employeeCondition);
-            setLeftDays(employeeOptions[0].holidayDays);
+            dispatch({ type: TYPES.TOOGLE_PERIOD, payload: employeeOptions });
         } else {
             isMounted.current = true;
         }
@@ -105,9 +103,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     }
 
     const handleEmployeeChange = event => {
-        setEmployee(event.target.value)
-        setEmployeeName(employeeOptions.find(option => option.id === event.target.value).name)
-        setLeftDays(employeeOptions.find(option => option.id === event.target.value).holidayDays)
+        dispatch({ type: TYPES.TOOGLE_EMP_OPTIONS, payload: employeeOptions.find(option => option.id === event.target.value) });
     }
 
     const handleEmpHolidayDetails = () => {
