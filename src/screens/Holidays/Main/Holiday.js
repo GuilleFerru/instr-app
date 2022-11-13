@@ -6,6 +6,7 @@ import { holidayStyle } from './HolidayStyle';
 import { formatDate } from '../../../Services/DateUtils';
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
+import { OverDueRoutine } from '../../../components/OverDueRoutines/OverDueRoutine';
 import { HolidayScores } from './HolidaysScores/HolidayScores';
 import { HolidaySelector } from './HolidaySelector/HolidaySelector';
 
@@ -47,6 +48,7 @@ export const Holiday = ({ data }) => {
         <ThemeProvider theme={theme}>
             <div className={classes.breadcrumb}>
                 <Breadcrumbs />
+                <OverDueRoutine />
             </div>
             <div className={classes.container}>
                 <div>

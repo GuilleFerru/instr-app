@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Input = (props) => {
 
-    const { name, label, value, onChange, autoFocus, error = false, fullWidth, required, variant, placeholder, margin, id, autoComplete, type, inputRef, multiline } = props
+    const { name, label, value, onChange, autoFocus, error = false, fullWidth, required, variant, placeholder, margin, id, autoComplete, type, inputRef, multiline, disabled = false } = props
     const classes = useStyles(props);
     return <TextField className={classes.textField}
         multiline={multiline}
@@ -32,6 +32,7 @@ export const Input = (props) => {
         type={type}
         inputRef={inputRef}
         error={error}
+        disabled={disabled}
 
     //{...(error && { error: true, helperText: error })}
     >

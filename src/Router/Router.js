@@ -15,6 +15,7 @@ import { AuthContext } from '../context/AuthContext';
 import { ErrorPage } from '../components/commonComponents/ErrorPage/ErrorPage';
 import { StoreContainer } from '../screens/Store/StoreCodes/StoreContainer';
 import { StoreReclaimsContainer } from '../screens/Store/StoreReclaims/StoreReclaimsContainer';
+import { EmployeeContainer } from '../screens/Employess/EmployeeContainer';
 
 export const Router = () => {
     const { user } = useContext(AuthContext);
@@ -56,6 +57,9 @@ export const Router = () => {
                 </Route>
                 <Route exact path="/vacacionesPersonal">
                     <HolidayContainer />
+                </Route>
+                <Route exact path="/personal">
+                    <EmployeeContainer />
                 </Route>
                 <Route exact path="/itemsAlmacen">
                     <StoreContainer />

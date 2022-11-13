@@ -67,8 +67,8 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 dataColumns={dataColumns}
                 updateRow={updateRow}
                 enablePaging={true}
-                pageSize={10}
-                pageSizeOptions={[10, 20, 30]}
+                pageSize={20}
+                pageSizeOptions={[20, 40, 60]}
                 routineDate={date}
                 handleRoutineSchedule={handleRoutineSchedule}
                 enableRoutinesDetails={true}

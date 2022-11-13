@@ -16,6 +16,7 @@ import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import StoreIcon from '@material-ui/icons/Store';
 import ListIcon from '@material-ui/icons/List';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
 // ]import { mainListActions } from "./MainListActions";
 
 
@@ -81,6 +82,12 @@ export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, hand
               <BeachAccessIcon />
             </ListItemIcon>
             <ListItemText primary="Vacaciones" />
+          </ListItem>
+          <ListItem button component={Link} to="/personal" className={classes.nested}>
+            <ListItemIcon>
+              <HowToRegIcon />
+            </ListItemIcon>
+            <ListItemText primary="Personal" />
           </ListItem>
         </List>
       </Collapse>

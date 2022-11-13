@@ -44,6 +44,7 @@ const Breadcrumbs = props => {
         '/almacen': 'Almacen',
         '/itemsAlmacen': 'Items de Almacen',
         '/reclamosStock': 'Reclamos de Stock',
+        '/personal': 'Personal',
     };
 
     return (
