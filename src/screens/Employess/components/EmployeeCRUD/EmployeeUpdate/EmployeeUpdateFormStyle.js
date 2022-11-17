@@ -13,5 +13,12 @@ export const employeeUpdateFormStyle = theme => {
             alignItems: 'flex-start',
             width: '100%'
         },
+        alert: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            margin: 'auto',
+            position: 'float',
+        },
     })
 }

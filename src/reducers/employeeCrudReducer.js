@@ -6,21 +6,21 @@ export const employeeCrudInitialState = {
 };
 
 export const employeeCrudReducer = (state, action) => {
-    
+
     switch (action.type) {
         case TYPES.CREATE_EMPLOYEE: {
             return {
                 ...state,
             };
-        } case TYPES.EDIT_EMPLOYEE: {
+        } case TYPES.UPDATE_EMPLOYEE: {
             return {
                 ...state,
             };
         } case TYPES.READ_ALL_EMPLOYEES: {
             return {
                 ...state,
-                db: action.payload.employees.map((data) => data),
-                aux: action.payload.shiftOptions.map((data) => data),
+                db: action.payload.employees?.map((data) => data),
+                aux: action.payload.shiftOptions?.map((data) => data),
             };
         }
         case TYPES.NO_DATA:

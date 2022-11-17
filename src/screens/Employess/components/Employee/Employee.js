@@ -71,12 +71,12 @@ export const Employee = ({ employee, handleDialog, handleEmployeeEdit }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <Tooltip title="Editar" placement="left-start">
-                    <IconButton aria-label="edit employee" onClick={handleEmployee} disabled>
+                    <IconButton aria-label="edit employee" onClick={handleEmployee}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Agregar novedad" placement="right-start">
-                    <IconButton aria-label="add news" disabled>
+                    <IconButton aria-label="add news">
                         <PostAddIcon />
                     </IconButton>
                 </Tooltip>

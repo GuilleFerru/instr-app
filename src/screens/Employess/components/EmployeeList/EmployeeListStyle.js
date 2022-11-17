@@ -1,4 +1,10 @@
 
+const shadowEffect = {
+    webkitBoxShadow: '2px 4px 10px 1px rgba(0, 0, 0, 0.47)',
+    boxShadow: ' 2px 4px 10px 1px rgba(201, 201, 201, 0.47)',
+    borderRadius: '10px',
+}
+
 export const employeeListStyle = theme => {
     return ({
         section: {
@@ -30,6 +36,31 @@ export const employeeListStyle = theme => {
             [theme.breakpoints.down('xs')]: {
                 height: '40px',
             },
+        },
+        container: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            padding: '10px',
+            width: '100%',
+            gap: '10px',
+            height: 'auto',
+            fontFamily: 'Nunito, sans-serif',
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: '100%',
+            },
+            ...shadowEffect,
+        },
+        mainTitles: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            width: '100%',
+            height: 'auto',
+            margin: '0',
+            paddingLeft:  '10px',
         },
     })
 }
