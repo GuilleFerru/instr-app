@@ -7,7 +7,7 @@ import { TableCard } from '../Card/TableCard';
 import { employeeContainerStyle } from './EmployeeContainerStyle';
 import { EmployeeList } from './components/EmployeeList/EmployeeList';
 import { EmployeeCrudContainer } from './components/EmployeeCRUD/EmployeeCrudContainer';
-
+import { parseHtmlInputTypeToDate } from '../../Services/DateUtils.js';
 import { employeeCrudInitialState, employeeCrudReducer } from '../../reducers/employeeCrudReducer';
 import { useHistory } from 'react-router-dom';
 
@@ -49,11 +49,12 @@ export const EmployeeContainer = () => {
     const handleUpdate = (employee) => {
         const updateEmployee = {}
         employee.forEach((element, _index) => {
-            updateEmployee[element.id] = element.value;
+            updateEmployee[element.id] = element.id === 'hireDate' ? parseHtmlInputTypeToDate(element.value) : element.value;
         });
+
         axiosPut(`${baseUrl}/emp/update`, updateEmployee).then((response) => {
             dispatch({ type: TYPES.READ_ALL_EMPLOYEES, payload: response.data }); /// ver si lo dejo asi
-        }).catch((error) => {
+        }).catch((_error) => {
         })
     }
 

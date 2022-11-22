@@ -6,7 +6,7 @@ import { Input } from '../../../../../components/commonComponents/Controls/Input
 import { SelectTwo as Select } from '../../../../../components/commonComponents/Controls/SelectTwo';
 import { employeeUpdateFormStyle } from './EmployeeUpdateFormStyle';
 import { parseStringToHtmlInputType } from '../../../../../Services/DateUtils.js';
-import { AlertSnackbar } from '../../../../../components/Alerts/AlertSnackbar';
+import { AlertSnackbar } from '../../../../../components/Alerts/AlertNormal';
 
 const radioOptions = [
     {
@@ -93,14 +93,6 @@ export const EmployeeUpdateForm = ({ employee, auxData, isDialogOpen, handleDial
                 type: "number",
                 disabled: false,
             },
-            // {
-            //     id: "schedule",
-            //     name: "schedule",
-            //     label: "Horario",
-            //     value: employee?.schedule,
-            //     type: "text",
-            //     hidden: true,
-            // },
             {
                 id: "hireDate",
                 name: "hireDate",
@@ -157,7 +149,6 @@ export const EmployeeUpdateForm = ({ employee, auxData, isDialogOpen, handleDial
         >
             <Container component="main" maxWidth="lg" >
                 <CssBaseline />
-
                 <div >
                     <form noValidate autoComplete="off" className={classes.form} >
                         {
@@ -201,7 +192,6 @@ export const EmployeeUpdateForm = ({ employee, auxData, isDialogOpen, handleDial
                                     />
                                 }
                             })}
-
                         <MyDialogActions>
                             <Button onClick={() => {
                                 handleDialog(false)

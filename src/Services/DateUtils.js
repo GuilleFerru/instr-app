@@ -19,6 +19,14 @@ export const parseStringToHtmlInputType = (stringDate) => {
     return `${year}-${month}-${day}`;
 }
 
+export const parseHtmlInputTypeToDate = (stringDate) => {
+    const dateSplit = stringDate.split(/\D+/);
+    const year = dateSplit[0];
+    const month = dateSplit[1].length === 1 ? `0${dateSplit[1]}` : dateSplit[1];
+    const day = dateSplit[2].length === 1 ? `0${dateSplit[2]}` : dateSplit[2];
+    return `${year}/${month}/${day}`;
+}
+
 
 
 export const dateInLocalDate = (date) => {
