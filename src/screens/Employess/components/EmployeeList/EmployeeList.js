@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { Employee } from '../Employee/Employee';
 import { employeeListStyle } from './EmployeeListStyle';
 import Breadcrumbs from '../../../../components/Breadcrumbs/Breadcrumbs';
 import { OverDueRoutine } from '../../../../components/OverDueRoutines/OverDueRoutine';
+import { AuthContext } from '../../../../context/AuthContext';
 
 const useStyles = makeStyles((theme) => employeeListStyle(theme));
 
 export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog }) => {
 
     const classes = useStyles();
+    const { user } = useContext(AuthContext);
 
     return <>
         <div className={classes.breadcrumb}>
@@ -24,7 +26,7 @@ export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog }) =>
             </div>
             <div className={classes.section}>
                 {employees.map((employee, i) => {
-                    return <Employee key={i} employee={employee} handleDialog={handleDialog} handleEmployeeEdit={handleEmployeeEdit} />
+                    return <Employee key={i} employee={employee} handleDialog={handleDialog} handleEmployeeEdit={handleEmployeeEdit} user={user} />
                 })}
             </div>
         </div>

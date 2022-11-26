@@ -1,11 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { employeetStyle } from './EmployeeStyle';
-import { Card, CardHeader, CardContent, CardActions } from '@material-ui/core';
+import { parseStringToDate } from '../../../../Services/DateUtils';
+import { Card, CardHeader, CardContent, CardActions, Typography } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -13,7 +13,20 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme) => employeetStyle(theme));
 
-export const Employee = ({ employee, handleDialog, handleEmployeeEdit }) => {
+const getTimeOfService = (date) => {
+    const today = new Date();
+    const dateOfService = parseStringToDate(date);
+    const timeOfService = today - dateOfService;
+    const yearsOfService = Math.floor(timeOfService / (1000 * 60 * 60 * 24 * 365));
+    const monthsOfService = Math.floor((timeOfService % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+    return `
+        ${yearsOfService} ${yearsOfService.toString().length > 1 ? 'años' : 'año'}  y  
+        ${monthsOfService} ${monthsOfService === 1 ? 'mes' : 'meses'}
+        `;
+}
+
+
+export const Employee = ({ employee, handleDialog, handleEmployeeEdit, user }) => {
 
     const classes = useStyles();
 
@@ -21,7 +34,6 @@ export const Employee = ({ employee, handleDialog, handleEmployeeEdit }) => {
         handleDialog(true);
         handleEmployeeEdit(employee);
     }
-
 
     const data = [
         {
@@ -31,7 +43,7 @@ export const Employee = ({ employee, handleDialog, handleEmployeeEdit }) => {
             "Fecha de Ingreso": employee.hireDate
         },
         {
-            "Antiguedad": `${Math.floor(((new Date().getTime() - new Date(employee.hireDate).getTime()) / 1000) / 60 / 60 / 24 / 365)} años`
+            "Antiguedad": getTimeOfService(employee.hireDate)
         },
         {
             "Condición": employee.condicion
@@ -71,18 +83,21 @@ export const Employee = ({ employee, handleDialog, handleEmployeeEdit }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <Tooltip title="Editar" placement="left-start">
-                    <IconButton aria-label="edit employee" onClick={handleEmployee}>
-                        <EditIcon />
-                    </IconButton>
+                    <span>
+                        <IconButton aria-label="edit employee" onClick={handleEmployee} disabled={user?.userType === 'user'}>
+                            <EditIcon />
+                        </IconButton>
+                    </span>
                 </Tooltip>
-                <Tooltip title="Agregar novedad" placement="right-start">
-                    <IconButton aria-label="add news">
-                        <PostAddIcon />
-                    </IconButton>
+                <Tooltip title="Agregar novedad" placement="right-start" >
+                    <span>
+                        <IconButton aria-label="add news" disabled={user?.userType === 'user'}>
+                            <PostAddIcon />
+                        </IconButton>
+                    </span>
                 </Tooltip>
             </CardActions>
         </Card>
-
     </>
 }
 
