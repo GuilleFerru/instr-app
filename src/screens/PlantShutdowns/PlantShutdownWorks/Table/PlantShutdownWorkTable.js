@@ -9,10 +9,6 @@ import { plantShutdownWorkTableStyle } from './PlantShutdownWorkTableStyle';
 import { UpdateShutdowWorksForm } from '../Forms/UpdateShutdowWorksForm';
 import { defaultPlantShutdownWorksTable, plantShutDownWorksInitialRowData } from '../../../../Services/defaultTables';
 
-
-
-
-
 const useStyles = makeStyles((theme) => plantShutdownWorkTableStyle(theme));
 
 export const PlantShutdownWorkTable = props => {
@@ -26,9 +22,7 @@ export const PlantShutdownWorkTable = props => {
     const [rowData, setRowData] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [dayWorksColumns, setDayWorksColumns] = useState([]);
-    
     //const { getNewDataBulkEdit } = muiTableCommonActions();
-
 
     useEffect(() => {
         new Promise(resolve => {
@@ -49,7 +43,6 @@ export const PlantShutdownWorkTable = props => {
         socket ? socket.emit('create_plant_shutdown_work', data) : history.push('/error');
         resolve();
     }
-
 
     // const bulkUpdate = (changes, resolve) => {
     //     const copyData = [...data];
@@ -90,11 +83,8 @@ export const PlantShutdownWorkTable = props => {
         }
     }
 
-
-
     return <div className={classes.table}>
         <ThemeProvider theme={theme}>
-
             <MuiTable
                 data={data}
                 setData={setData}
@@ -106,6 +96,7 @@ export const PlantShutdownWorkTable = props => {
                 disableInitialFormData={false}
                 disableAddButton={props.plantShutdownState}
                 disableDeleteButton={false}
+                disableDefaultSearch={false}
                 rowAdd={rowAdd}
                 deleteRow={deleteRow}
                 enablePaging={true}
