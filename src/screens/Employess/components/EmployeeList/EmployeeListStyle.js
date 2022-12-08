@@ -7,21 +7,6 @@ const shadowEffect = {
 
 export const employeeListStyle = theme => {
     return ({
-        section: {
-            display: 'flex',
-            flexFlow: 'row wrap',
-            justifyContent: 'space-around',
-            //justifyContent: 'space-around',
-            '&>div': {
-                marginTop: '1rem'
-            },
-            // '&>div:nth-child(odd)': {
-            //     backgroundColor: '#FAFAFA'
-            // },
-            // '&>div:nth-child(even)': {
-            //     backgroundColor: 'white'
-            // },
-        },
         breadcrumb: {
             display: 'flex',
             flexDirection: 'row',
@@ -40,27 +25,52 @@ export const employeeListStyle = theme => {
         container: {
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            padding: '10px',
-            width: '100%',
-            gap: '10px',
-            height: 'auto',
+            padding: '0.5rem',
+            gap: '1rem',
             fontFamily: 'Nunito, sans-serif',
             [theme.breakpoints.down('xs')]: {
                 maxWidth: '100%',
             },
             ...shadowEffect,
         },
+        body: {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            padding: '0.2rem',
+            [theme.breakpoints.down('xs')]: {
+                padding: '0.5rem',
+            },
+        },
         mainTitles: {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
-            width: '100%',
             height: 'auto',
             margin: '0',
-            paddingLeft:  '10px',
+            paddingLeft: '1rem',
+        },
+        section: {
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-start',
+            gap: '3rem',
+            width: '100%',
+        },
+        pagination: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            height: 'auto',
+            marginBottom: '0.5rem',
+            //margin: '0',
+            //padding: '0',
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: '100%',
+            },
         },
     })
 }
