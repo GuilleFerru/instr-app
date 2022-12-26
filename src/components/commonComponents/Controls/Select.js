@@ -4,7 +4,7 @@ import { makeStyles, FormControl, InputLabel, Select as MuiSelect, MenuItem, For
 
 const useStyles = makeStyles(theme => ({
     textField: {
-        marginRight: theme.spacing(2),
+        //marginRight: theme.spacing(2),
         minWidth: (props) => props.minWidth
     },
     input: {

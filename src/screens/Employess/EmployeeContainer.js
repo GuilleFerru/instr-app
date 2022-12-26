@@ -7,6 +7,7 @@ import { TableCard } from '../Card/TableCard';
 import { employeeContainerStyle } from './EmployeeContainerStyle';
 import { EmployeeList } from './components/EmployeeList/EmployeeList';
 import { EmployeeCrudContainer } from './components/EmployeeCRUD/EmployeeCrudContainer';
+import { EmployeeAditionalContainer } from './components/EmployeeAditional/EmployeeAditionalContainer';
 import { parseHtmlInputTypeToDate } from '../../Services/DateUtils.js';
 import { employeeCrudInitialState, employeeCrudReducer } from '../../reducers/employeeCrudReducer';
 import { useHistory } from 'react-router-dom';
@@ -21,8 +22,19 @@ export const EmployeeContainer = () => {
     const [state, dispatch] = useReducer(employeeCrudReducer, employeeCrudInitialState);
     const { db, aux } = state;
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isAditionalDialogOpen, setIsAditionalDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [loadingAditional, setLoadingAditional] = useState(false);
     const [dataToEdit, setDataToEdit] = useState(null);
+    const [aditionals, setAditionals] = useState(null);
+    const [aditionalData, setAditionalData] = useState(
+        {
+            legajo: '',
+            startDate: new Date(),
+            endDate: new Date(),
+            aditional: ''
+        }
+    )
 
 
     useEffect(() => {
@@ -46,6 +58,8 @@ export const EmployeeContainer = () => {
     }, [history]);
 
 
+
+
     const handleUpdate = (employee) => {
         const updateEmployee = {}
         employee.forEach((element, _index) => {
@@ -61,14 +75,58 @@ export const EmployeeContainer = () => {
     const handleDialog = (value) => {
         setIsDialogOpen(value);
     }
+
     const handleEmployeeEdit = (value) => {
         setDataToEdit(value);
     }
 
+    const handleAditionalDialog = (value) => {
+        setIsAditionalDialogOpen(value);
+        setLoadingAditional(true);
+        const abortController = new AbortController();
+        let cancel = false;
+        axiosGet(`${baseUrl}/aditional/get`, { signal: abortController.signal }).then(res => {
+            if (!cancel) {
+                setAditionals(res);
+                setLoadingAditional(false);
+            } else {
+                return;
+            }
+        }).catch(_err => {
+            history.push('/error');
+        });;
+        return () => {
+            cancel = true;
+            abortController.abort();
+        }
+    }
+
     return <TableCard>
-        {loading && <CircularProgress size='5rem' className={classes.loading} />}
-        {db ? <EmployeeList employees={db} auxData={aux} setDataToEdit={setDataToEdit} dataToEdit={dataToEdit} isDialogOpen={isDialogOpen} handleEmployeeEdit={handleEmployeeEdit} handleDialog={handleDialog} /> : null}
-        <EmployeeCrudContainer isDialogOpen={isDialogOpen} auxData={aux} handleUpdate={handleUpdate} handleDialog={handleDialog} dataToEdit={dataToEdit} title={"Actualizar Datos"} />
+        {(loading || loadingAditional) && <CircularProgress size='5rem' className={classes.loading} />}
+        {db ? <EmployeeList
+            employees={db}
+            handleEmployeeEdit={handleEmployeeEdit}
+            handleDialog={handleDialog}
+            handleAditionalDialog={handleAditionalDialog}
+            aditionalData={aditionalData}
+            setAditionalData={setAditionalData}
+        /> : null}
+        <EmployeeCrudContainer
+            isDialogOpen={isDialogOpen}
+            auxData={aux}
+            handleUpdate={handleUpdate}
+            handleDialog={handleDialog}
+            dataToEdit={dataToEdit}
+            title={"Actualizar Datos"}
+        />
+        {aditionals ? <EmployeeAditionalContainer
+            aditionals={aditionals}
+            aditionalData={aditionalData}
+            setAditionalData={setAditionalData}
+            isAditionalDialogOpen={isAditionalDialogOpen}
+            setIsAditionalDialogOpen={setIsAditionalDialogOpen}
+            setLoadingAditional={setLoadingAditional}
+        /> : null}
     </TableCard>
 }
 

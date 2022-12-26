@@ -26,13 +26,21 @@ const getTimeOfService = (date) => {
 }
 
 
-export const Employee = ({ employee, handleDialog, handleEmployeeEdit, user }) => {
+export const Employee = ({ employee, handleDialog, handleAditionalDialog, aditionalData, setAditionalData, handleEmployeeEdit, user }) => {
 
     const classes = useStyles();
 
     const handleEmployee = () => {
         handleDialog(true);
         handleEmployeeEdit(employee);
+    }
+
+    const handleAditional = () => {
+        handleAditionalDialog(true);
+        setAditionalData({
+            ...aditionalData,
+            legajo: employee.legajo,
+        })
     }
 
     const data = [
@@ -91,7 +99,7 @@ export const Employee = ({ employee, handleDialog, handleEmployeeEdit, user }) =
                 </Tooltip>
                 <Tooltip title="Agregar novedad" placement="right-start" >
                     <span>
-                        <IconButton aria-label="add news" disabled={user?.userType === 'user'}>
+                        <IconButton aria-label="add news" onClick={handleAditional} disabled={user?.userType === 'user'}>
                             <PostAddIcon />
                         </IconButton>
                     </span>

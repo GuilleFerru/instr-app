@@ -11,7 +11,7 @@ import usePagination from '../../../../components/Pagination/usePagination';
 
 const useStyles = makeStyles((theme) => employeeListStyle(theme));
 
-export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog }) => {
+export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog, handleAditionalDialog, aditionalData, setAditionalData }) => {
 
     const classes = useStyles();
     const { user } = useContext(AuthContext);
@@ -31,7 +31,16 @@ export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog }) =>
                 </div>
                 <div className={classes.section}>
                     {_DATA.currentData().map((employee, i) => {
-                        return <Employee key={i} employee={employee} handleDialog={handleDialog} handleEmployeeEdit={handleEmployeeEdit} user={user} />
+                        return <Employee
+                            key={i}
+                            employee={employee}
+                            handleDialog={handleDialog}
+                            handleAditionalDialog={handleAditionalDialog}
+                            aditionalData={aditionalData}
+                            setAditionalData={setAditionalData}
+                            handleEmployeeEdit={handleEmployeeEdit}
+                            user={user}
+                        />
                     })}
                 </div>
             </div>

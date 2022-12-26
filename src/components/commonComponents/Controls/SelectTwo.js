@@ -4,7 +4,7 @@ import { makeStyles, FormControl, InputLabel, Select as MuiSelect, MenuItem, For
 
 const useStyles = makeStyles(theme => ({
     textField: {
-        marginRight: theme.spacing(2),
+        //marginRight: theme.spacing(2),
         minWidth: (props) => props.minWidth
     },
     input: {
@@ -16,9 +16,9 @@ const useStyles = makeStyles(theme => ({
 export const SelectTwo = (props) => {
 
     const classes = useStyles(props);
-    const { id, disabled, label, options, variant, name, margin, value = '', handleChange, autoWidth, helperText } = props;
+    const { id, disabled, label, options, variant, name, margin, value = '', handleChange, autoWidth, helperText, error } = props;
 
-    return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin} style={{minWidth: 234.75}}>
+    return <FormControl className={classes.textField} disabled={disabled} variant={variant} margin={margin} error={error} style={{ minWidth: 234.75 }}>
         <InputLabel id={id}>{label}</InputLabel>
         <MuiSelect
             id={id}
