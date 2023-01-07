@@ -8,7 +8,21 @@ import DialogAlert from '../../../../components/commonComponents/Dialog/DialogAl
 
 const useStyles = makeStyles((theme) => alertsStyle(theme));
 
-export const Alerts = ({ title, dialogText, error, success, deleteSuccess, openDialog, setOpenDialog, handleAgree, agreeButtonText, enableExtraButton = false, handleExtraButton, extraButtonText }) => {
+export const Alerts = (
+    {
+        title,
+        dialogText,
+        error,
+        success,
+        deleteSuccess,
+        openDialog,
+        setOpenDialog,
+        handleAgree,
+        agreeButtonText,
+        enableExtraButton = false,
+        handleExtraButton,
+        extraButtonText
+    }) => {
 
     const classes = useStyles();
 
@@ -33,7 +47,6 @@ export const Alerts = ({ title, dialogText, error, success, deleteSuccess, openD
                 enableExtraButton={enableExtraButton}
                 handleExtraButton={handleExtraButton}
                 extraButtonText={extraButtonText}
-
             />
         </div>
     </>

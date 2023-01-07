@@ -29,15 +29,15 @@ const DialogAlert = ({ open, setOpenDialog, handleAgree, title, dialogText, agre
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleAgree} color="primary" autoFocus>
+                    <Button id='agreeButton' onClick={handleAgree} color="primary" autoFocus>
                         {agreeButtonText}
                     </Button>
                     {enableExtraButton &&
-                        <Button onClick={handleExtraButton} color="primary">
+                        <Button id='extraButton'  onClick={handleExtraButton} color="primary">
                             {extraButtonText}
                         </Button>
                     }
-                    <Button onClick={handleClose} color="primary">
+                    <Button id='cancelButton' onClick={handleClose} color="primary">
                         Cancelar
                     </Button>
                 </DialogActions>

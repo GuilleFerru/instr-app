@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext, useReducer } from 'react';
+import { axiosPost } from '../../../../Services/Axios.js';
 import { TYPES } from '../../../../actions/holidayEmpActions';
 import { AuthContext } from '../../../../context/AuthContext';
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,8 +14,10 @@ import { AlertClose } from '../components/AlertClose';
 import { Alerts } from '../components/Alerts';
 import { HolidayDetails } from './List/HolidayDetails';
 import { holidayEmpReducer, holidayEmpInitialState } from '../../../../reducers/holidayEmpReducer';
+import { HolidayShiftSub } from './List/HolidayShiftSub';
 
 const useStyles = makeStyles((theme) => holidaySelectorStyle(theme));
+const baseUrl = process.env.REACT_APP_API_URL;
 
 const staticDateArrayDefault = [
     {
@@ -47,8 +50,6 @@ const dataToSave = (employee, employeeName, employeeCondition, period, staticDat
     setOpenDialog(false);
     setOnLoading(true);
     socket.emit('create_employee_holiday', empNewDataHoliday);
-
-
 }
 
 
@@ -58,7 +59,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const classes = useStyles();
     const { user, socket } = useContext(AuthContext);
     const [state, dispatch] = useReducer(holidayEmpReducer, holidayEmpInitialState);
-    const { employee, employeeName, employeeCondition, leftDays } = state;
+    const { employee, employeeName, employeeCondition, leftDays, shiftType } = state;
     const [period, setPeriod] = useState('');
     const [periodName, setPeriodName] = useState('');
     const [succesAdd, setSuccesAdd] = useState(false);
@@ -70,6 +71,9 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     const [holidayDetailDialog, setHolidayDetailDialog] = useState(false);
     const [successDelete, setSuccessDelete] = useState(false);
     const [onLoading, setOnLoading] = useState(false);
+    const [shiftSubstitute, setShiftSubstitute] = useState(false);
+    const [isHolidayShiftSubDialogOpen, setIsHolidayShiftSubDialogOpen] = useState(false);
+    const [substitute, setSubstitute] = useState('');
 
 
 
@@ -129,8 +133,49 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
     }
 
     const handleAddToSchedule = () => {
-        dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading)
+        if (shiftType === 'rotativeShift') {
+            setShiftSubstitute(true);
+            setOpenDialog(false);
+        } else {
+            dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading)
+        }
     }
+
+    const handleAddSubstitute = (event) => {
+        if (event.currentTarget.id === 'agreeButton') {
+            setIsHolidayShiftSubDialogOpen(true);
+        } else {
+            dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading)
+        }
+        setShiftSubstitute(false);
+    }
+
+    const handleSubmitSubstitute = () => {
+        setIsHolidayShiftSubDialogOpen(false);
+        setOnLoading(true);
+        const llamadaData = {
+            legajo: substitute,
+            startDate: staticDateArray[0].startDate,
+            endDate: staticDateArray[0].startDate,
+            aditional: 14,
+            aditionalInfo: `1 cob turno ${employeeName}`
+        }
+        const shiftData = {
+            holidayEmp: employee,
+            legajo: substitute,
+            startDate: staticDateArray[0].startDate,
+            endDate: staticDateArray[0].endDate,
+            aditional: 25,
+            aditionalInfo: `Cob turno ${employeeName}`
+        }
+        axiosPost(`${baseUrl}/schedule/create/aditionals`, llamadaData).then((_response) => {
+            axiosPost(`${baseUrl}/schedule/create/aditionals`, shiftData).then((_response) => {
+                dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading)
+            }).catch((_error) => { })
+        }).catch((_error) => { })
+    }
+
+
 
     return <>
         <div className={classes.alert}>
@@ -162,6 +207,19 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                 handleExtraButton={handleNotAddToSchedule}
                 agreeButtonText={'Agregar al Parte Diario'}
                 extraButtonText={'No agregar al Parte Diario'}
+            />
+        </div>
+        <div className={classes.alert}>
+            <Alerts
+                title={'¿Desea agregar un reemplazo?'}
+                dialogText={'Si da click en Agregar, debera designar un reemplazante.'}
+                enableExtraButton={true}
+                openDialog={shiftSubstitute}
+                setOpenDialog={setShiftSubstitute}
+                handleAgree={handleAddSubstitute}
+                agreeButtonText={'Agregar reemplazo'}
+                extraButtonText={'No agregar y guardar'}
+                handleExtraButton={handleAddSubstitute}
             />
         </div>
         <Typography variant="h6" gutterBottom>Selector de Vacaciones</Typography>
@@ -221,7 +279,23 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                 <StaticDateRangePicker staticDateArray={staticDateArray} setStaticDateArray={setStaticDateArray} />
             </div>
         </form>
-        <HolidayDetails holidayData={employeeDetails} isDialogOpen={holidayDetailDialog} setIsDialogOpen={setHolidayDetailDialog} successDelete={successDelete} setSuccessDelete={setSuccessDelete} />
+        <HolidayDetails
+            holidayData={employeeDetails}
+            isDialogOpen={holidayDetailDialog}
+            setIsDialogOpen={setHolidayDetailDialog}
+            successDelete={successDelete}
+            setSuccessDelete={setSuccessDelete}
+        />
+        <HolidayShiftSub
+            isHolidayShiftSubDialogOpen={isHolidayShiftSubDialogOpen}
+            setIsHolidayShiftSubDialogOpen={setIsHolidayShiftSubDialogOpen}
+            substitutes={employeeOptions}
+            substitute={substitute}
+            setSubstitute={setSubstitute}
+            setOnLoading={setOnLoading}
+            staticDateArray={staticDateArray}
+            handleSubmitSubstitute={handleSubmitSubstitute}
+        />
         <Backdrop open={onLoading} />
     </>
 }

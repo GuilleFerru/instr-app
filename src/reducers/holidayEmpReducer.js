@@ -5,6 +5,7 @@ export const holidayEmpInitialState = {
     employeeName: '',
     employeeCondition: '',
     leftDays: undefined,
+    shiftType: '',
 };
 
 
@@ -19,6 +20,7 @@ export const holidayEmpReducer = (state, action) => {
                     employeeName: employee.name,
                     employeeCondition: employee.employeeCondition,
                     leftDays: employee.holidayDays,
+                    shiftType: employee.shiftType,
 
                 };
             } else {
@@ -28,6 +30,7 @@ export const holidayEmpReducer = (state, action) => {
                     employeeName: action.payload[0].name,
                     employeeCondition: action.payload[0].employeeCondition,
                     leftDays: action.payload[0].holidayDays,
+                    shiftType: action.payload[0].shiftType,
                 };
             }
         }
@@ -38,6 +41,7 @@ export const holidayEmpReducer = (state, action) => {
                 employeeName: action.payload.name,
                 employeeCondition: action.payload.employeeCondition,
                 leftDays: action.payload.holidayDays,
+                shiftType: action.payload.shiftType,
             };
         }
         default:
