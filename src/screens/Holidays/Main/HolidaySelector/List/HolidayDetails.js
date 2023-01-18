@@ -47,7 +47,7 @@ export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, set
     }
 
     const submitDelete = () => {
-        socket.emit('delete_holiday_fraction', { ...fractionToDelete, employeeCondition: holidayData.employeeCondition });
+        socket.emit('delete_holiday_fraction', { ...fractionToDelete, employeeCondition: holidayData.employeeCondition, shiftType: holidayData.shiftType });
         setHandleDeleteDialog(false);
         setIsDialogOpen(false);
         setSuccessDelete(true);
@@ -90,6 +90,9 @@ export const HolidayDetails = ({ holidayData, isDialogOpen, setIsDialogOpen, set
                         <ListItemText primary={`Hasta: ${formatDate(item.endDate)}`} className={classes.listItemText} />
                         <ListItemText primary={`Días: ${item.qtyDays}`} className={classes.listItemText} />
                         <ListItemText primary={`Puntos: ${item.points}`} className={classes.listItemText} />
+                        {
+                            item.substitute && <ListItemText primary={`Relevante: ${item.substitute}`} className={classes.listItemText} />
+                        }
                         <ListItemSecondaryAction>
                             <Tooltip title="Ver detalle de puntos">
                                 <IconButton edge="start" aria-label="fractionDetail" onClick={() => handleFractionDetail(item)}>

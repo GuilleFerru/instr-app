@@ -33,7 +33,21 @@ const calculateTakenDays = (staticDateArray) => {
     return Math.round((staticDateArray[0].endDate - staticDateArray[0].startDate) / oneDay) + 1;
 }
 
-const dataToSave = (employee, employeeName, employeeCondition, period, staticDateArray, createSchedule, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading) => {
+const dataToSave = (
+    employee,
+    employeeName,
+    employeeCondition,
+    period,
+    staticDateArray,
+    createSchedule,
+    setTakenDays,
+    setDisplayedName,
+    setStaticDateArray,
+    setOpenDialog,
+    socket,
+    setOnLoading,
+    substitute = null
+) => {
 
     const empNewDataHoliday = {
         employee: employee,
@@ -42,7 +56,8 @@ const dataToSave = (employee, employeeName, employeeCondition, period, staticDat
         periodId: period,
         startDate: staticDateArray[0].startDate,
         endDate: staticDateArray[0].endDate,
-        createSchedule: createSchedule
+        createSchedule: createSchedule,
+        substitute: substitute,
     }
     setTakenDays(calculateTakenDays(staticDateArray));
     setDisplayedName(employeeName)
@@ -118,7 +133,8 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
             employeeCondition: employeeCondition,
             periodId: period,
             periodName: periodName,
-            employeeDetail: employeeDetail
+            employeeDetail: employeeDetail,
+            shiftType: shiftType
         });
         setHolidayDetailDialog(true);
     }
@@ -170,7 +186,7 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
         }
         axiosPost(`${baseUrl}/schedule/create/aditionals`, llamadaData).then((_response) => {
             axiosPost(`${baseUrl}/schedule/create/aditionals`, shiftData).then((_response) => {
-                dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading)
+                dataToSave(employee, employeeName, employeeCondition, period, staticDateArray, true, setTakenDays, setDisplayedName, setStaticDateArray, setOpenDialog, socket, setOnLoading, substitute)
             }).catch((_error) => { })
         }).catch((_error) => { })
     }
