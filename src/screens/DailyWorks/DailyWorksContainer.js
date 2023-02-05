@@ -8,6 +8,7 @@ import { DailyWorksTable } from './Tables/DailyWorksTable';
 import { dailyWorksDefault } from '../../Services/defaultTables.js';
 import { dailyWorksContainerStyle } from './DailyWorksContainerStyle';
 import { useHistory } from 'react-router-dom';
+import { TableCustomComponents } from './Tables/CustomComponents/TableCustomComponents';
 
 const useStyles = makeStyles((theme) => dailyWorksContainerStyle(theme));
 
@@ -21,11 +22,36 @@ export const DailyWorksContainer = () => {
     const [data, setData] = useState([]);
     const [roomId, setRoomId] = useState(0);
     const [dataColumns, setDataColumns] = useState([]);
+    const {
+        createOptions,
+        createAutocomplete,
+        createTextField
+    } = TableCustomComponents();
+
+
 
     const getData = (data) => {
         setData([]);
         const { dayWorks, columns } = data;
 
+        const plantOptions = createOptions(columns[2].lookup);
+        const attelierOptions = createOptions(columns[3].lookup);
+
+        data.columns.forEach((column) => {
+            if (column.field === 'plant') {
+                column.editComponent = (props) => (
+                    createAutocomplete(props, plantOptions, classes, column.field, true)
+                )
+            }
+            if (column.field === 'attelier') {
+                column.editComponent = (props) => (
+                    createAutocomplete(props, attelierOptions, classes, column.field, false)
+                )
+            }
+            if (column.field === 'description') {
+                column.editComponent = (props) => createTextField(props, classes, column.field, 'Descripción de la tarea')
+            }
+        })
         if (data) {
             dayWorks === undefined ? setData([]) : setData(dayWorks);
             columns === undefined ? setDataColumns([dailyWorksDefault]) : setDataColumns(columns);
@@ -56,11 +82,11 @@ export const DailyWorksContainer = () => {
     return <TableCard>
         {connected ? (
             <DailyWorksTable allData={data} dataColumns={dataColumns} getData={getData} date={date} getNewDate={getNewDate} roomId={roomId} socket={socket} />
-            ) : (
-                <div className={classes.progress}>
-                    <CircularProgress />
-                </div>
-            )
+        ) : (
+            <div className={classes.progress}>
+                <CircularProgress />
+            </div>
+        )
         }
     </TableCard>
 };

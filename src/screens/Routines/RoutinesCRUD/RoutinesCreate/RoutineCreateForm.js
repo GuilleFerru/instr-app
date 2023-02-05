@@ -74,6 +74,7 @@ export const RoutineCreateForm = ({ data, isDialogOpen, setIsDialogOpen }) => {
 
 
     useEffect(() => {
+        
         if (frequency >= 1 && frequency <= 4) {
             enableFrequencyInputs(true)
             setStartDay(new Date(new Date().getFullYear(), new Date().getMonth(), 1))

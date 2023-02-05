@@ -7,9 +7,6 @@ export const dailyWorksContainerStyle = theme => {
             // // overflow: "auto",
             // flexDirection: "column",
         },
-        // fixedHeight: {
-        //     height: "240",
-        // },
         appBarSpacer: theme.mixins.toolbar,
         container: {
             paddingTop: theme.spacing(1),
@@ -22,6 +19,34 @@ export const dailyWorksContainerStyle = theme => {
             justifyContent: 'center',
             width: '100%',
             marginTop: theme.spacing(2),
-        }
+        },
+        resize: {
+            fontSize: '13px',
+        },
+        customAutoComplete: {
+            '& div': {
+                fontSize: '13px',
+            },
+        },
+        autoCompleteInput: {
+            width: '150px',
+            fontSize: '13px',
+        },
+        description: {
+            width: '100%',
+            marginBottom: theme.spacing(2),
+
+        },
+        label: {
+            fontSize: '13px',
+            fontWeight: 'normal',
+        },
+        shrink: {
+            fontSize: '15px',
+            fontWeight: 'normal',
+            top: '-1px !important',
+        },
+
+
     })
 }
