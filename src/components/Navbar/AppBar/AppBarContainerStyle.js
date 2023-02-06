@@ -8,9 +8,12 @@ export const appBarContainerStyle = theme => {
             display: 'flex',
             background: '#069999',
             paddingRight: "24", // keep right padding when drawer closed
+            width: '100%',
             // witdh: 'auto',
         },
         appBar: {
+            //border: '1px solid red',
+            //width: 'fit-content',
             zIndex: theme.zIndex.drawer + 1,
             transition: theme.transitions.create(["width", "margin"], {
                 easing: theme.transitions.easing.sharp,

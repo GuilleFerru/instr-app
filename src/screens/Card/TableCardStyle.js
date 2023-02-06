@@ -3,15 +3,7 @@ export const tableCardStyle = theme => {
         paper: {
             margin: theme.spacing(1),
             padding: theme.spacing(1),
-            
-            width : 'auto'
-            
-            
-            // flexDirection: "column",
-
-            // display: "flex",
-            // // overflow: "auto",
-            // flexDirection: "column",
+            //border: '1px solid red',
         },
         // fixedHeight: {
         //     height: "240",

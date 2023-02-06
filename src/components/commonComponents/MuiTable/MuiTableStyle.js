@@ -1,9 +1,11 @@
 export const muiTableStyle = theme => {
     return ({
         table: {
+            //border: '1px solid black',
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
+            overflow: 'hidden',
         },
         toolbarHeader: {
             display: 'flex',
@@ -26,11 +28,7 @@ export const muiTableStyle = theme => {
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'nowrap',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            // margin: '0 8px 5px 24px'
-        },
-        reloadDataButton: {
+            alignItems: 'flex-end',
             margin: '0 0 0.1rem 0.1rem',
         },
         holidayPeriodSelector: {
@@ -50,9 +48,15 @@ export const muiTableStyle = theme => {
             padding: '0 1.5rem  0.5rem 1.5rem',
         },
 
-        // datePicker: {
-        //     margin: '0 0 1rem 1rem',
-        // },
+        datePicker: {
+            //border: '1px solid #e0e0e0',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-end',
+            //borderRadius: '4px',
+            //padding: '0 0.5rem',
+            
+        },
         // complete: {
         //     backgroundColor: '#6aec6a',
         //     width: 'fitContent',

@@ -151,6 +151,7 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
                 enableDailyWorkSearchButton={true}
                 setIsDialogOpen={setIsDialogOpen}
                 getDailyWorkDataForSearch={getDailyWorkDataForSearch}
+                disableGoToTodayButton={false}
             />
             <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} dailyWorkDataForSearch={dailyWorkDataForSearch} getDataFromAdvanceSearch={getDataFromAdvanceSearch} />
         </ThemeProvider>

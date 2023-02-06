@@ -182,6 +182,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                     pdfTitle={`Personal ${formatDate(date)}`}
                     enableGenerateDailyShiftButton={true}
                     setIsDialogOpen={setIsDialogOpen}
+                    disableGoToTodayButton={false}
                 />
                 <GenerateDailyShiftForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} generateDailyShift={generateDailyShift} loadingExcel={loadingExcel} />
             </ThemeProvider>

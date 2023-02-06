@@ -7,11 +7,13 @@ import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import { MTableToolbar } from '@material-table/core';
 import { tableIcons } from './tableIcons';
 import { Link } from "react-router-dom";
+import Tooltip from '@material-ui/core/Tooltip';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import WorkOffIcon from '@material-ui/icons/WorkOff';
 import BackupIcon from '@material-ui/icons/Backup';
+import TodayIcon from '@material-ui/icons/Today';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
 import { ExportPdfButton } from './exportPdf';
@@ -99,6 +101,7 @@ export const MuiTable = (
         handleDeleteClaimedItems,
         enableLoadNewStoreItemsButton = false,
         handleLoadNewStoreItems,
+        disableGoToTodayButton = true,
     }) => {
 
     const positionRef = React.useRef();
@@ -244,23 +247,32 @@ export const MuiTable = (
                                     <MTableToolbar {...props} />
                                 )}
                                 {disableSubTitle ? null : (
-                                    <Typography variant="overline" id="tableTitle"  className={classes.subTitle}> {subTitle} </Typography>
+                                    <Typography variant="overline" id="tableTitle" className={classes.subTitle}> {subTitle} </Typography>
                                 )}
+
                                 {disableCustomSearch ? null : (
                                     <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
                                 )}
                                 {disableDatePicker ? null : (
+                                    
                                     <div className={classes.datePickerContainer}>
                                         {disableReloadDataButton ? null : (
                                             <div className={classes.reloadDataButton}>
-                                                <IconButton color="primary" aria-label="reload-button" component="span"
-                                                    onClick={() => resetData()}>
+                                                <IconButton color="primary" aria-label="reload-button" component="span" onClick={() => resetData()}>
                                                     <CachedIcon />
                                                 </IconButton>
                                             </div>
                                         )}
+
                                         <div className={classes.datePicker}>
                                             {datepicker}
+                                            {disableGoToTodayButton ? null : (
+                                                <Tooltip title="Ir a Hoy" placement="bottom" >
+                                                    <IconButton color="default" aria-label="go-today" onClick={() => getNewDate(new Date())}>
+                                                        <TodayIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            )}
                                         </div>
                                     </div>
                                 )}

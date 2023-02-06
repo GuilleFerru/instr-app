@@ -16,7 +16,7 @@ export const Footer = () => {
         <Link color="inherit" to={'/'}>
           Instrumentos PRIII 
         </Link >{" "}
-        {"2022"}{" "}
+        {new Date().getFullYear() }{" "}
         - Guillermo Ferrucci
         {"."}
       </Typography>

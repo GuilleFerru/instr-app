@@ -5,23 +5,27 @@ export const layOutStyle = theme => {
             display: "flex",
             height: 'auto',
             minHeight: '100vh',
+            width: '100%',
             '&>div:nth-child(3)': {
-                // border: '3px solid red',
+                //border: '1px solid red',
                 display: 'flex',
                 flexFlow: 'column noWrap',
                 width: '100%',
                 // height:'auto'
-            }
+            },
+            //border: '1px solid red',
+            //width: '100wh',
+            //width: 'fit-content',
+
         },
         pages: {
             display: "flex",
             flexFlow: 'column noWrap',
             width: '100%',
             height: 'auto',
-            //  border: '1px solid blue',
+            //border: '1px solid blue',
         },
         content: {
-            // border: '1px solid black',
             display: 'flex',
             flexFlow: 'column noWrap',
             width: '100%',
