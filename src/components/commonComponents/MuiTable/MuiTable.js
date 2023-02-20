@@ -3,7 +3,6 @@ import { AuthContext } from '../../../context/AuthContext';
 import MaterialTable, { MTableAction } from '@material-table/core';
 import { makeStyles, Typography } from '@material-ui/core';
 import { muiTableStyle } from './MuiTableStyle';
-import Breadcrumbs from '../../Breadcrumbs/Breadcrumbs';
 import { MTableToolbar } from '@material-table/core';
 import { tableIcons } from './tableIcons';
 import { Link } from "react-router-dom";
@@ -17,7 +16,6 @@ import TodayIcon from '@material-ui/icons/Today';
 import { DateContext } from '../../../context/DateContext';
 import { parseStringToDate } from '../../../Services/DateUtils';
 import { ExportPdfButton } from './exportPdf';
-import { OverDueRoutine } from '../../OverDueRoutines/OverDueRoutine';
 import { LoadDataTable } from '../../LoadDataTable/LoadDataTable';
 import { muiTableCommonActions } from './MuiTableCommonActions';
 import { tableLocalization } from './tableLocalization';
@@ -78,7 +76,6 @@ export const MuiTable = (
         enablePaging = false,
         enableDetailPanel = false,
         detailPanel,
-        disableBreadcrumbs = false,
         disableToolbar = false,
         headerStyleBackgroundColor = "#069999",
         pageSizeOptions = [10, 15, 20, 25, 50],
@@ -137,6 +134,7 @@ export const MuiTable = (
         loadNewStoreItems } = muiTableCommonActions(getNewDate, user);
 
     useEffect(() => {
+
         setRowColor && setSelectedRow(rowIdHighlight);
     }, [rowIdHighlight, setRowColor]);
 
@@ -235,13 +233,6 @@ export const MuiTable = (
                     },
 
                     Toolbar: props => (
-                        <div >
-                            {disableBreadcrumbs ? null : (
-                                <div className={classes.toolbarHeader}>
-                                    <Breadcrumbs />
-                                    <OverDueRoutine />
-                                </div>
-                            )}
                             <div className={classes.toolbarBody} >
                                 {disableToolbar ? null : (
                                     <MTableToolbar {...props} />
@@ -254,7 +245,7 @@ export const MuiTable = (
                                     <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
                                 )}
                                 {disableDatePicker ? null : (
-                                    
+
                                     <div className={classes.datePickerContainer}>
                                         {disableReloadDataButton ? null : (
                                             <div className={classes.reloadDataButton}>
@@ -276,9 +267,7 @@ export const MuiTable = (
                                         </div>
                                     </div>
                                 )}
-
                             </div>
-                        </div>
                     )
 
                     // EditField: props => (
@@ -289,7 +278,6 @@ export const MuiTable = (
                     // )
                 }}
                 onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
-
             />
         </div >
     );

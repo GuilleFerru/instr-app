@@ -3,8 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { Employee } from '../Employee/Employee';
 import { employeeListStyle } from './EmployeeListStyle';
-import Breadcrumbs from '../../../../components/Breadcrumbs/Breadcrumbs';
-import { OverDueRoutine } from '../../../../components/OverDueRoutines/OverDueRoutine';
 import { AuthContext } from '../../../../context/AuthContext';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../components/Pagination/usePagination';
@@ -19,10 +17,6 @@ export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog, hand
     const _DATA = usePagination(employees, PER_PAGE);
 
     return <>
-        <div className={classes.breadcrumb}>
-            <Breadcrumbs />
-            <OverDueRoutine />
-        </div>
         <div className={classes.container}>
             <div className={classes.body}>
                 <div className={classes.mainTitles}>

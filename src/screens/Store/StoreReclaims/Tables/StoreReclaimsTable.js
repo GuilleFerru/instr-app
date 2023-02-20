@@ -240,8 +240,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
         setItemsToClaimQty(0);
     }
 
-    return <div className={classes.table}>
-
+    return <>
         <div className={classes.containerHeader}>
             <Alerts open={openAlert} setOpenAlert={setOpenAlert} severity={'error'} title={'No se puede editar, se debe desagregar primero.'} />
             <StoreReclaimsEmail
@@ -255,7 +254,6 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
             />
         </div>
         <ThemeProvider theme={theme}>
-
             <MuiTable className={classes.table}
                 data={data}
                 dataColumns={columns}
@@ -282,7 +280,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
                 handleDeleteClaimedItems={handleDeleteClaimedItems}
             />
         </ThemeProvider>
-    </div>
+    </>
 }
 
 

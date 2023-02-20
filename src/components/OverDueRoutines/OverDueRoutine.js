@@ -6,7 +6,6 @@ import { AuthContext } from '../../context/AuthContext';
 import { useHistory, Link } from 'react-router-dom';
 
 
-
 const useStyles = makeStyles((theme) => ({
     link: {
         display: 'flex',
@@ -22,28 +21,22 @@ export const OverDueRoutine = (props) => {
     const { socket } = useContext(AuthContext);
     const history = useHistory();
     const [qtyOverdueRoutines, setQtyOverdueRoutines] = useState(0);
-
     useEffect(() => {
-        let cancel = false;
         if (socket) {
             socket.emit('get_qtyOverDueRoutines');
-            socket.on('get_qtyOverDueRoutines', (data) => {
-                cancel = false;
-                if (!cancel) {
-                    setQtyOverdueRoutines(data);
-                } else {
-                    return;
-                }
-            });
+            const listener = (data) => {
+                setQtyOverdueRoutines(data);
+            }
+            socket.on('get_qtyOverDueRoutines', listener);
             return () => {
-                socket.off('get_qtyOverDueRoutines');
-                cancel = true
+                socket.off('get_qtyOverDueRoutines', listener);
             }
         } else {
             history.push('/error');
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
 
     return (
         <Link to="/rutinas" className={classes.link}>

@@ -38,6 +38,7 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
     }, [location])
 
     useEffect(() => {
+
         setData([]);
         new Promise((resolve) => {
             setTimeout(resolve, 200);
@@ -113,47 +114,46 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
     }
 
 
-    return <div className={classes.table}>
-        <ThemeProvider theme={theme}>
-            <MuiTable className={classes.table}
-                data={data}
-                setData={setData}
-                title={'TAREAS DIARIAS'}
-                datepicker={datePicker(date, handleDatePicker)}
-                disableAddButton={false}
-                disableDeleteButton={false}
-                disableOnRowUpdate={false}
-                disableOnBulkUpdate={false}
-                disableColumnButton={false}
-                dataColumns={dataColumns}
-                rowAdd={rowAdd}
-                updateRow={updateRow}
-                bulkUpdate={bulkUpdate}
-                deleteRow={deleteRow}
-                enablePaging={true}
-                pageSize={20}
-                pageSizeOptions={[20, 30, 50]}
-                disableGroupingOption={false}
-                date={date}
-                disableDatePicker={false}
-                CustomSearchBar={MySearchBar}
-                searchData={searchData}
-                disableCustomSearch={false}
-                disableReloadDataButton={reloadButton}
-                resetData={searchData}
-                searchPlaceHolder={'Buscar por TAG, OT ó Descripción'}
-                enableDuplicateButton={true}
-                disableInitialFormData={false}
-                initialRowData={dailyWorksInitialRowData}
-                rowIdHighlight={rowIdHighlight}
-                setRowColor={true}
-                pdfTitle={`Tareas diarias ${formatDate(date)}`}
-                enableDailyWorkSearchButton={true}
-                setIsDialogOpen={setIsDialogOpen}
-                getDailyWorkDataForSearch={getDailyWorkDataForSearch}
-                disableGoToTodayButton={false}
-            />
-            <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} dailyWorkDataForSearch={dailyWorkDataForSearch} getDataFromAdvanceSearch={getDataFromAdvanceSearch} />
-        </ThemeProvider>
-    </div>
+    return <ThemeProvider theme={theme}>
+        <MuiTable className={classes.table}
+            data={data}
+            setData={setData}
+            title={'TAREAS DIARIAS'}
+            datepicker={datePicker(date, handleDatePicker)}
+            disableAddButton={false}
+            disableDeleteButton={false}
+            disableOnRowUpdate={false}
+            disableOnBulkUpdate={false}
+            disableColumnButton={false}
+            dataColumns={dataColumns}
+            rowAdd={rowAdd}
+            updateRow={updateRow}
+            bulkUpdate={bulkUpdate}
+            deleteRow={deleteRow}
+            enablePaging={true}
+            pageSize={20}
+            pageSizeOptions={[20, 30, 50]}
+            disableGroupingOption={false}
+            date={date}
+            disableDatePicker={false}
+            CustomSearchBar={MySearchBar}
+            searchData={searchData}
+            disableCustomSearch={false}
+            disableReloadDataButton={reloadButton}
+            resetData={searchData}
+            searchPlaceHolder={'Buscar por TAG, OT ó Descripción'}
+            enableDuplicateButton={true}
+            disableInitialFormData={false}
+            initialRowData={dailyWorksInitialRowData}
+            rowIdHighlight={rowIdHighlight}
+            setRowColor={true}
+            pdfTitle={`Tareas diarias ${formatDate(date)}`}
+            enableDailyWorkSearchButton={true}
+            setIsDialogOpen={setIsDialogOpen}
+            getDailyWorkDataForSearch={getDailyWorkDataForSearch}
+            disableGoToTodayButton={false}
+        />
+        <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} dailyWorkDataForSearch={dailyWorkDataForSearch} getDataFromAdvanceSearch={getDataFromAdvanceSearch} />
+    </ThemeProvider>
+
 }

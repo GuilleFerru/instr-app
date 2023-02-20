@@ -5,19 +5,16 @@ import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { axiosPut } from '../../../../Services/Axios.js';
 import { otherRoutinesDefault, otherRoutinesInitialRowData } from '../../../../Services/defaultTables.js';
 import { monthPicker } from '../../../../Services/DatePickers'
-import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
-import { routineTableStyle } from './RoutineTableStyle'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { RoutineCrudContainer } from '../../RoutinesCRUD/RoutineCrudContainer';
 
 
 const baseUrl = process.env.REACT_APP_API_URL;
-const useStyles = makeStyles((theme) => routineTableStyle(theme));
+
 
 export const RoutineTable = ({ allData, setDate, date }) => {
 
-    const classes = useStyles();
     const { socket } = useContext(AuthContext);
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
@@ -56,8 +53,7 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         });
     }
 
-    return <div className={classes.table}>
-        <ThemeProvider theme={theme}>
+    return <ThemeProvider theme={theme}>
             <MuiTable
                 data={data}
                 setData={setData}
@@ -90,6 +86,4 @@ export const RoutineTable = ({ allData, setDate, date }) => {
                 setIsEditDialogOpen={setIsRoutineEditDialogOpen}
             />
         </ThemeProvider>
-    </div>
-
 }

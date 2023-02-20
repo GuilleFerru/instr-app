@@ -3,18 +3,12 @@ import { axiosPut } from '../../../../Services/Axios';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { defaultDailyWorksRoutineTable } from '../../../../Services/defaultTables';
-import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { routineDetailTableStyle } from './RoutineDetailTableStyle';
-
 
 const baseUrl = process.env.REACT_APP_API_URL;
-const useStyles = makeStyles((theme) => routineDetailTableStyle(theme));
 
 export const RoutineDetailTable = props => {
-
-    const classes = useStyles();
     const [data, setData] = useState([]);
     const [nickname, setNickname] = useState('');
     const [dataColumns, setDataColumns] = useState([]);
@@ -45,8 +39,7 @@ export const RoutineDetailTable = props => {
     }
 
 
-    return <div className={classes.table}>
-        <ThemeProvider theme={theme}>
+    return<ThemeProvider theme={theme}>
             <MuiTable
                 data={data}
                 setData={setData}
@@ -58,6 +51,4 @@ export const RoutineDetailTable = props => {
                 pdfTitle={`${nickname}`}
             />
         </ThemeProvider>
-    </div>
-
 }

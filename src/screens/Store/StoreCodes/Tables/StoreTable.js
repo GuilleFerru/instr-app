@@ -164,9 +164,7 @@ export const StoreTable = ({ getData, data, subTitle }) => {
         }
     }
 
-    return <>
-        {/* <Input type='file' onChange={importExcel} hidden></Input> */}
-        <ThemeProvider theme={theme}>
+    return <ThemeProvider theme={theme}>
             <MuiTable className={classes.table}
                 title={'Listado de almacen'}
                 subTitle={subTitle}
@@ -190,10 +188,5 @@ export const StoreTable = ({ getData, data, subTitle }) => {
             />
             <Backdrop open={onLoading} />
         </ThemeProvider >
-    </>
-
-
-
-
 }
 

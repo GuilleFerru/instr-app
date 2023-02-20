@@ -1,22 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-// import { axiosPut } from '../../../../Services/Axios';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { defaultPlantShutdownWorksToDoTable } from '../../../../Services/defaultTables';
-import { makeStyles } from "@material-ui/core/styles";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable';
 import { AuthContext } from '../../../../context/AuthContext';
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
-import { plantShutdownWorksToDoTableStyle } from './PlantShutdownWorksToDoTableStyle';
 import { useHistory } from 'react-router-dom';
 
 
-// const baseUrl = process.env.REACT_APP_API_URL;
-const useStyles = makeStyles((theme) => plantShutdownWorksToDoTableStyle(theme));
-
 export const PlantShutdownWorksToDoTable = props => {
-
-    const classes = useStyles();
     const { socket } = useContext(AuthContext);
     const history = useHistory();
     const [data, setData] = useState([]);
@@ -71,9 +63,7 @@ export const PlantShutdownWorksToDoTable = props => {
         return dataUpdate;
     }
 
-
-    return <div className={classes.table}>
-        <ThemeProvider theme={theme}>
+    return <ThemeProvider theme={theme}>
             <MuiTable
                 data={data}
                 setData={setData}
@@ -88,6 +78,4 @@ export const PlantShutdownWorksToDoTable = props => {
                 pdfTitle={`${nickname}`}
             />
         </ThemeProvider>
-    </div>
-
 }

@@ -6,7 +6,6 @@ import { AuthContext } from '../../context/AuthContext';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-
 export const Logout = () => {
 
     const history = useHistory();
@@ -14,6 +13,7 @@ export const Logout = () => {
 
     const handleLogout = (idle = false) => {
         socket && socket.disconnect();
+        document.fullscreenElement && document.exitFullscreen();
         dispatch({ type: 'LOGOUT_SUCCESS' });
         history.push('/', { from: 'logout', idle });
     }
@@ -21,10 +21,9 @@ export const Logout = () => {
     const onIdle = () => {
         handleLogout(true);
     }
-
-    // 3 horas
+    // 1 hora
     useIdleTimer({ onIdle, timeout: 60000 * 60 * 1});
-    
+
     return <>
         <ListItem>
             <ListItemAvatar>

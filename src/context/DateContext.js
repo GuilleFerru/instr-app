@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 export const DateContext = createContext();
+
 export const DateComponentContext = props => {
 
     const [date, setDate] = useState(new Date());

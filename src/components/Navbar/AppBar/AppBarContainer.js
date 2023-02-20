@@ -5,14 +5,15 @@ import { AppBar, Toolbar, IconButton, Box } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { appBarContainerStyle } from './AppBarContainerStyle';
 import { Title } from '../../commonComponents/Title';
-import { DateTime } from '../../DateTime/DateTime'
+import { DateTime } from '../../DateTime/DateTime';
+import FullScreenView from '../../FullScreenView/FullScreenView ';
 import { green } from '@material-ui/core/colors';
 
 
 const useStyles = makeStyles((theme) => appBarContainerStyle(theme));
 
 export const AppBarContainer = ({ handleDrawerOpen, open }) => {
-    const classes = useStyles({green:green});
+    const classes = useStyles({ green: green });
 
     return <AppBar
         position="absolute"
@@ -31,15 +32,23 @@ export const AppBarContainer = ({ handleDrawerOpen, open }) => {
             >
                 <MenuIcon />
             </IconButton>
+
             <Box className={classes.toolbarContent}>
                 <Title
-                    component={'h1'}
-                    variant={'h5'}
+                    component={'h2'}
+                    variant={'h6'}
                     color={'inherit'}
                     value={'INSTRUMENTOS PR3'}
                 />
-                <DateTime />
+                <Box className={classes.toolbarSubMenu} >
+                    <DateTime />
+                    <FullScreenView />
+                </Box>
             </Box>
+
+
+
+
         </Toolbar>
     </AppBar>
 }

@@ -31,7 +31,7 @@ export const appBarContainerStyle = theme => {
         toolbarContent: {
             display: 'flex',
             flexFlow: 'row wrap',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
             '& h1:nth-child(1)': {
@@ -40,8 +40,15 @@ export const appBarContainerStyle = theme => {
             '& h1:nth-child(2)': {
                 flexGrow: '1',
             }
-
         },
+        toolbarSubMenu: {
+            display: 'flex',
+            flexFlow: 'row wrap',
+            gap: '0.5rem',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        },
+
         menuButton: {
             marginRight: "36",
         },

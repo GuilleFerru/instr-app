@@ -83,8 +83,7 @@ export const PlantShutdownWorkTable = props => {
         }
     }
 
-    return <div className={classes.table}>
-        <ThemeProvider theme={theme}>
+    return <ThemeProvider theme={theme}>
             <MuiTable
                 data={data}
                 setData={setData}
@@ -112,6 +111,4 @@ export const PlantShutdownWorkTable = props => {
             />
             <UpdateShutdowWorksForm tableData={props.data} rowData={rowData} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
         </ThemeProvider>
-    </div>
-
 }

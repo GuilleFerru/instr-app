@@ -1,11 +1,20 @@
+const shadowEffect = {
+    webkitBoxShadow: '2px 4px 10px 1px rgba(0, 0, 0, 0.47)',
+    boxShadow: ' 2px 4px 10px 1px rgba(201, 201, 201, 0.47)',
+    borderRadius: '10px',
+}
+
 export const muiTableStyle = theme => {
     return ({
         table: {
             //border: '1px solid black',
-            display: 'flex',
-            flexDirection: 'column',
+            //display: 'flex',
+            // flexDirection: 'column',
+            // columnGap: '10px',
+            // //flexDirection: 'column',
             width: '100%',
-            overflow: 'hidden',
+            overflow: 'visible',
+            ...shadowEffect
         },
         toolbarHeader: {
             display: 'flex',

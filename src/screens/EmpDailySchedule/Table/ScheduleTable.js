@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
-import { makeStyles } from "@material-ui/core/styles";
 import { axiosGetExcel } from '../../../Services/Axios.js';
 import theme from '../../../components/commonComponents/MuiTable/theme';
 import { MuiTable } from '../../../components/commonComponents/MuiTable/MuiTable'
@@ -8,23 +7,17 @@ import { muiTableCommonActions } from '../../../components/commonComponents/MuiT
 import { scheduleEmpDefault } from '../../../Services/defaultTables.js';
 import { datePicker } from '../../../Services/DatePickers';
 import { formatDate } from '../../../Services/DateUtils.js';
-import { scheduleTableStyle } from './ScheduleTableStyle';
 import { GenerateDailyShiftForm } from '../Forms/GenerateDailyShiftForm';
 import { useHistory } from 'react-router-dom';
 import fileDownload from 'js-file-download'
 
-
 const baseUrl = process.env.REACT_APP_API_URL;
-const useStyles = makeStyles((theme) => scheduleTableStyle(theme));
-
 
 const getNumberOfAditionals = (dataColumns) => {
     return parseInt((dataColumns[dataColumns.length - 2].field).match(/\d+/)[0]) + 1;
 }
 
 export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => {
-
-    const classes = useStyles();
     const history = useHistory();
     const [data, setData] = useState([]);
     const [aditionals, setAditionals] = useState({});
@@ -154,9 +147,7 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
     }
 
 
-    return <>
-        <div className={classes.table}>
-            <ThemeProvider theme={theme}>
+    return <ThemeProvider theme={theme}>
                 <MuiTable
                     data={data}
                     setData={setData}
@@ -186,6 +177,4 @@ export const ScheduleTable = ({ allData, roomId, date, getNewDate, socket }) => 
                 />
                 <GenerateDailyShiftForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} generateDailyShift={generateDailyShift} loadingExcel={loadingExcel} />
             </ThemeProvider>
-        </div>
-    </>
 }

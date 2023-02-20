@@ -1,4 +1,3 @@
-
 const shadowEffect = {
     webkitBoxShadow: '2px 4px 10px 1px rgba(0, 0, 0, 0.47)',
     boxShadow: ' 2px 4px 10px 1px rgba(201, 201, 201, 0.47)',
@@ -7,30 +6,21 @@ const shadowEffect = {
 
 export const employeeListStyle = theme => {
     return ({
-        breadcrumb: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: '#f5f5f5',
-            borderBottom: '1px solid #e0e0e0',
-            margin: '0 0 1rem 0',
-            padding: '0',
-            borderRadius: '5px 5px 0 0',
-            height: '48px',
-            [theme.breakpoints.down('xs')]: {
-                height: '40px',
-            },
-        },
         container: {
             display: 'flex',
             flexDirection: 'column',
-            padding: '0.5rem',
-            gap: '1rem',
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            padding: '10px',
+            width: '100%',
+            gap: '10px',
+            height: 'auto',
+            marginTop: '10px',
             fontFamily: 'Nunito, sans-serif',
             [theme.breakpoints.down('xs')]: {
                 maxWidth: '100%',
             },
+            overflow: 'visible',
             ...shadowEffect,
         },
         body: {
