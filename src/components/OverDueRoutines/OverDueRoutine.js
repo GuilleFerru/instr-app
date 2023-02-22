@@ -20,7 +20,7 @@ export const OverDueRoutine = (props) => {
     const classes = useStyles();
     const { socket } = useContext(AuthContext);
     const history = useHistory();
-    const [qtyOverdueRoutines, setQtyOverdueRoutines] = useState(0);
+    const [qtyOverdueRoutines, setQtyOverdueRoutines] = useState(null);
     useEffect(() => {
         if (socket) {
             socket.emit('get_qtyOverDueRoutines');
@@ -39,7 +39,7 @@ export const OverDueRoutine = (props) => {
 
 
     return (
-        <Link to="/rutinas" className={classes.link}>
+        qtyOverdueRoutines ? <Link to="/rutinas" className={classes.link}>
             <Badges
                 tooltip="Rutinas atrasadas"
                 qty={qtyOverdueRoutines}
@@ -47,7 +47,7 @@ export const OverDueRoutine = (props) => {
             >
                 <ScheduleIcon color={qtyOverdueRoutines === 0 ? "disabled" : "error"} />
             </Badges>
-        </Link>
+        </Link> : null
     )
 }
 
