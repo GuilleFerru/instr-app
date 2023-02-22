@@ -20,7 +20,7 @@ export const OverDueRoutine = (props) => {
     const classes = useStyles();
     const { socket } = useContext(AuthContext);
     const history = useHistory();
-    const [qtyOverdueRoutines, setQtyOverdueRoutines] = useState(null);
+    const [qtyOverdueRoutines, setQtyOverdueRoutines] = useState(undefined);
     useEffect(() => {
         if (socket) {
             socket.emit('get_qtyOverDueRoutines');
@@ -39,7 +39,7 @@ export const OverDueRoutine = (props) => {
 
 
     return (
-        qtyOverdueRoutines ? <Link to="/rutinas" className={classes.link}>
+        qtyOverdueRoutines !== undefined ? <Link to="/rutinas" className={classes.link}>
             <Badges
                 tooltip="Rutinas atrasadas"
                 qty={qtyOverdueRoutines}
