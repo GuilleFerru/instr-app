@@ -224,6 +224,16 @@ export const muiTableCommonActions = (getNewDate, user) => {
 
     })
 
+    const completeDayRoutines = (tableIcons, handleCompleteDayRoutines) => ({
+        tooltip: 'Completar rutinas',
+        hidden: user?.userType === 'user',
+        icon: tableIcons.Complete,
+        isFreeAction: true,
+        onClick: (_evt, _rowData) => {
+            handleCompleteDayRoutines()
+        }
+    })
+
 
 
     return {
@@ -245,6 +255,7 @@ export const muiTableCommonActions = (getNewDate, user) => {
         addToClaimItem,
         claimItems,
         deleteClaimItems,
-        loadNewStoreItems
+        loadNewStoreItems,
+        completeDayRoutines
     }
 }

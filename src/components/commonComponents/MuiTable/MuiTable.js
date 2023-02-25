@@ -99,6 +99,8 @@ export const MuiTable = (
         enableLoadNewStoreItemsButton = false,
         handleLoadNewStoreItems,
         disableGoToTodayButton = true,
+        enableCompleteDayRoutinesButton = false,
+        handleCompleteDayRoutines,
     }) => {
 
     const positionRef = React.useRef();
@@ -131,7 +133,8 @@ export const MuiTable = (
         addToClaimItem,
         claimItems,
         deleteClaimItems,
-        loadNewStoreItems } = muiTableCommonActions(getNewDate, user);
+        loadNewStoreItems,
+        completeDayRoutines } = muiTableCommonActions(getNewDate, user);
 
     useEffect(() => {
 
@@ -218,6 +221,7 @@ export const MuiTable = (
                     (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems, itemsToClaimQty)),
                     (enableDeleteClaimItemsButton && deleteClaimItems(tableIcons, handleDeleteClaimedItems, itemsToClaimQty)),
                     (enableLoadNewStoreItemsButton && loadNewStoreItems(IconButton, BackupIcon, handleLoadNewStoreItems)),
+                    (enableCompleteDayRoutinesButton && completeDayRoutines(tableIcons, handleCompleteDayRoutines)),
                 ]}
                 components={{
                     Action: (props) => {
@@ -233,41 +237,41 @@ export const MuiTable = (
                     },
 
                     Toolbar: props => (
-                            <div className={classes.toolbarBody} >
-                                {disableToolbar ? null : (
-                                    <MTableToolbar {...props} />
-                                )}
-                                {disableSubTitle ? null : (
-                                    <Typography variant="overline" id="tableTitle" className={classes.subTitle}> {subTitle} </Typography>
-                                )}
+                        <div className={classes.toolbarBody} >
+                            {disableToolbar ? null : (
+                                <MTableToolbar {...props} />
+                            )}
+                            {disableSubTitle ? null : (
+                                <Typography variant="overline" id="tableTitle" className={classes.subTitle}> {subTitle} </Typography>
+                            )}
 
-                                {disableCustomSearch ? null : (
-                                    <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
-                                )}
-                                {disableDatePicker ? null : (
+                            {disableCustomSearch ? null : (
+                                <CustomSearchBar value={''} searchData={searchData} placeholder={searchPlaceHolder} />
+                            )}
+                            {disableDatePicker ? null : (
 
-                                    <div className={classes.datePickerContainer}>
-                                        {disableReloadDataButton ? null : (
-                                            <div className={classes.reloadDataButton}>
-                                                <IconButton color="primary" aria-label="reload-button" component="span" onClick={() => resetData()}>
-                                                    <CachedIcon />
-                                                </IconButton>
-                                            </div>
-                                        )}
-
-                                        <div className={classes.datePicker}>
-                                            {datepicker}
-                                            {disableGoToTodayButton ? null : (
-                                                <Tooltip title="Ir a Hoy" placement="bottom" >
-                                                    <IconButton color="default" aria-label="go-today" onClick={() => getNewDate(new Date())}>
-                                                        <TodayIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            )}
+                                <div className={classes.datePickerContainer}>
+                                    {disableReloadDataButton ? null : (
+                                        <div className={classes.reloadDataButton}>
+                                            <IconButton color="primary" aria-label="reload-button" component="span" onClick={() => resetData()}>
+                                                <CachedIcon />
+                                            </IconButton>
                                         </div>
+                                    )}
+
+                                    <div className={classes.datePicker}>
+                                        {datepicker}
+                                        {disableGoToTodayButton ? null : (
+                                            <Tooltip title="Ir a Hoy" placement="bottom" >
+                                                <IconButton color="default" aria-label="go-today" onClick={() => getNewDate(new Date())}>
+                                                    <TodayIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        )}
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
+                        </div>
                     )
 
                     // EditField: props => (

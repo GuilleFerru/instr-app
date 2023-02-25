@@ -38,7 +38,6 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
     }, [location])
 
     useEffect(() => {
-
         setData([]);
         new Promise((resolve) => {
             setTimeout(resolve, 200);
@@ -113,6 +112,10 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
         });
     }
 
+    const completeDayRoutines = () => {
+        const dayRoutines = data.filter((el) => el.routineScheduleId !== null && el.action === 2 && el.complete !== 'C');
+        socket ? socket.emit('complete_day_routines', date, dayRoutines, roomId) : history.push('/error');
+    }
 
     return <ThemeProvider theme={theme}>
         <MuiTable className={classes.table}
@@ -152,6 +155,8 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
             setIsDialogOpen={setIsDialogOpen}
             getDailyWorkDataForSearch={getDailyWorkDataForSearch}
             disableGoToTodayButton={false}
+            enableCompleteDayRoutinesButton={true}
+            handleCompleteDayRoutines={completeDayRoutines}
         />
         <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} dailyWorkDataForSearch={dailyWorkDataForSearch} getDataFromAdvanceSearch={getDataFromAdvanceSearch} />
     </ThemeProvider>
