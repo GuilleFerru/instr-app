@@ -38,5 +38,10 @@ export const holidaySelectorStyle = theme => {
             margin: 'auto',
             position: 'float',
         },
+        nextEmpHoliday:{
+            display: 'flex',
+            flexFlow: 'column wrap',
+            
+        }
     })
 }

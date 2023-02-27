@@ -22,6 +22,7 @@ export const Holiday = ({ data }) => {
     const [periodOptions, setPeriodOptions] = useState([]);
     const [employeeOptions, setEmployeeOptions] = useState([]);
     const [actualPeriod, setActualPeriod] = useState([]);
+    const [nextEmpHoliday, setNextEmpHoliday] = useState([]);
 
     useEffect(() => {
         if (isMounted.current) {
@@ -35,6 +36,7 @@ export const Holiday = ({ data }) => {
                 const actualPeriod = data.periodData.periodName === period.name ? data.periodOptions[index - 1]?.name.slice(7) || '2019-2020' : null;
                 return actualPeriod;
             }));
+            setNextEmpHoliday(data.nextEmpHoliday);
 
         } else {
             isMounted.current = true;
@@ -43,23 +45,23 @@ export const Holiday = ({ data }) => {
 
 
     return <ThemeProvider theme={theme}>
-            <div className={classes.container}>
-                <div>
-                    <div className={classes.mainTitles}>
-                        <Typography variant="h5" gutterBottom> Vacaciones del Personal </Typography>
-                        <Typography variant="overline" >
-                            El periodo seleccionado es {actualPeriod} y comprende desde el {startDate} hasta {endDate}.
-                        </Typography>
-                        <Typography color="inherit" variant="overline">
-                            Los puntajes se calcularan para el {title}.
-                        </Typography>
-                        <Typography color="inherit" variant="overline" gutterBottom>
-                            En el selector de vacaciones se muestra el {title} pero se deben anotar las vacaciones correspondientes al Período {actualPeriod}
-                        </Typography>
-                    </div>
+        <div className={classes.container}>
+            <div>
+                <div className={classes.mainTitles}>
+                    <Typography variant="h5" gutterBottom> Vacaciones del Personal </Typography>
+                    <Typography variant="overline" >
+                        El periodo seleccionado es {actualPeriod} y comprende desde el {startDate} hasta {endDate}.
+                    </Typography>
+                    <Typography color="inherit" variant="overline">
+                        Los puntajes se calcularan para el {title}.
+                    </Typography>
+                    <Typography color="inherit" variant="overline" gutterBottom>
+                        En el selector de vacaciones se muestra el {title} pero se deben anotar las vacaciones correspondientes al Período {actualPeriod}
+                    </Typography>
                 </div>
-                <HolidayScores periodOptions={periodOptions} periodData={periodData} title={title} />
-                <HolidaySelector periodOptions={periodOptions} periodData={periodData} employeeOptions={employeeOptions} />
             </div>
-        </ThemeProvider >
+            <HolidayScores periodOptions={periodOptions} periodData={periodData} title={title} />
+            <HolidaySelector periodOptions={periodOptions} periodData={periodData} employeeOptions={employeeOptions} nextEmpHoliday={nextEmpHoliday} />
+        </div>
+    </ThemeProvider >
 }

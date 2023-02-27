@@ -15,6 +15,7 @@ import { Alerts } from '../components/Alerts';
 import { HolidayDetails } from './List/HolidayDetails';
 import { holidayEmpReducer, holidayEmpInitialState } from '../../../../reducers/holidayEmpReducer';
 import { HolidayShiftSub } from './List/HolidayShiftSub';
+import { NextEmpHoliday } from './List/NextEmpHoliday.js';
 
 const useStyles = makeStyles((theme) => holidaySelectorStyle(theme));
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -68,7 +69,7 @@ const dataToSave = (
 }
 
 
-export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) => {
+export const HolidaySelector = ({ periodOptions, periodData, employeeOptions, nextEmpHoliday }) => {
 
     const isMounted = useRef(false);
     const classes = useStyles();
@@ -280,6 +281,19 @@ export const HolidaySelector = ({ periodOptions, periodData, employeeOptions }) 
                         <Button onClick={handleEmpHolidayDetails} color="primary" endIcon={<MoreIcon />} variant="contained" disabled={period === periodOptions[0]?.id}>
                             Ver Mas
                         </Button>
+                    </Box>
+                </div>
+                <div className={classes.nextEmpHoliday}>
+                    <Box mb={2} mr={2}>
+                        <Typography variant="overline" display="block" >Proximas vacaciones</Typography>
+                        <Box ml={2} mb={0}>
+                            {nextEmpHoliday.map(nextEmpHoliday => {
+                                return <NextEmpHoliday
+                                    key={nextEmpHoliday.employee}
+                                    employee={nextEmpHoliday}
+                                />
+                            })}
+                        </Box>
                     </Box>
                 </div>
                 <div className={classes.save}>
