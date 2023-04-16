@@ -14,7 +14,6 @@ export const TableCustomComponents = () => {
 
     const createAutocomplete = (props, options, classes, field, focus) => {
         const defaultValue = options?.find((option) => Number(option?.id) === Number(props.rowData[field])) || null;
-
         return (
             <Autocomplete
                 ListboxProps={{
@@ -25,20 +24,20 @@ export const TableCustomComponents = () => {
                 }}
                 className={classes.customAutoComplete}
                 noOptionsText={'Sin opciones'}
-                autoSelect={true}
+                //autoSelect={true}
                 id={field}
                 options={options}
                 getOptionLabel={(option) => option?.title || ''}
                 defaultValue={defaultValue}
                 onChange={(_event, value) => props.onChange(value?.id || null)}
                 value={defaultValue || null}
-
                 renderInput={(params) => <TextField
                     InputProps={{
                         classes: {
                             input: classes.resize,
                         },
                     }}
+                    // inputRef={focus ? input => input && input.focus() : null}
                     {...params} variant="outlined" className={classes.autoCompleteInput}/>}
             />
         )
@@ -72,10 +71,6 @@ export const TableCustomComponents = () => {
             />
         )
     }
-
-
-
-
 
     return {
         createOptions,
