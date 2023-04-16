@@ -58,6 +58,7 @@ export const Login = () => {
                                 autoFocus={true}
                                 type={"email"}
                                 inputRef={username}
+                                value={'gferrucci@pr3.com.ar'}
                             />
                             <Input
                                 variant={"outlined"}
@@ -70,6 +71,7 @@ export const Login = () => {
                                 autoComplete={"current-password"}
                                 type={"password"}
                                 inputRef={password}
+                                value={'1492'}
                             />
                             <Button
                                 type="submit"
