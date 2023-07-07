@@ -26,12 +26,11 @@ const getTimeOfService = (date) => {
 }
 
 
-export const Employee = ({ employee, handleDialog, handleAditionalDialog, aditionalData, setAditionalData, handleEmployeeEdit, user }) => {
+export const Employee = ({ employee, handleAditionalDialog, aditionalData, setAditionalData, handleEmployeeEdit, user }) => {
 
     const classes = useStyles();
 
     const handleEmployee = () => {
-        handleDialog(true);
         handleEmployeeEdit(employee);
     }
 

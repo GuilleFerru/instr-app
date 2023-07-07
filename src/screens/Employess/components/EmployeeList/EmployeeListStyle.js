@@ -34,12 +34,18 @@ export const employeeListStyle = theme => {
         },
         mainTitles: {
             display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+        },
+        titles: {
+            display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
             height: 'auto',
             margin: '0',
             paddingLeft: '1rem',
+
         },
         section: {
             display: 'flex',

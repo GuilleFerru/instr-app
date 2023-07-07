@@ -6,10 +6,11 @@ import { employeeListStyle } from './EmployeeListStyle';
 import { AuthContext } from '../../../../context/AuthContext';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import usePagination from '../../../../components/Pagination/usePagination';
+import { AddTooltip } from '../../../../components/Tooltips/AddTooltip';
 
 const useStyles = makeStyles((theme) => employeeListStyle(theme));
 
-export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog, handleAditionalDialog, aditionalData, setAditionalData }) => {
+export const EmployeeList = ({ employees, handleEmployee, handleAditionalDialog, aditionalData, setAditionalData }) => {
 
     const classes = useStyles();
     const { user } = useContext(AuthContext);
@@ -18,21 +19,32 @@ export const EmployeeList = ({ employees, handleEmployeeEdit, handleDialog, hand
 
     return <>
         <div className={classes.container}>
+
             <div className={classes.body}>
                 <div className={classes.mainTitles}>
-                    <Typography variant="h6" gutterBottom> Personal Total: {employees.length} personas </Typography>
-                    <Typography variant="overline" gutterBottom> Puedes editar los datos un empleado y agregar novedades a su Parte Díario </Typography>
+                    <div className={classes.titles}>
+                        <Typography variant="h6" gutterBottom> Personal Total: {employees.length} personas </Typography>
+                        <Typography variant="overline" gutterBottom> Puedes editar los datos un empleado y agregar novedades a su Parte Díario </Typography>
+                    </div>
+                    <div>
+                        <AddTooltip
+                            title="Agregar Empleado"
+                            size="small"
+                            color="primary"
+                            placement="top-end"
+                            handleTooltip={handleEmployee}>
+                        </AddTooltip>
+                    </div>
                 </div>
                 <div className={classes.section}>
                     {_DATA.currentData().map((employee, i) => {
                         return <Employee
                             key={i}
                             employee={employee}
-                            handleDialog={handleDialog}
                             handleAditionalDialog={handleAditionalDialog}
                             aditionalData={aditionalData}
                             setAditionalData={setAditionalData}
-                            handleEmployeeEdit={handleEmployeeEdit}
+                            handleEmployeeEdit={handleEmployee}
                             user={user}
                         />
                     })}

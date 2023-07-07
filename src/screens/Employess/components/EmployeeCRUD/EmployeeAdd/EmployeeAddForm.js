@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import { EmployeeForm } from '../Form/EmployeeForm';
 
-export const EmployeeUpdateForm = ({ employee, auxData, isDialogOpen, handleDialog, handleCrud, title }) => {
+export const EmployeeAddForm = ({ auxData, isDialogOpen, handleDialog, handleCrud, title }) => {
 
-    //const [form, setForm] = useState([]);
+    // const [form, setForm] = useState([]);
     // const [openAlertError, setOpenAlertError] = useState(false);
     // const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
 
@@ -13,72 +13,73 @@ export const EmployeeUpdateForm = ({ employee, auxData, isDialogOpen, handleDial
     //             id: "legajo",
     //             name: "legajo",
     //             label: "Legajo",
-    //             value: employee?.legajo,
     //             type: "number",
-    //             disabled: true,
+    //             value: "",
     //         },
     //         {
     //             id: "nombre",
     //             name: "nombre",
     //             label: "Nombre",
-    //             value: employee?.nombre,
     //             type: "text",
-    //             disabled: false,
+    //             value: "",
     //         },
     //         {
     //             id: "apellido",
     //             name: "apellido",
     //             label: "Apellido",
-    //             value: employee?.apellido,
     //             type: "text",
-    //             disabled: false,
+    //             value: "",
     //         },
     //         {
     //             id: "puesto",
     //             name: "puesto",
     //             label: "Puesto",
-    //             value: employee?.puesto,
     //             type: "text",
-    //             disabled: false,
+    //             value: "",
     //         },
     //         {
     //             id: "categoria",
     //             name: "categoria",
     //             label: "Categoria",
-    //             value: employee?.categoria,
     //             type: "text",
-    //             disabled: false,
+    //             value: "",
+    //         },
+    //         {
+    //             id: "condicion",
+    //             name: "Condicion",
+    //             label: "Condicion",
+    //             type: "text",
+    //             value: "",
+
     //         },
     //         {
     //             id: "shift",
     //             name: "shift",
-    //             value: employee?.shiftType,
+    //             value: "",
     //         },
     //         {
     //             id: "turno",
     //             name: "turno",
     //             label: "Turno",
-    //             value: employee?.shiftType === 'rotativeShift' ? employee?.shift : employee?.shift,
+    //             value: ""
     //         },
     //         {
     //             id: "holidayDays",
     //             name: "holidays",
     //             label: "Dias de vacaciones",
-    //             value: employee?.holidayDays,
     //             type: "number",
-    //             disabled: false,
+    //             value: "",
     //         },
     //         {
     //             id: "hireDate",
     //             name: "hireDate",
     //             label: "Fecha de contratacion",
-    //             value: parseStringToHtmlInputType(employee?.hireDate),
     //             type: "date",
-    //             hidden: true,
+    //             value: parseStringToHtmlInputType(new Date().toLocaleDateString()),
     //         },
     //     ]);
 
-    // }, [employee]);
+    // }, []);
 
 
     // const handleChanges = (e) => {
@@ -98,7 +99,7 @@ export const EmployeeUpdateForm = ({ employee, auxData, isDialogOpen, handleDial
     //     if ((form[5].value === "rotativeShift" && form[6].value >= 5) || (form[5].value === "dailyShift" && form[6].value <= 4)) {
     //         setOpenAlertError(true);
     //     } else {
-    //         handleCrud(form);
+    //         handleCrud(form)
     //         setOpenAlertError(false);
     //         setOpenAlertSuccess(true);
     //         handleDialog(false);
@@ -115,11 +116,10 @@ export const EmployeeUpdateForm = ({ employee, auxData, isDialogOpen, handleDial
 
 
     return <>
-
         <EmployeeForm title={title}
             isDialogOpen={isDialogOpen}
             auxData={auxData}
-            employee={employee}
+            employee={null}
             handleDialog={handleDialog}
             handleCrud={handleCrud}
         />

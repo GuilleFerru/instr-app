@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { TYPES } from '../../actions/employeeCrudActions';
-import { axiosGet, axiosPut } from '../../Services/Axios.js';
+import { axiosGet, axiosPut, axiosPost } from '../../Services/Axios.js';
 import { TableCard } from '../Card/TableCard';
 import { employeeContainerStyle } from './EmployeeContainerStyle';
 import { EmployeeList } from './components/EmployeeList/EmployeeList';
@@ -35,6 +35,8 @@ export const EmployeeContainer = () => {
             aditional: ''
         }
     )
+    const [updateEmployee, setUpdateEmployee] = useState(null)
+    const [addEmployee, setAddEmployee] = useState(null);
 
 
     useEffect(() => {
@@ -59,18 +61,25 @@ export const EmployeeContainer = () => {
 
 
 
-
-    const handleUpdate = (employee) => {
-        const updateEmployee = {}
+    const handleCrud = (employee) => {
+        const emp = {}
+        const url = addEmployee ? `${baseUrl}/emp/create` : `${baseUrl}/emp/update`;
         employee.forEach((element, _index) => {
-            updateEmployee[element.id] = element.id === 'hireDate' ? parseHtmlInputTypeToDate(element.value) : element.value;
+            emp[element.id] = element.id === 'hireDate' ? parseHtmlInputTypeToDate(element.value) : element.value;
         });
 
-        axiosPut(`${baseUrl}/emp/update`, updateEmployee).then((response) => {
+        updateEmployee && axiosPut(url, emp).then((response) => {
             dispatch({ type: TYPES.READ_ALL_EMPLOYEES, payload: response.data }); /// ver si lo dejo asi
         }).catch((_error) => {
         })
+
+        addEmployee && axiosPost(url, emp).then((response) => {
+            dispatch({ type: TYPES.READ_ALL_EMPLOYEES, payload: response.empResp }); /// ver si lo dejo asi
+        }).catch((_error) => {
+        })
     }
+
+
 
     const handleDialog = (value) => {
         setIsDialogOpen(value);
@@ -78,7 +87,20 @@ export const EmployeeContainer = () => {
 
     const handleEmployeeEdit = (value) => {
         setDataToEdit(value);
+        setUpdateEmployee(true);
+        setAddEmployee(false);
     }
+
+    const handleEmployeeAdd = () => {
+        setAddEmployee(true);
+        setUpdateEmployee(false);
+    }
+
+    const handleEmployee = (value = null) => {
+        value ? handleEmployeeEdit(value) : handleEmployeeAdd();
+        setIsDialogOpen(true);
+    }
+
 
     const handleAditionalDialog = (value) => {
         setIsAditionalDialogOpen(value);
@@ -103,10 +125,10 @@ export const EmployeeContainer = () => {
 
     return <TableCard>
         {(loading || loadingAditional) && <CircularProgress size='5rem' className={classes.loading} />}
+
         {db ? <EmployeeList
             employees={db}
-            handleEmployeeEdit={handleEmployeeEdit}
-            handleDialog={handleDialog}
+            handleEmployee={handleEmployee}
             handleAditionalDialog={handleAditionalDialog}
             aditionalData={aditionalData}
             setAditionalData={setAditionalData}
@@ -114,10 +136,12 @@ export const EmployeeContainer = () => {
         <EmployeeCrudContainer
             isDialogOpen={isDialogOpen}
             auxData={aux}
-            handleUpdate={handleUpdate}
+            updateEmployee={updateEmployee}
+            addEmployee={addEmployee}
+            handleCrud={handleCrud}
             handleDialog={handleDialog}
             dataToEdit={dataToEdit}
-            title={"Actualizar Datos"}
+
         />
         {aditionals ? <EmployeeAditionalContainer
             aditionals={aditionals}
