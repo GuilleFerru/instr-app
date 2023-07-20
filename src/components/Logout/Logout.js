@@ -21,8 +21,8 @@ export const Logout = () => {
     const onIdle = () => {
         handleLogout(true);
     }
-    // 1 hora
-    useIdleTimer({ onIdle, timeout: 60000 * 60 * 1});
+    // 4 horas
+    useIdleTimer({ onIdle, timeout: 60000 * 60 * 4});
 
     return <>
         <ListItem>
