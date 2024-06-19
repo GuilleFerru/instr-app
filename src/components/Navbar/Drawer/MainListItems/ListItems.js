@@ -17,6 +17,7 @@ import StoreIcon from '@material-ui/icons/Store';
 import ListIcon from '@material-ui/icons/List';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
+import TocIcon from '@material-ui/icons/Toc';
 // ]import { mainListActions } from "./MainListActions";
 
 
@@ -104,13 +105,19 @@ export const ListItems = ({ openWorkList, handleClickWorkList, openEmpList, hand
             <ListItemIcon>
               <ListIcon />
             </ListItemIcon>
-            <ListItemText primary="Items de almacén" />
+            <ListItemText primary="Stock Almacén" />
+          </ListItem>
+          <ListItem button component={Link} to="/itemsTaller" className={classes.nested}>
+            <ListItemIcon>
+              <TocIcon />
+            </ListItemIcon>
+            <ListItemText primary="Stock Taller" />
           </ListItem>
           <ListItem button component={Link} to="/reclamosStock" className={classes.nested}>
             <ListItemIcon>
               <PlaylistAddIcon />
             </ListItemIcon>
-            <ListItemText primary="Reclamos stock" />
+            <ListItemText primary="Reclamos de Stock" />
           </ListItem>
         </List>
       </Collapse>

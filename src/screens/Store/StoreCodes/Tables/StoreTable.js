@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react';
 import XLSX from 'xlsx';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';

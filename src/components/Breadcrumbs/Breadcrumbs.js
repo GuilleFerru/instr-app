@@ -42,7 +42,8 @@ const Breadcrumbs = props => {
         '/parosDePlanta/tareasParoDePlantaSinAsignar': 'Tareas Paro de Planta sin asignar',
         '/vacacionesPersonal': 'Vacaciones del Personal',
         '/almacen': 'Almacen',
-        '/itemsAlmacen': 'Items de Almacen',
+        '/itemsAlmacen': 'Stock Almacén',
+        '/itemsTaller': 'Stock Taller',
         '/reclamosStock': 'Reclamos de Stock',
         '/personal': 'Personal',
     };

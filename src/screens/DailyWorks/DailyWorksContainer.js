@@ -34,6 +34,7 @@ export const DailyWorksContainer = () => {
         setData([]);
         const { dayWorks, columns } = data;
 
+
         const plantOptions = createOptions(columns[2].lookup);
         const attelierOptions = createOptions(columns[3].lookup);
 
