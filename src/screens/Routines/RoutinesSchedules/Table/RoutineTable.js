@@ -57,7 +57,7 @@ export const RoutineTable = ({ allData, setDate, date }) => {
             <MuiTable
                 data={data}
                 setData={setData}
-                title={`Rutinas ${monthAndYear}`}
+                title={`RUTINAS ${monthAndYear.toUpperCase()}`}
                 datepicker={monthPicker(date, handleDatePicker)}
                 disableOnRowUpdate={false}
                 dataColumns={dataColumns}

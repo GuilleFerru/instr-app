@@ -62,7 +62,7 @@ export const StoreWorkshopTable = ({ data, socket }) => {
                 ),
                 align: 'justify',
                 type: 'string',
-                width: '50%',
+                width: '35%',
             },
             {
                 field: 'storeWorkshopUbication',
@@ -83,6 +83,19 @@ export const StoreWorkshopTable = ({ data, socket }) => {
                 type: 'numeric',
                 width: '5%',
             },
+            {
+                field: 'date',
+                title: 'Fecha',
+                type: 'date',
+                dateSetting: {
+                    "locale": "es-AR",
+                    "format": "dd-MMM-yyyy"
+                },
+                filtering: false,
+                initialEditValue: new Date(),
+                width: '15%',
+                tooltip: 'Fecha de creación/actualización',
+            },
         ],
         [],
     );
@@ -91,6 +104,16 @@ export const StoreWorkshopTable = ({ data, socket }) => {
         const newStoreWorkshop = newRow;
         socket ? socket.emit('create_store_workshop', newStoreWorkshop) : history.push('/error');
         resolve();
+    }
+
+    const updateRow = (newData, oldData, resolve) => {
+        const dataUpdate = [...data];
+        const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
+        const index = dataUpdate.indexOf(target);
+        dataUpdate[index] = newData;
+        socket ? socket.emit('update_store_workshop', newData) : history.push('/error');
+        resolve();
+        return dataUpdate;
     }
 
     const deleteRow = (selectedRow, resolve) => {
@@ -103,18 +126,21 @@ export const StoreWorkshopTable = ({ data, socket }) => {
         <MuiTable className={classes.table}
             data={data}
             dataColumns={columns}
+            rowAdd={rowAdd}
+            updateRow={updateRow}
+            deleteRow={deleteRow}
             disableSubTitle={false}
-            title={'PRUEBA ---- Stock en taller ---- PRUEBA '}
+            title={'LISTADO ITEMS EN TALLER'}
             searchPlaceHolder={'Buscar por código o descripción'}
+            pdfTitle={`Listado de stock en taller`}
             disableAddButton={false}
             disableDeleteButton={false}
             disableOnRowUpdate={false}
             disableColumnButton={false}
             disableGroupingOption={false}
             disableDefaultSearch={false}
+            disableInitialFormData={false}
             enableDuplicateButton={true}
-            rowAdd={rowAdd}
-            deleteRow={deleteRow}
             enablePaging={true}
             pageSize={20}
             pageSizeOptions={[20, 40, 100]}

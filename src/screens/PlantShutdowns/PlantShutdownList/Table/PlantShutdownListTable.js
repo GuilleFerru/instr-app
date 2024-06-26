@@ -57,7 +57,7 @@ export const PlantShutdownListTable = ({ allData, setDate, date }) => {
             <MuiTable
                 data={data}
                 setData={setData}
-                title={'LISTADO DE PAROS DE PLANTA'}
+                title={'PAROS DE PLANTA'}
                 datepicker={yearPicker(date, handleDatePicker)}
                 disableAddButton={false}
                 disableDeleteButton={false}

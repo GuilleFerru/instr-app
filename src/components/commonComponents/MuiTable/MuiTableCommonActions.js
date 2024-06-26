@@ -76,12 +76,17 @@ export const muiTableCommonActions = (getNewDate, user) => {
         tooltip: 'Duplicar fila',
         icon: tableIcons.Duplicate,
         hidden: user?.userType === 'user',
-        onClick: (_evt, rowData) => {
+        onClick: (evt, rowData) => {
             const materialTable = materialTableRef.current;
-            const { tableData, id, tag, ...dataRest } = rowData
+            const clickPathname = evt.view.location.pathname;
+            const { tableData, id, ...dataRest } = rowData;
+            const actions = {
+                '/tareasDiarias': () => { dataRest.tag = ''; },
+                '/itemsTaller': () => { dataRest.date = new Date(); },
+            }
+            if (actions[clickPathname]) actions[clickPathname]();
             setInitialFormData({
                 id: 0,
-                tag: '',
                 ...dataRest
             });
             materialTable.dataManager.changeRowEditing();

@@ -166,7 +166,7 @@ export const StoreTable = ({ getData, data, subTitle }) => {
 
     return <ThemeProvider theme={theme}>
             <MuiTable className={classes.table}
-                title={'Listado de almacen'}
+                title={'LISTADO ITEMS ALMACEN'}
                 subTitle={subTitle}
                 disableSubTitle={false}
                 data={data}

@@ -257,7 +257,7 @@ export const StoreReclaimsTable = ({ allData, socket }) => {
             <MuiTable className={classes.table}
                 data={data}
                 dataColumns={columns}
-                title="ÍTEMS CON STOCK CERO"
+                title="LISTADO ITEMS STOCK CERO"
                 enablePaging={true}
                 pageSize={20}
                 pageSizeOptions={[20, 30, 50]}
