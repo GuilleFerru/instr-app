@@ -101,6 +101,8 @@ export const MuiTable = (
         disableGoToTodayButton = true,
         enableCompleteDayRoutinesButton = false,
         handleCompleteDayRoutines,
+        enableCrudStoreWorkshopUbication = false,
+        setCrudSWorkshopUbicOpen
     }) => {
 
     const positionRef = React.useRef();
@@ -134,14 +136,34 @@ export const MuiTable = (
         claimItems,
         deleteClaimItems,
         loadNewStoreItems,
-        completeDayRoutines } = muiTableCommonActions(getNewDate, user);
+        completeDayRoutines,
+        crudStoreWorkshopUbication } = muiTableCommonActions(getNewDate, user);
 
     useEffect(() => {
-
         setRowColor && setSelectedRow(rowIdHighlight);
     }, [rowIdHighlight, setRowColor]);
 
-
+    const actions = [
+        (enableAditionalButton && addAditional(tableIcons, handleAditional, maxAditionalsReached)),
+        (enableDeleteAditionalButton && deleteAditional(tableIcons, handleAditional, minAditionalReached)),
+        (enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData)),
+        (enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData)))),
+        (enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon, routineDate)))),
+        (enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate)))),
+        (enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon)))),
+        (enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon)),
+        (enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData)),
+        (enableDailyWorkSearchButton && searchDailyWork(tableIcons, setIsDialogOpen, getDailyWorkDataForSearch)),
+        (enableGenerateDailyShiftButton && generateDailyShift(tableIcons, setIsDialogOpen)),
+        (enableCreateNewRoutineButton && createNewRoutine(tableIcons, setIsDialogOpen)),
+        (enableEditRoutineButton && editRoutine(tableIcons, setRoutineEditDialogOpen)),
+        (enableAddToClaimItemButton && (rowData => addToClaimItem(tableIcons, handleAddToClaimItem, rowData))),
+        (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems, itemsToClaimQty)),
+        (enableDeleteClaimItemsButton && deleteClaimItems(tableIcons, handleDeleteClaimedItems, itemsToClaimQty)),
+        (enableLoadNewStoreItemsButton && loadNewStoreItems(IconButton, BackupIcon, handleLoadNewStoreItems)),
+        (enableCompleteDayRoutinesButton && completeDayRoutines(tableIcons, handleCompleteDayRoutines)),
+        (enableCrudStoreWorkshopUbication && crudStoreWorkshopUbication(tableIcons, setCrudSWorkshopUbicOpen))
+    ].filter(Boolean);
 
     return (
         <div ref={positionRef} className={classes.table}>
@@ -174,7 +196,6 @@ export const MuiTable = (
                         bulkUpdate(selectedRows, resolve);
                     }),
                 }}
-
                 options={{
                     search: disableDefaultSearch ? false : true,
                     padding: 'dense',
@@ -203,26 +224,7 @@ export const MuiTable = (
                         fontWeight: 'bold',
                     }
                 }}
-                actions={[
-                    (enableAditionalButton && addAditional(tableIcons, handleAditional, maxAditionalsReached)),
-                    (enableDeleteAditionalButton && deleteAditional(tableIcons, handleAditional, minAditionalReached)),
-                    (enableDuplicateButton && duplicateRow(tableIcons, materialTableRef, setInitialFormData)),
-                    (enableCompleteTaskButton && (rowData => (completeTask(tableIcons, handleRoutineSchedule, rowData)))),
-                    (enableRoutinesDetails && (rowData => (watchTask(rowData, Link, monthAndYear, ListAltIcon, routineDate)))),
-                    (enableGoToDateButton && (rowData => (goToDate(Link, rowData, ListAltIcon, parseStringToDate)))),
-                    (enableGoToPlantShutdown && (rowData => (goToPlantShutdown(Link, rowData, ListAltIcon)))),
-                    (enableGoToPlantShutdownWorksToDoButton && goToPlantShutdownWorksToDo(Link, WorkOffIcon)),
-                    (enableUpdateShutdownWorkButton && updateShutdownWork(tableIcons, setIsDialogOpen, setRowData)),
-                    (enableDailyWorkSearchButton && searchDailyWork(tableIcons, setIsDialogOpen, getDailyWorkDataForSearch)),
-                    (enableGenerateDailyShiftButton && generateDailyShift(tableIcons, setIsDialogOpen)),
-                    (enableCreateNewRoutineButton && createNewRoutine(tableIcons, setIsDialogOpen)),
-                    (enableEditRoutineButton && editRoutine(tableIcons, setRoutineEditDialogOpen)),
-                    (enableAddToClaimItemButton && (rowData => addToClaimItem(tableIcons, handleAddToClaimItem, rowData))),
-                    (enableClaimItemsButton && claimItems(tableIcons, handleClaimItems, itemsToClaimQty)),
-                    (enableDeleteClaimItemsButton && deleteClaimItems(tableIcons, handleDeleteClaimedItems, itemsToClaimQty)),
-                    (enableLoadNewStoreItemsButton && loadNewStoreItems(IconButton, BackupIcon, handleLoadNewStoreItems)),
-                    (enableCompleteDayRoutinesButton && completeDayRoutines(tableIcons, handleCompleteDayRoutines)),
-                ]}
+                actions={actions}
                 components={{
                     Action: (props) => {
                         //If isn't the add action

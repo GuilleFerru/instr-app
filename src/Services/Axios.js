@@ -95,8 +95,22 @@ export const axiosPost = async (url, body) => {
     }
 };
 
-export const axiosDelete = (url, data) => {
-    axios.delete(url, { data: { data } }, options()).then(_res => _res.status).catch(err => { console.log(err) });
+export const axiosDelete = async (url, body) => {
+    try {
+        const _res = await axios.delete(url, {
+            params: body,
+            ...options()
+        });
+        if (_res.status === 200) {
+            return _res.data;
+        }
+        return _res.status;
+    } catch (err) {
+        return { error: err };
+    }
+
+
+    //axios.delete(url, { data: { data } }, options()).then(_res => _res.status).catch(err => { console.log(err) });
 }
 
 export const loginCall = async (userCredential, dispatch) => {

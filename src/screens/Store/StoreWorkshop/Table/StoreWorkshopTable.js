@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import theme from '../../../../components/commonComponents/MuiTable/theme';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,14 +6,16 @@ import { ThemeProvider } from "@material-ui/core";
 import { TextField, } from '@material-ui/core';
 import { storeWorkshopTableStyle } from "./StoreWorkshopTableStyle";
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable';
+import { StoreWorkshopCrudContainer } from '../StoreWorkshopCRUD/StoreWorkshopCrudContainer';
 
 
 const useStyles = makeStyles((theme) => storeWorkshopTableStyle(theme));
 
-export const StoreWorkshopTable = ({ data, socket }) => {
+export const StoreWorkshopTable = ({ data, types, ubications, socket }) => {
 
     const classes = useStyles();
     const history = useHistory();
+    const [isCrudSWorkshopUbicOpen, setCrudSWorkshopUbicOpen] = useState(false);
 
 
     const columns = useMemo(
@@ -25,12 +27,8 @@ export const StoreWorkshopTable = ({ data, socket }) => {
             },
             {
                 field: 'eqType',
-                initialEditValue: 1,
-                lookup: {
-                    1: 'Válvula',
-                    2: 'Instrumento',
-                    3: 'Otros',
-                },
+                initialEditValue: Object.keys(types)[0],
+                lookup: types, // { 1: 'Válvula', 2: 'Instrumento', 3: 'Otros' },
                 title: 'Tipo',
                 align: 'justify',
                 width: '10%',
@@ -66,14 +64,8 @@ export const StoreWorkshopTable = ({ data, socket }) => {
             },
             {
                 field: 'storeWorkshopUbication',
-                initialEditValue: 1,
-                lookup: {
-                    1: 'CP-EST1',
-                    2: 'CP-EST2',
-                    3: 'CP-ARM1',
-                    4: 'CP-ARM2',
-                    6: 'CON-ZN1',
-                },
+                initialEditValue: Object.keys(ubications)[0],
+                lookup: ubications,
                 title: 'Ubicación',
                 width: '10%',
             },
@@ -97,7 +89,7 @@ export const StoreWorkshopTable = ({ data, socket }) => {
                 tooltip: 'Fecha de creación/actualización',
             },
         ],
-        [],
+        [types, ubications],
     );
 
     const rowAdd = (newRow, resolve) => {
@@ -121,7 +113,6 @@ export const StoreWorkshopTable = ({ data, socket }) => {
         resolve();
     }
 
-
     return <ThemeProvider theme={theme}>
         <MuiTable className={classes.table}
             data={data}
@@ -141,11 +132,18 @@ export const StoreWorkshopTable = ({ data, socket }) => {
             disableDefaultSearch={false}
             disableInitialFormData={false}
             enableDuplicateButton={true}
+            enableCrudStoreWorkshopUbication={true}
+            setCrudSWorkshopUbicOpen={setCrudSWorkshopUbicOpen}
             enablePaging={true}
             pageSize={20}
             pageSizeOptions={[20, 40, 100]}
-
         />
+        <StoreWorkshopCrudContainer
+            isCrudDialogOpen={isCrudSWorkshopUbicOpen}
+            setCrudDialogOpen={setCrudSWorkshopUbicOpen}
+            types={types}
+            ubications={ubications}
+        ></StoreWorkshopCrudContainer>
 
     </ThemeProvider>
 

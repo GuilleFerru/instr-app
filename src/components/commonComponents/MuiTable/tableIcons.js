@@ -23,6 +23,8 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import BuildIcon from '@material-ui/icons/Build';
 import BackupIcon from '@material-ui/icons/Backup';
+import ExploreIcon from '@material-ui/icons/Explore';
+import EditAttributesIcon from '@material-ui/icons/EditAttributes';
 
 
 export const tableIcons = {
@@ -52,4 +54,6 @@ export const tableIcons = {
     DeleteSweep: forwardRef((props, ref) => <DeleteSweepIcon {...props} ref={ref} />),
     EditTwo: forwardRef((props, ref) => <BuildIcon {...props} ref={ref} />),
     Backup: forwardRef((props, ref) => <BackupIcon {...props} ref={ref} />),
+    ExploreIcon: forwardRef((props, ref) => <ExploreIcon {...props} ref={ref} />),
+    EditAttributesIcon: forwardRef((props, ref) => <EditAttributesIcon {...props} ref={ref} />),
 };

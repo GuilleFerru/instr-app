@@ -240,6 +240,17 @@ export const muiTableCommonActions = (getNewDate, user) => {
     })
 
 
+    const crudStoreWorkshopUbication = (tableIcons, setCrudSWorkshopUbicOpen) => ({
+        tooltip: 'Tipo-Ubicación',
+        hidden: user?.userType === 'user',
+        icon: tableIcons.EditAttributesIcon,
+        isFreeAction: true,
+        onClick: (_evt, _rowData) => {
+            setCrudSWorkshopUbicOpen(true)
+        }
+    })
+
+
 
     return {
         handleDatePicker,
@@ -261,6 +272,7 @@ export const muiTableCommonActions = (getNewDate, user) => {
         claimItems,
         deleteClaimItems,
         loadNewStoreItems,
-        completeDayRoutines
+        completeDayRoutines,
+        crudStoreWorkshopUbication
     }
 }
