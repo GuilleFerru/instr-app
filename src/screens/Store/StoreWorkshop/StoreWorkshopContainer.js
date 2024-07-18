@@ -16,7 +16,6 @@ export const StoreWorkshopContainer = () => {
     const [data, setData] = useState([]);
     const [types, setTypes] = useState([]);
     const [ubications, setUbications] = useState([]);
-
     const [connected, setConnected] = useState(false);
     const { socket } = useContext(AuthContext);
 
@@ -36,7 +35,7 @@ export const StoreWorkshopContainer = () => {
         } else {
             history.push('/error');
         }
-        
+
     }, [history, socket])
 
 

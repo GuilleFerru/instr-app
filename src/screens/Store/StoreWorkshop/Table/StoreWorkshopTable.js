@@ -11,7 +11,7 @@ import { StoreWorkshopCrudContainer } from '../StoreWorkshopCRUD/StoreWorkshopCr
 
 const useStyles = makeStyles((theme) => storeWorkshopTableStyle(theme));
 
-export const StoreWorkshopTable = ({ data, types, ubications, socket }) => {
+export const StoreWorkshopTable = ({ data, types, ubications, socket}) => {
 
     const classes = useStyles();
     const history = useHistory();

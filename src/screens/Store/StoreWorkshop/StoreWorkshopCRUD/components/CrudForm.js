@@ -29,9 +29,15 @@ export const CrudForm = ({ onSubmit, isCrudDialogOpen, setCrudDialogOpen, types,
     const [radioValue, setRadioValue] = useState('eqType');
 
     useEffect(() => {
+        setSelectValue('')
         updateSelect(radioValue);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [radioValue, types, ubications]);
+
+    // useEffect(() => {
+    //     setSelectValue('')
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [types, ubications]);
 
     const updateSelect = (value) => {
         setSelect(value === 'eqType' ? selectArray(types) : selectArray(ubications));
@@ -41,6 +47,7 @@ export const CrudForm = ({ onSubmit, isCrudDialogOpen, setCrudDialogOpen, types,
         const value = e.target.value;
         setRadioValue(value);
         updateSelect(value);
+        setSelectValue('')
     };
 
     const handleSubmit = (action) => {

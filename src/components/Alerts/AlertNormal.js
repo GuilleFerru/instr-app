@@ -7,11 +7,11 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export function AlertSnackbar({ open, handleClose, severity, message }) {
+export function AlertSnackbar({ open, handleClose, severity, message, autoHideDuration = 4000 }) {
     return (
         <Snackbar
             open={open}
-            autoHideDuration={4000}
+            autoHideDuration={autoHideDuration}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             onClose={handleClose}
         >
