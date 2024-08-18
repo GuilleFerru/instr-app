@@ -45,10 +45,6 @@ export const AppBarContainer = ({ handleDrawerOpen, open }) => {
                     <FullScreenView />
                 </Box>
             </Box>
-
-
-
-
         </Toolbar>
     </AppBar>
 }

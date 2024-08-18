@@ -2,10 +2,10 @@ export const dailyWorksContainerStyle = theme => {
     return ({
         paper: {
             margin: theme.spacing(2),
-            padding: theme.spacing(1)
-            // display: "flex",
-            // // overflow: "auto",
-            // flexDirection: "column",
+            padding: theme.spacing(1),
+            overflowX: 'auto', // Permite scroll horizontal
+            width: '100%', // Asegura que el Paper ocupe el ancho completo
+            boxSizing: 'border-box', // Considera el padding en el ancho total
         },
         appBarSpacer: theme.mixins.toolbar,
         container: {

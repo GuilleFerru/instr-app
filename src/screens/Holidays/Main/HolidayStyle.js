@@ -1,6 +1,6 @@
 const shadowEffect = {
     webkitBoxShadow: '2px 4px 10px 1px rgba(0, 0, 0, 0.47)',
-    boxShadow: ' 2px 4px 10px 1px rgba(201, 201, 201, 0.47)',
+    boxShadow: '2px 4px 10px 1px rgba(201, 201, 201, 0.47)',
     borderRadius: '10px',
 }
 
@@ -13,14 +13,13 @@ export const holidayStyle = theme => {
             alignItems: 'flex-start',
             padding: '10px',
             width: '100%',
+            maxWidth: '100vw',
+            boxSizing: 'border-box',
             gap: '10px',
             height: 'auto',
             marginTop: '10px',
             fontFamily: 'Nunito, sans-serif',
-            [theme.breakpoints.down('xs')]: {
-                maxWidth: '100%',
-            },
-            overflow: 'visible',
+            overflowX: 'auto', // Permite desplazamiento horizontal en pantallas pequeñas
             ...shadowEffect,
         },
         mainTitles: {
@@ -32,7 +31,7 @@ export const holidayStyle = theme => {
             height: 'auto',
             margin: '0',
             padding: '0',
-
+            boxSizing: 'border-box', // Asegura que el padding no afecte el ancho total
         },
         containerHeader: {
             display: 'flex',
@@ -40,6 +39,8 @@ export const holidayStyle = theme => {
             justifyContent: 'space-between',
             alignItems: 'flex-start',
             width: '100%',
+            boxSizing: 'border-box', // Asegura que el padding no afecte el ancho total
         },
     })
 }
+
