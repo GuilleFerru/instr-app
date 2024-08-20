@@ -15,6 +15,7 @@ export const EmployeeList = ({ employees, handleEmployee, handleAditionalDialog,
     const classes = useStyles();
     const { user } = useContext(AuthContext);
     const PER_PAGE = 8;
+
     const _DATA = usePagination(employees, PER_PAGE);
 
     return <>
@@ -32,7 +33,8 @@ export const EmployeeList = ({ employees, handleEmployee, handleAditionalDialog,
                             size="small"
                             color="primary"
                             placement="top-end"
-                            handleTooltip={handleEmployee}>
+                            handleTooltip={handleEmployee}
+                            disabled={user?.userType === 'user'}>
                         </AddTooltip>
                     </div>
                 </div>

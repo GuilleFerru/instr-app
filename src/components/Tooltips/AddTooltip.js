@@ -10,15 +10,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const AddTooltip = ({ title, size, color, placement, handleTooltip }) => {
+export const AddTooltip = ({ title, size, color, placement, handleTooltip, disabled = false }) => {
     const classes = useStyles();
 
 
     return (
-        <Tooltip title={title} aria-label={title} placement={placement}>
-            <Fab size={size} color={color} className={classes.fab} onClick={() => handleTooltip()} >
-                <AddIcon />
-            </Fab>
+        <Tooltip title={title} aria-label={title} placement={placement} >
+            <span>
+                <Fab size={size} color={color} className={classes.fab} onClick={() => handleTooltip()} disabled={disabled} >
+                    <AddIcon />
+                </Fab>
+            </span>
         </Tooltip >
     );
 }
