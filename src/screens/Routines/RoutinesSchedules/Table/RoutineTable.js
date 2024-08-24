@@ -2,12 +2,13 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../../../context/AuthContext';
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from '../../../../components/commonComponents/MuiTable/theme';
-import { axiosPut } from '../../../../Services/Axios.js';
+import { axiosPut, axiosPost } from '../../../../Services/Axios.js';
 import { otherRoutinesDefault, otherRoutinesInitialRowData } from '../../../../Services/defaultTables.js';
 import { monthPicker } from '../../../../Services/DatePickers'
 import { MuiTable } from '../../../../components/commonComponents/MuiTable/MuiTable'
 import { muiTableCommonActions } from '../../../../components/commonComponents/MuiTable/MuiTableCommonActions';
 import { RoutineCrudContainer } from '../../RoutinesCRUD/RoutineCrudContainer';
+import { useHistory } from 'react-router-dom';
 
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -16,11 +17,13 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export const RoutineTable = ({ allData, setDate, date }) => {
 
     const { socket } = useContext(AuthContext);
+    const history = useHistory();
     const [data, setData] = useState([]);
     const [dataColumns, setDataColumns] = useState([]);
     const [monthAndYear, setMonthAndYear] = useState('');
     const [isRoutineCreateDialogOpen, setIsRoutineCreateDialogOpen] = useState(false);
     const [isRoutineEditDialogOpen, setIsRoutineEditDialogOpen] = useState(false);
+    const [isCreateMonthRoutineEnabled, setIsCreateMonthRoutineEnabled] = useState(true)
     const { handleDatePicker } = muiTableCommonActions(setDate);
 
     useEffect(() => {
@@ -53,37 +56,49 @@ export const RoutineTable = ({ allData, setDate, date }) => {
         });
     }
 
+    const handleCreateMonthRoutine = () => {
+        setIsCreateMonthRoutineEnabled(true);
+        axiosPost(`${baseUrl}/routine/createMonthRoutine`,).then(data => {
+            console.log('data')
+        }).catch(_err => {
+            history.push('/error');
+        });
+
+    }
+
     return <ThemeProvider theme={theme}>
-            <MuiTable
-                data={data}
-                setData={setData}
-                title={`RUTINAS ${monthAndYear.toUpperCase()}`}
-                datepicker={monthPicker(date, handleDatePicker)}
-                disableOnRowUpdate={false}
-                dataColumns={dataColumns}
-                updateRow={updateRow}
-                enablePaging={true}
-                pageSize={20}
-                pageSizeOptions={[20, 40, 60]}
-                routineDate={date}
-                handleRoutineSchedule={handleRoutineSchedule}
-                enableRoutinesDetails={true}
-                enableCompleteTaskButton={true}
-                disableDatePicker={false}
-                disableDefaultSearch={false}
-                disableInitialFormData={false}
-                initialRowData={{ otherRoutinesInitialRowData }}
-                monthAndYear={monthAndYear}
-                enableCreateNewRoutineButton={true}
-                setIsDialogOpen={setIsRoutineCreateDialogOpen}
-                setRoutineEditDialogOpen={setIsRoutineEditDialogOpen}
-                enableEditRoutineButton={true}
-            />
-            <RoutineCrudContainer
-                isCreateDialogOpen={isRoutineCreateDialogOpen}
-                setIsCreateDialogOpen={setIsRoutineCreateDialogOpen}
-                isEditDialogOpen={isRoutineEditDialogOpen}
-                setIsEditDialogOpen={setIsRoutineEditDialogOpen}
-            />
-        </ThemeProvider>
+        <MuiTable
+            data={data}
+            setData={setData}
+            title={`RUTINAS ${monthAndYear.toUpperCase()}`}
+            datepicker={monthPicker(date, handleDatePicker)}
+            disableOnRowUpdate={false}
+            dataColumns={dataColumns}
+            updateRow={updateRow}
+            enablePaging={true}
+            pageSize={20}
+            pageSizeOptions={[20, 40, 60]}
+            routineDate={date}
+            handleRoutineSchedule={handleRoutineSchedule}
+            enableRoutinesDetails={true}
+            enableCompleteTaskButton={true}
+            disableDatePicker={false}
+            disableDefaultSearch={false}
+            disableInitialFormData={false}
+            initialRowData={{ otherRoutinesInitialRowData }}
+            monthAndYear={monthAndYear}
+            enableCreateNewRoutineButton={true}
+            setIsDialogOpen={setIsRoutineCreateDialogOpen}
+            setRoutineEditDialogOpen={setIsRoutineEditDialogOpen}
+            enableEditRoutineButton={true}
+            handleCreateMonthRoutine={handleCreateMonthRoutine}
+            enableCreateMonthRoutine={isCreateMonthRoutineEnabled}
+        />
+        <RoutineCrudContainer
+            isCreateDialogOpen={isRoutineCreateDialogOpen}
+            setIsCreateDialogOpen={setIsRoutineCreateDialogOpen}
+            isEditDialogOpen={isRoutineEditDialogOpen}
+            setIsEditDialogOpen={setIsRoutineEditDialogOpen}
+        />
+    </ThemeProvider>
 }

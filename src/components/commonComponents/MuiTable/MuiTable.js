@@ -102,7 +102,9 @@ export const MuiTable = (
         enableCompleteDayRoutinesButton = false,
         handleCompleteDayRoutines,
         enableCrudStoreWorkshopUbication = false,
-        setCrudSWorkshopUbicOpen
+        setCrudSWorkshopUbicOpen,
+        enableCreateMonthRoutine = false,
+        handleCreateMonthRoutine,
     }) => {
 
     const positionRef = React.useRef();
@@ -137,7 +139,8 @@ export const MuiTable = (
         deleteClaimItems,
         loadNewStoreItems,
         completeDayRoutines,
-        crudStoreWorkshopUbication } = muiTableCommonActions(getNewDate, user);
+        crudStoreWorkshopUbication,
+        createMonthRoutine } = muiTableCommonActions(getNewDate, user);
 
     useEffect(() => {
         setRowColor && setSelectedRow(rowIdHighlight);
@@ -162,7 +165,8 @@ export const MuiTable = (
         (enableDeleteClaimItemsButton && deleteClaimItems(tableIcons, handleDeleteClaimedItems, itemsToClaimQty)),
         (enableLoadNewStoreItemsButton && loadNewStoreItems(IconButton, BackupIcon, handleLoadNewStoreItems)),
         (enableCompleteDayRoutinesButton && completeDayRoutines(tableIcons, handleCompleteDayRoutines)),
-        (enableCrudStoreWorkshopUbication && crudStoreWorkshopUbication(tableIcons, setCrudSWorkshopUbicOpen))
+        (enableCrudStoreWorkshopUbication && crudStoreWorkshopUbication(tableIcons, setCrudSWorkshopUbicOpen)),
+        (enableCreateMonthRoutine && createMonthRoutine(tableIcons, handleCreateMonthRoutine))
     ].filter(Boolean);
 
     return (
@@ -288,5 +292,3 @@ export const MuiTable = (
         </div >
     );
 }
-
-

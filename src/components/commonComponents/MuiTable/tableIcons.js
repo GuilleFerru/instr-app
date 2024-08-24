@@ -27,6 +27,7 @@ import ExploreIcon from '@material-ui/icons/Explore';
 import EditAttributesIcon from '@material-ui/icons/EditAttributes';
 
 
+
 export const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Duplicate: forwardRef((props, ref) => <LibraryAddIcon {...props} ref={ref} />),

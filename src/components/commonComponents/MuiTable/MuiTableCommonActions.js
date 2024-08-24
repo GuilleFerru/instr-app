@@ -250,6 +250,16 @@ export const muiTableCommonActions = (getNewDate, user) => {
         }
     })
 
+    const createMonthRoutine = (tableIcons, handleCreateMonthRoutine) => ({
+        tooltip: 'Generar rutinas mes en curso',
+        hidden: user?.userType === 'user',
+        icon: tableIcons.DailyShift,
+        isFreeAction: true,
+        onClick: (_evt, _rowData) => {
+            handleCreateMonthRoutine()
+        }
+    })
+
 
 
     return {
@@ -273,6 +283,7 @@ export const muiTableCommonActions = (getNewDate, user) => {
         deleteClaimItems,
         loadNewStoreItems,
         completeDayRoutines,
-        crudStoreWorkshopUbication
+        crudStoreWorkshopUbication,
+        createMonthRoutine
     }
 }
