@@ -49,12 +49,6 @@ export const useDailyWorksTable = (dayWorks) => {
         })
     }
 
-
-    useEffect(() => {
-        console.log(dayWork);
-    }, [dayWork])
-
-
     return {
         data,
         setData,

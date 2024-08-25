@@ -29,8 +29,6 @@ export const DailyWorkersForm = () => {
     const { values, handleChange } = UseDailyWorkersForm(initialFValues);
     const classes = useStyles();
 
-    console.log(values)
-
     return <Form>
         <div className={classes.shiftWorkersContainer}>
             <div>

@@ -12,13 +12,14 @@ import { formatDate } from '../../../Services/DateUtils.js';
 import { datePicker } from '../../../Services/DatePickers';
 import { dailyWorksTableStyle } from './DailyWorksTableStyle';
 import { SearchDailyWorkForm } from '../Forms/SearchDailyWorkForm';
+import { AlertSnackbar } from '../../../components/Alerts/AlertNormal';
 
 
 const useStyles = makeStyles((theme) => dailyWorksTableStyle(theme));
 const baseUrl = process.env.REACT_APP_API_URL;
 
 
-export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDate, roomId, socket }) => {
+export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDate, roomId, socket, disableButtons }) => {
     const location = useLocation();
     const classes = useStyles();
     const history = useHistory();
@@ -117,16 +118,22 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
         socket ? socket.emit('complete_day_routines', date, dayRoutines, roomId) : history.push('/error');
     }
 
+    const handleCloseAlert = (_event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+    };
+
     return <ThemeProvider theme={theme}>
         <MuiTable className={classes.table}
             data={data}
             setData={setData}
             title={'TAREAS DIARIAS'}
             datepicker={datePicker(date, handleDatePicker)}
-            disableAddButton={false}
-            disableDeleteButton={false}
+            disableAddButton={disableButtons}
+            disableDeleteButton={disableButtons}
             disableOnRowUpdate={false}
-            disableOnBulkUpdate={false}
+            disableOnBulkUpdate={disableButtons}
             disableColumnButton={false}
             dataColumns={dataColumns}
             rowAdd={rowAdd}
@@ -155,9 +162,10 @@ export const DailyWorksTable = ({ allData, dataColumns, getData, date, getNewDat
             setIsDialogOpen={setIsDialogOpen}
             getDailyWorkDataForSearch={getDailyWorkDataForSearch}
             disableGoToTodayButton={false}
-            enableCompleteDayRoutinesButton={true}
+            enableCompleteDayRoutinesButton={!disableButtons}
             handleCompleteDayRoutines={completeDayRoutines}
         />
+        <AlertSnackbar open={disableButtons} handleClose={handleCloseAlert} message={'Vaya a Tareas -> Rutinas y haga click en Generar rutinas'} severity={'warning'}  />
         <SearchDailyWorkForm isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} dailyWorkDataForSearch={dailyWorkDataForSearch} getDataFromAdvanceSearch={getDataFromAdvanceSearch} />
     </ThemeProvider>
 

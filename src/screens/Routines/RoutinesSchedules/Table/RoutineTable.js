@@ -23,11 +23,12 @@ export const RoutineTable = ({ allData, setDate, date }) => {
     const [monthAndYear, setMonthAndYear] = useState('');
     const [isRoutineCreateDialogOpen, setIsRoutineCreateDialogOpen] = useState(false);
     const [isRoutineEditDialogOpen, setIsRoutineEditDialogOpen] = useState(false);
-    const [isCreateMonthRoutineEnabled, setIsCreateMonthRoutineEnabled] = useState(true)
+    const [isCreateMonthRoutineEnabled, setIsCreateMonthRoutineEnabled] = useState(false)
     const { handleDatePicker } = muiTableCommonActions(setDate);
 
     useEffect(() => {
         new Promise(resolve => {
+            setIsCreateMonthRoutineEnabled(allData.hasFrequencyInRange ? allData.hasFrequencyInRange : false);
             setData(allData.otherRoutines ? allData.otherRoutines : []);
             setDataColumns(allData.columns ? allData.columns : [otherRoutinesDefault]);
             setMonthAndYear(allData.date ? allData.date : '');
@@ -57,9 +58,8 @@ export const RoutineTable = ({ allData, setDate, date }) => {
     }
 
     const handleCreateMonthRoutine = () => {
-        setIsCreateMonthRoutineEnabled(true);
-        axiosPost(`${baseUrl}/routine/createMonthRoutine`,).then(data => {
-            console.log('data')
+        axiosPost(`${baseUrl}/routine/createMonthRoutine`,).then(_data => {
+            setIsCreateMonthRoutineEnabled(false);
         }).catch(_err => {
             history.push('/error');
         });

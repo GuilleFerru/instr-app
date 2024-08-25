@@ -20,30 +20,12 @@ const StyledTableCell = withStyles((theme) => ({
 
 }))(TableCell);
 
-// const StyledTableRow = withStyles((theme) => ({
-//     root: {
-//         '&:nth-of-type(odd)': {
-//             backgroundColor: theme.palette.action.hover,
-//         },
-//     },
-// }))(TableRow);
 
 const useStyles = makeStyles((theme) => scoreTableStyle(theme));
 
 export const ScoreTable = ({ scores }) => {
 
-    //const isMounted = useRef(false);
     const classes = useStyles();
-
-
-    // useEffect(() => {
-    //     if (isMounted.current) {
-    //         console.log(scores);
-    //         //setData(scores);
-    //     } else {
-    //         isMounted.current = true;
-    //     }
-    // }, [scores]);
 
     return (
         <TableContainer component={Paper}>

@@ -22,6 +22,7 @@ export const DailyWorksContainer = () => {
     const [data, setData] = useState([]);
     const [roomId, setRoomId] = useState(0);
     const [dataColumns, setDataColumns] = useState([]);
+    const [disableButtons, setDisableButtons] = useState();
     const {
         createOptions,
         createAutocomplete,
@@ -63,6 +64,7 @@ export const DailyWorksContainer = () => {
         if (socket) {
             socket.emit('get_daily_works', date);
             const listener = (...args) => {
+                args[0].dayWorks.length === 0 ? setDisableButtons(true) : setDisableButtons(false);
                 getData(args[0]);
                 setRoomId(date);
                 setConnected(true);
@@ -82,7 +84,7 @@ export const DailyWorksContainer = () => {
 
     return <TableCard>
         {connected ? (
-            <DailyWorksTable allData={data} dataColumns={dataColumns} getData={getData} date={date} getNewDate={getNewDate} roomId={roomId} socket={socket} />
+            <DailyWorksTable allData={data} dataColumns={dataColumns} getData={getData} date={date} getNewDate={getNewDate} roomId={roomId} socket={socket} disableButtons={disableButtons} />
         ) : (
             <div className={classes.progress}>
                 <CircularProgress />
