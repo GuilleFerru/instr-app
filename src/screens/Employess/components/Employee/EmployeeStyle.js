@@ -1,9 +1,10 @@
 
-export const employeetStyle = theme => {
+export const employeetStyle = (theme, employee) => {
     return ({
         root: {
             maxWidth: 345,
             width: '50%',
+            backgroundColor: employee.status ? 'white' : '#f5f5f5'
         },
         media: {
             height: 0,
@@ -20,7 +21,7 @@ export const employeetStyle = theme => {
             transform: 'rotate(180deg)',
         },
         avatar: {
-            backgroundColor: "#069999",
+            backgroundColor: employee.status ? '#069999' : 'gray',
         },
     })
 }
