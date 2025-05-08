@@ -11,7 +11,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
-const useStyles = makeStyles((theme) => employeetStyle(theme));
+
 
 const getTimeOfService = (date) => {
     const today = new Date();
@@ -28,6 +28,7 @@ const getTimeOfService = (date) => {
 
 export const Employee = ({ employee, handleAditionalDialog, aditionalData, setAditionalData, handleEmployeeEdit, user }) => {
 
+    const useStyles = makeStyles((theme) => employeetStyle(theme, employee));
     const classes = useStyles();
 
     const handleEmployee = () => {
@@ -61,10 +62,13 @@ export const Employee = ({ employee, handleAditionalDialog, aditionalData, setAd
         {
             "Días de vacaciones": employee.holidayDays
         },
+        {
+            "Activo": employee?.status ? 'Si' : 'No'
+        },
     ]
 
     return <>
-        <Card className={classes.root}>
+        <Card className={classes.root} >
             <CardHeader
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>

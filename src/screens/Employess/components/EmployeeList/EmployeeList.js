@@ -10,6 +10,10 @@ import { AddTooltip } from '../../../../components/Tooltips/AddTooltip';
 
 const useStyles = makeStyles((theme) => employeeListStyle(theme));
 
+const countInactiveEmployees = (employees) => {
+    return employees.filter(employee => employee.status === false).length;
+}
+
 export const EmployeeList = ({ employees, handleEmployee, handleAditionalDialog, aditionalData, setAditionalData }) => {
 
     const classes = useStyles();
@@ -24,7 +28,7 @@ export const EmployeeList = ({ employees, handleEmployee, handleAditionalDialog,
             <div className={classes.body}>
                 <div className={classes.mainTitles}>
                     <div className={classes.titles}>
-                        <Typography variant="h6" gutterBottom> Personal Total: {employees.length} personas </Typography>
+                        <Typography variant="h6" gutterBottom> Personal Total: {employees.length - countInactiveEmployees(employees)} personas </Typography>
                         <Typography variant="overline" gutterBottom> Puedes editar los datos un empleado y agregar novedades a su Parte Díario </Typography>
                     </div>
                     <div>

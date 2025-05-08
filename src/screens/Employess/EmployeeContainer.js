@@ -66,6 +66,7 @@ export const EmployeeContainer = () => {
         const url = addEmployee ? `${baseUrl}/emp/create` : `${baseUrl}/emp/update`;
         employee.forEach((element, _index) => {
             emp[element.id] = element.id === 'hireDate' ? parseHtmlInputTypeToDate(element.value) : element.value;
+            emp[element.id] = element.id === 'status' ? element.checked : element.value;
         });
 
         updateEmployee && axiosPut(url, emp).then((response) => {

@@ -52,5 +52,5 @@ const days = [
     { id: 4, name: 'Jueves' },
     { id: 5, name: 'Viernes' },
     { id: 6, name: 'Sabado' },
-    { id: 7, name: 'Domingo' },
+    { id: 0, name: 'Domingo' },
 ];

@@ -2,23 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { AlertSnackbar } from '../../../../../components/Alerts/AlertNormal';
 import { makeStyles } from "@material-ui/core/styles";
 import { parseStringToHtmlInputType } from '../../../../../Services/DateUtils.js';
-import { CssBaseline, Container, Button, Radio, RadioGroup, FormLabel, FormControl, FormControlLabel } from '@material-ui/core';
+import { CssBaseline, Container, Button, Switch, FormControlLabel, Box } from '@material-ui/core';
 import { MyDialog, MyDialogActions } from '../../../../../components/commonComponents/Dialog/MyDialog';
 import { employeeFormStyle } from './EmployeeFormStyle';
 import { SelectTwo as Select } from '../../../../../components/commonComponents/Controls/SelectTwo';
 import { Input } from '../../../../../components/commonComponents/Controls/Input';
+import { CustomRadioGroup } from '../../../../../components/commonComponents/Controls/CustomRadioGroup';
+
 
 
 const radioOptions = [
     {
-        type: "radio",
-        name: "Horario",
         label: "Turno",
         value: "rotativeShift",
     },
     {
-        type: "radio",
-        name: "Horario",
         label: "Diurno",
         value: "dailyShift",
     }
@@ -93,8 +91,10 @@ export const EmployeeForm = ({
             {
                 id: "shift",
                 name: "shift",
+                label: "Horario",
                 value: employee ? employee?.shiftType : "",
             },
+
             {
                 id: "turno",
                 name: "turno",
@@ -117,17 +117,26 @@ export const EmployeeForm = ({
                 type: "date",
                 hidden: true,
             },
+            {
+                id: "status",
+                name: "status",
+                label: "Activo",
+                checked: employee ? employee?.status : true,
+            },
         ]);
-
     }, [employee]);
 
 
     const handleChanges = (e) => {
-        const { name, value } = e.target;
+        const { name, value, checked } = e.target;
         setForm((prev) => {
             return prev.map((item) => {
                 if (item.name === name) {
-                    return { ...item, value: value }
+                    if (name === "status") {
+                        return { ...item, checked: checked }
+                    } else {
+                        return { ...item, value: value }
+                    }
                 }
                 return item;
             })
@@ -136,7 +145,7 @@ export const EmployeeForm = ({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if ((form[5].value === "rotativeShift" && form[6].value >= 5) || (form[5].value === "dailyShift" && form[6].value <= 4)) {
+        if ((form[6].value === "rotativeShift" && form[7].value >= 5) || (form[6].value === "dailyShift" && form[7].value <= 4)) {
             setOpenAlertError(true);
         } else {
             handleCrud(form);
@@ -169,17 +178,36 @@ export const EmployeeForm = ({
                     <form noValidate autoComplete="off" className={classes.form} >
                         {
                             form.map((item, i) => {
+
                                 if (item.id === "shift") {
-                                    return <div key={i} className={classes.radioGroup}>
-                                        <FormControl component="fieldset" key={i}>
-                                            <FormLabel component="legend">Horario</FormLabel>
-                                            {radioOptions.map((radio, i) => {
-                                                return <RadioGroup key={i} aria-label="shiftType" name={item.name} value={item.value} onChange={handleChanges}>
-                                                    <FormControlLabel value={radio.value} control={<Radio />} label={radio.label} />
-                                                </RadioGroup>
-                                            })}
-                                        </FormControl>
-                                    </div>
+                                    return (
+                                        <CustomRadioGroup
+                                            key={i}
+                                            label={item.label}
+                                            name={item.name}
+                                            value={item.value}
+                                            options={radioOptions}
+                                            onChange={handleChanges}
+                                        />
+                                    )
+                                } else if (item.id === "status") {
+                                    return (
+                                        <Box>
+                                            <Box className={classes.statusBox}>Estado</Box>
+                                            <FormControlLabel
+                                                key={i}
+                                                control={
+                                                    <Switch
+                                                        id={item.id}
+                                                        name={item.name}
+                                                        checked={item.checked}
+                                                        onChange={handleChanges}
+                                                    />
+                                                }
+                                                label={item.label}
+                                            />
+                                        </Box>
+                                    )
                                 } else if (item.id === "turno") {
                                     return <Select
                                         key={i}
